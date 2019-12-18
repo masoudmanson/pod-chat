@@ -7968,7 +7968,7 @@
                     }
 
                     fireEvent('fileUploadEvents', {
-                        threadId: params.threadId,
+                        threadId: 0,
                         uniqueId: fileUniqueId,
                         state: 'NOT_STARTED',
                         progress: 0,
@@ -8012,7 +8012,7 @@
                     metadata['file']['mimeType'] = fileType;
                     metadata['file']['size'] = fileSize;
 
-                    fileUploadParams.threadId = params.threadId;
+                    fileUploadParams.threadId = 0;
                     fileUploadParams.uniqueId = fileUniqueId;
                     fileUploadParams.fileObject = params.file;
                     fileUploadParams.originalFileName = fileName;
@@ -8047,7 +8047,7 @@
                                         result.result.id + '&hashCode=' +
                                         result.result.hashCode;
 
-                                    transferFromUploadQToSendQ(parseInt(params.threadId), fileUniqueId, JSON.stringify(metadata), function () {
+                                    transferFromUploadQToSendQ(0, fileUniqueId, JSON.stringify(metadata), function () {
                                         chatSendQueueHandler();
                                     });
                                 }
@@ -8067,7 +8067,7 @@
                                         result.result.id + '&hashCode=' +
                                         result.result.hashCode;
 
-                                    transferFromUploadQToSendQ(parseInt(params.threadId), fileUniqueId, JSON.stringify(metadata), function () {
+                                    transferFromUploadQToSendQ(0, fileUniqueId, JSON.stringify(metadata), function () {
                                         chatSendQueueHandler();
                                     });
                                 }
@@ -8080,7 +8080,7 @@
 
                     return {
                         uniqueId: fileUniqueId,
-                        threadId: params.threadId,
+                        threadId: 0,
                         participant: userInfo,
                         content: {
                             caption: params.content,
@@ -8103,7 +8103,7 @@
 
             return {
                 uniqueId: fileUniqueId,
-                threadId: params.threadId,
+                threadId: 0,
                 participant: userInfo,
                 content: params.content
             };
