@@ -96,8 +96,8 @@
              */
             // socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
             // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-            // platformHost: 'http:///172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
-            // fileServer: 'http:///172.16.110.76:8080', // {**REQUIRED**} File Server Address
+            // platformHost: 'http://172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
+            // fileServer: 'http://172.16.110.76:8080', // {**REQUIRED**} File Server Address
             // serverName: 'sheikh_chat', // {**REQUIRED**} Server to to
 
             /**
@@ -106,15 +106,25 @@
             socketAddress: "wss://chat-sandbox.pod.ir/ws", // {**REQUIRED**} Socket Address
             ssoHost: "https://accounts.pod.ir", // {**REQUIRED**} Socket Address
             platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform", // {**REQUIRED**} Platform Core Address
-            fileServer: "https://sandbox.pod.ir:8443", // {**REQUIRED**} File Server Address
+            // fileServer: "https://sandbox.pod.ir:8443", // {**REQUIRED**} File Server Address
+            fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
             serverName: "chat-server", // {**REQUIRED**} Server to to register on
+
+            /**
+             * Integration
+             */
+            // socketAddress: "ws://172.16.110.235:8003/ws",
+            // ssoHost: "http://172.16.110.76",
+            // platformHost: "http://172.16.110.235:8003/srv/bptest-core",
+            // fileServer: 'https://core.pod.ir',
+            // serverName: "chatlocal",
 
             grantDeviceIdFromSSO: false,
             enableCache: false, // Enable Client side caching
             fullResponseObject: false,
             mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
             // typeCode: "talk",
-            token: "7c9ea3fdfab94ffa9ebb3d7e0b6656b7",
+            token: "e55eddb7831b464babfc7a9e47954a1a",
             // token: "7cba09ff83554fc98726430c30afcfc6", // {**REQUIRED**} SSO Token ZiZi
             // token: "fbd4ecedb898426394646e65c6b1d5d1", //  {**REQUIRED**} SSO Token JiJi
             // token: "5fb88da4c6914d07a501a76d68a62363", // {**REQUIRED**} SSO Token FiFi
@@ -148,7 +158,7 @@
             /**
              *  Get User Info
              */
-            // getUserInfo();
+            getUserInfo();
 
             /*******************************************************
              *                    T H R E A D S                    *
@@ -664,6 +674,7 @@
                      * Sending Message Seen to Sender after 5 secs
                      */
                     setTimeout(function () {
+                        console.log(`Sending SEEN ACK for message ${message.id} ...`);
                         chatAgent.seen({
                             messageId: message.id,
                             ownerId: message.ownerId
@@ -696,6 +707,23 @@
             switch (type) {
                 case "IS_TYPING":
                     console.log(event.result.user.user + " is typing in thread #" + event.result.thread);
+                    break;
+
+                default:
+                    break;
+            }
+        });
+
+        /**
+         * Listen to User Events
+         */
+        chatAgent.on('userEvents', function (event) {
+            var type = event.type;
+            console.log(event);
+
+            switch (type) {
+                case 'CHAT_PROFILE_UPDATED':
+                    console.log('Chat Profile Has Been Updated', event);
                     break;
 
                 default:
@@ -1155,7 +1183,10 @@
             count:document.getElementById('g-p2p-count').value,
             offset: document.getElementById('g-p2p-off').value
         })">Get Contacts</a>
-        <a class="btn" href="#" onclick="getThreads({count:50, offset: 0})">Get Threads</a>
+        <a class="btn" href="#" onclick="getThreads({
+            count:document.getElementById('g-p2p-count').value,
+            offset: document.getElementById('g-p2p-off').value
+        })">Get Threads</a>
         <a class="btn" href="#" onclick="getHistory({
 //            fromTimeFull: 1557830885624256000,
 //            toTimeFull: 1558247572310448000,
@@ -1358,7 +1389,7 @@
 <hr>
 <br>
 
-<form method="POST" action="http://172.16.110.131:8080/nzh/addContacts">
+<form method="POST" action="https://sandbox.pod.ir:8043/srv/basic-platform/nzh/addContacts">
     <fieldset>
         <legend>Add Contact</legend>
         <label for="firstName">firstName : </label>

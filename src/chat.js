@@ -84,6 +84,7 @@
                 threadEvents: {},
                 contactEvents: {},
                 botEvents: {},
+                userEvents: {},
                 fileUploadEvents: {},
                 systemEvents: {},
                 chatReady: {},
@@ -135,6 +136,15 @@
                 GET_NOT_SEEN_DURATION: 47,
                 PIN_THREAD: 48,
                 UNPIN_THREAD: 49,
+                PIN_MESSAGE: 50,
+                UNPIN_MESSAGE: 51,
+                UPDATE_CHAT_PROFILE: 52,
+                GET_PARTICIPANT_ROLES: 54,
+                GET_REPORT_REASONS: 56,
+                REPORT_THREAD: 57,
+                REPORT_USER: 58,
+                REPORT_MESSAGE: 59,
+                GET_CONTACT_NOT_SEEN_DURATION: 60,
                 LOGOUT: 100,
                 ERROR: 999
             },
@@ -152,6 +162,14 @@
                 CHANNEL_GROUP: 4,
                 CHANNEL: 8,
                 NOTIFICATION_CHANNEL: 16
+            },
+            chatMessageTypes = {
+                TEXT: '1',
+                VOICE: '2',
+                PICTURE: '3',
+                VIDEO: '4',
+                SOUND: '5',
+                FILE: '6'
             },
             systemMessageTypes = {
                 IS_TYPING: '1',
@@ -2865,6 +2883,86 @@
                         break;
 
                     /**
+                     * Type 50    Pin Message
+                     */
+                    case chatMessageVOTypes.PIN_MESSAGE:
+                        if (messagesCallbacks[uniqueId]) {
+                            messagesCallbacks[uniqueId](Utility.createReturnData(false, '', 0, messageContent));
+                        }
+
+                        fireEvent('threadEvents', {
+                            type: 'MESSAGE_PIN',
+                            result: {
+                                thread: threadId,
+                                pinMessage: formatDataToMakePinMessage(messageContent)
+                            }
+                        });
+
+                        break;
+
+                    /**
+                     * Type 51    UnPin Message
+                     */
+                    case chatMessageVOTypes.UNPIN_MESSAGE:
+                        if (messagesCallbacks[uniqueId]) {
+                            messagesCallbacks[uniqueId](Utility.createReturnData(false, '', 0, messageContent));
+                        }
+
+                        fireEvent('threadEvents', {
+                            type: 'MESSAGE_UNPIN',
+                            result: {
+                                thread: threadId,
+                                pinMessage: formatDataToMakePinMessage(messageContent)
+                            }
+                        });
+
+                        break;
+
+                    /**
+                     * Type 52    Update Chat Profile
+                     */
+                    case chatMessageVOTypes.UPDATE_CHAT_PROFILE:
+                        if (messagesCallbacks[uniqueId]) {
+                            messagesCallbacks[uniqueId](Utility.createReturnData(false, '', 0, messageContent));
+                        }
+
+                        fireEvent('userEvents', {
+                            type: 'CHAT_PROFILE_UPDATED',
+                            result: {
+                                user: messageContent
+                            }
+                        });
+
+                        break;
+
+                    /**
+                     * Type 54    Get Participant Roles
+                     */
+                    case chatMessageVOTypes.GET_PARTICIPANT_ROLES:
+                        if (messagesCallbacks[uniqueId]) {
+                            messagesCallbacks[uniqueId](Utility.createReturnData(false, '', 0, messageContent));
+                        }
+
+                        fireEvent('userEvents', {
+                            type: 'GET_PARTICIPANT_ROLES',
+                            result: {
+                                roles: messageContent
+                            }
+                        });
+
+                        break;
+
+                    /**
+                     * Type 60    Get Contact Not Seen Duration
+                     */
+                    case chatMessageVOTypes.GET_CONTACT_NOT_SEEN_DURATION:
+                        fireEvent('contactEvents', {
+                            type: 'CONTACTS_LAST_SEEN',
+                            result: messageContent
+                        });
+                        break;
+
+                    /**
                      * Type 999   All unknown errors
                      */
                     case chatMessageVOTypes.ERROR:
@@ -3377,6 +3475,7 @@
                  *    - lastSeen              {long}
                  *    - sendEnable            {boolean}
                  *    - receiveEnable         {boolean}
+                 *    - chatProfileVO         {object:chatProfileVO}
                  */
 
                 var user = {
@@ -3408,6 +3507,11 @@
 
                 if (messageContent.blocked) {
                     user.blocked = messageContent.blocked;
+                }
+
+                // Add chatProfileVO if exist
+                if (messageContent.chatProfileVO) {
+                    user.chatProfileVO = messageContent.chatProfileVO;
                 }
 
                 return user;
@@ -3574,6 +3678,7 @@
                  *    - lastSeenMessageTime                 {long}
                  *    - lastSeenMessageNanos                {integer}
                  *    - lastMessageVO                       {object : ChatMessageVO}
+                 *    - pinMessageVO                        {object : pinMessageVO}
                  *    - partnerLastSeenMessageId            {long}
                  *    - partnerLastSeenMessageTime          {long}
                  *    - partnerLastSeenMessageNanos         {integer}
@@ -3611,6 +3716,7 @@
                         ? (parseInt(parseInt(messageContent.lastSeenMessageTime) / 1000) * 1000000000) + parseInt(messageContent.lastSeenMessageNanos)
                         : (parseInt(messageContent.lastSeenMessageTime)),
                     lastMessageVO: undefined,
+                    pinMessageVO: undefined,
                     partnerLastSeenMessageId: messageContent.partnerLastSeenMessageId,
                     partnerLastSeenMessageTime: (messageContent.partnerLastSeenMessageNanos)
                         ? (parseInt(parseInt(messageContent.partnerLastSeenMessageTime) / 1000) * 1000000000) +
@@ -3652,6 +3758,11 @@
                 // Add lastMessageVO if exist
                 if (messageContent.lastMessageVO) {
                     conversation.lastMessageVO = formatDataToMakeMessage(messageContent.id, messageContent.lastMessageVO);
+                }
+
+                // Add pinMessageVO if exist
+                if (messageContent.pinMessageVO) {
+                    conversation.pinMessageVO = formatDataToMakePinMessage(messageContent.pinMessageVO);
                 }
 
                 return conversation;
@@ -3838,6 +3949,38 @@
                 }
 
                 return message;
+            },
+
+
+            /**
+             * Format Data To Make Pin Message
+             *
+             * This functions reformats given JSON to proper Object
+             *
+             * @access private
+             *
+             * @param {object}  messageContent    Json object of thread taken from chat server
+             *
+             * @return {object} pin message Object
+             */
+            formatDataToMakePinMessage = function (pushMessageVO) {
+                /**
+                 * + PinMessageVO                    {object}
+                 *    - messageId                    {long}
+                 *    - text                         {string}
+                 *    - notifyAll                    {boolean}
+                 */
+
+                var pinMessage = {
+                    messageId: pushMessageVO.messageId,
+                    text: pushMessageVO.text
+                };
+
+                if (typeof pushMessageVO.notifyAll === 'boolean') {
+                    pinMessage.notifyAll = pushMessageVO.notifyAll
+                }
+
+                return pinMessage;
             },
 
             /**
@@ -4428,7 +4571,6 @@
                         });
                     }
 
-
                     if (uploadingQueue) {
                         getChatUploadQueue(parseInt(params.threadId), function (uploadQueueMessages) {
                             for (var i = 0; i < uploadQueueMessages.length; i++) {
@@ -4440,7 +4582,6 @@
                             }
                         });
                     }
-
 
                     getChatWaitQueue(parseInt(params.threadId), failedQueue, function (waitQueueMessages) {
                         if (cacheSecret.length > 0) {
@@ -4521,6 +4662,14 @@
 
                         if (typeof params.query != 'undefined') {
                             sendMessageParams.content.query = whereClause.query = params.query;
+                        }
+
+                        if (params.allMentioned && typeof params.allMentioned == 'boolean') {
+                            sendMessageParams.content.allMentioned = whereClause.allMentioned = params.allMentioned;
+                        }
+
+                        if (params.unreadMentioed && typeof params.unreadMentioed == 'boolean') {
+                            sendMessageParams.content.unreadMentioed = whereClause.unreadMentioed = params.unreadMentioed;
                         }
 
                         if (typeof params.metadataCriteria == 'object' && params.metadataCriteria.hasOwnProperty('field')) {
@@ -5567,6 +5716,78 @@
                 }
 
                 return sendMessage(updateThreadInfoData, {
+                    onResult: function (result) {
+                        callback && callback(result);
+                    }
+                });
+            },
+
+            /**
+             * Update Thread Info
+             *
+             * This functions updates metadata of thread
+             *
+             * @access private
+             *
+             * @param {int}       threadId      Id of thread
+             * @param {string}    image         URL og thread image to be set
+             * @param {string}    description   Description for thread
+             * @param {string}    title         New Title for thread
+             * @param {object}    metadata      New Metadata to be set on thread
+             * @param {function}  callback      The callback function to call after
+             *
+             * @return {object} Instant sendMessage result
+             */
+            updateChatProfile = function (params, callback) {
+                var updateChatProfileData = {
+                    chatMessageVOType: chatMessageVOTypes.UPDATE_CHAT_PROFILE,
+                    content: {},
+                    pushMsgType: 4,
+                    token: token
+                };
+
+                if (params) {
+                    if (typeof params.bio == 'string') {
+                        updateChatProfileData.content.bio = params.bio;
+                    }
+
+                    if (typeof params.metadata == 'object') {
+                        updateChatProfileData.content.metadata = JSON.stringify(params.metadata);
+                    }
+                    else if (typeof params.metadata == 'string') {
+                        updateChatProfileData.content.metadata = params.metadata;
+                    }
+                }
+
+                return sendMessage(updateChatProfileData, {
+                    onResult: function (result) {
+                        callback && callback(result);
+                    }
+                });
+            },
+
+            /**
+             * Get Participant Roles
+             *
+             * This functions retrieves roles of an user if they are
+             * part of the thread
+             *
+             * @access private
+             *
+             * @param {int}       threadId      Id of thread
+             * @param {function}  callback      The callback function to call after
+             *
+             * @return {object} Instant sendMessage result
+             */
+            getParticipantRoles = function (params, callback) {
+                var updateChatProfileData = {
+                    chatMessageVOType: chatMessageVOTypes.GET_PARTICIPANT_ROLES,
+                    pushMsgType: 4,
+                    subjectId: params.threadId,
+                    token: token
+                };
+
+                return sendMessage(updateChatProfileData, {
                     onResult: function (result) {
                         callback && callback(result);
                     }
@@ -6936,7 +7157,7 @@
                                 var message = uploadQueue[i].message,
                                     callbacks = uploadQueue[i].callbacks;
 
-                                if (message.content.hasOwnProperty('message')) {
+                                if (message && typeof message.content === 'object' && typeof message.content.message === 'object') {
                                     message.content.message['metadata'] = metadata;
                                 }
 
@@ -7117,6 +7338,36 @@
         this.getAllThreadList = getAllThreadList;
 
         this.getHistory = getHistory;
+
+        this.getAllMentionedMessages = function(params, callback) {
+            return getHistory({
+                threadId: params.threadId,
+                allMentioned: true,
+                typeCode: params.typeCode,
+                count: params.count || 50,
+                offset: params.offset || 0,
+                queues: {
+                    uploading: false,
+                    sending: false,
+                    uploading: false
+                }
+            }, callback);
+        };
+
+        this.getUnreadMentionedMessages = function(params, callback) {
+            return getHistory({
+                threadId: params.threadId,
+                unreadMentioned: true,
+                typeCode: params.typeCode,
+                count: params.count || 50,
+                offset: params.offset || 0,
+                queues: {
+                    uploading: false,
+                    sending: false,
+                    uploading: false
+                }
+            }, callback);
+        };
 
         /**
          * Get Contacts
@@ -7494,6 +7745,8 @@
             });
         };
 
+        this.getParticipantRoles = getParticipantRoles;
+
         this.leaveThread = function (params, callback) {
 
             /**
@@ -7691,7 +7944,7 @@
                 message: {
                     chatMessageVOType: chatMessageVOTypes.MESSAGE,
                     typeCode: params.typeCode,
-                    messageType: params.messageType,
+                    messageType: (params.messageType && params.messageType.toUpperCase() !== undefined && chatMessageTypes[params.messageType.toUpperCase()] > 0) ? chatMessageTypes[params.messageType.toUpperCase()] : 1,
                     subjectId: params.threadId,
                     repliedTo: params.repliedTo,
                     content: params.content,
@@ -7809,7 +8062,7 @@
                         message: {
                             chatMessageVOType: chatMessageVOTypes.MESSAGE,
                             typeCode: params.typeCode,
-                            messageType: params.messageType,
+                            messageType: (params.messageType && params.messageType.toUpperCase() !== undefined && chatMessageTypes[params.messageType.toUpperCase()] > 0) ? chatMessageTypes[params.messageType.toUpperCase()] : 1,
                             subjectId: params.threadId,
                             repliedTo: params.repliedTo,
                             content: params.content,
@@ -7828,8 +8081,10 @@
                                     metadata['file']['height'] = result.result.height;
                                     metadata['file']['width'] = result.result.width;
                                     metadata['file']['name'] = result.result.name;
+                                    metadata['name'] = result.result.name;
                                     metadata['file']['hashCode'] = result.result.hashCode;
                                     metadata['file']['id'] = result.result.id;
+                                    metadata['id'] = result.result.id;
                                     metadata['file']['link'] = SERVICE_ADDRESSES.FILESERVER_ADDRESS +
                                         SERVICES_PATH.GET_IMAGE + '?imageId=' +
                                         result.result.id + '&hashCode=' +
@@ -7848,8 +8103,10 @@
                             uploadFile(fileUploadParams, function (result) {
                                 if (!result.hasError) {
                                     metadata['file']['name'] = result.result.name;
+                                    metadata['name'] = result.result.name;
                                     metadata['file']['hashCode'] = result.result.hashCode;
                                     metadata['file']['id'] = result.result.id;
+                                    metadata['id'] = result.result.id;
                                     metadata['file']['link'] = SERVICE_ADDRESSES.FILESERVER_ADDRESS +
                                         SERVICES_PATH.GET_FILE + '?fileId=' +
                                         result.result.id + '&hashCode=' +
@@ -8020,7 +8277,7 @@
                     content.message = {};
                     content.message['uniqueId'] = Utility.generateUUID();
                     content.message['text'] = params.caption;
-                    content.message['messageType'] = params.messageType;
+                    content.message['messageType'] = (params.messageType && params.messageType.toUpperCase() !== undefined && chatMessageTypes[params.messageType.toUpperCase()] > 0) ? chatMessageTypes[params.messageType.toUpperCase()] : 2;
 
                     putInChatUploadQueue({
                         message: {
@@ -8040,8 +8297,10 @@
                                     metadata['file']['height'] = result.result.height;
                                     metadata['file']['width'] = result.result.width;
                                     metadata['file']['name'] = result.result.name;
+                                    metadata['name'] = result.result.name;
                                     metadata['file']['hashCode'] = result.result.hashCode;
                                     metadata['file']['id'] = result.result.id;
+                                    metadata['id'] = result.result.id;
                                     metadata['file']['link'] = SERVICE_ADDRESSES.FILESERVER_ADDRESS +
                                         SERVICES_PATH.GET_IMAGE + '?imageId=' +
                                         result.result.id + '&hashCode=' +
@@ -8060,8 +8319,10 @@
                             uploadFile(fileUploadParams, function (result) {
                                 if (!result.hasError) {
                                     metadata['file']['name'] = result.result.name;
+                                    metadata['name'] = result.result.name;
                                     metadata['file']['hashCode'] = result.result.hashCode;
                                     metadata['file']['id'] = result.result.id;
+                                    metadata['id'] = result.result.id;
                                     metadata['file']['link'] = SERVICE_ADDRESSES.FILESERVER_ADDRESS +
                                         SERVICES_PATH.GET_FILE + '?fileId=' +
                                         result.result.id + '&hashCode=' +
@@ -8496,7 +8757,7 @@
                 subjectId: params.messageId,
                 uniqueId: params.uniqueId,
                 content: JSON.stringify({
-                    'deleteForAll': params.deleteForAll
+                    'deleteForAll': (typeof params.deleteForAll === 'boolean') ? params.deleteForAll : false
                 }),
                 pushMsgType: 4
             }, {
@@ -8615,7 +8876,7 @@
                 content: {
                     uniqueIds: uniqueIdsList,
                     ids: messageIdsList,
-                    deleteForAll: params.deleteForAll
+                    deleteForAll: (typeof params.deleteForAll === 'boolean') ? params.deleteForAll : false
                 },
                 pushMsgType: 4
             });
@@ -8976,6 +9237,8 @@
 
         this.updateThreadInfo = updateThreadInfo;
 
+        this.updateChatProfile = updateChatProfile;
+
         this.muteThread = function (params, callback) {
             return sendMessage({
                 chatMessageVOType: chatMessageVOTypes.MUTE_THREAD,
@@ -9027,6 +9290,40 @@
                 typeCode: params.typeCode,
                 subjectId: params.subjectId,
                 content: {},
+                pushMsgType: 4,
+                token: token
+            }, {
+                onResult: function (result) {
+                    callback && callback(result);
+                }
+            });
+        };
+
+        this.pinMessage = function (params, callback) {
+            return sendMessage({
+                chatMessageVOType: chatMessageVOTypes.PIN_MESSAGE,
+                typeCode: params.typeCode,
+                subjectId: params.messageId,
+                content: JSON.stringify({
+                    'notifyAll': (typeof params.notifyAll === 'boolean') ? params.notifyAll : false
+                }),
+                pushMsgType: 4,
+                token: token
+            }, {
+                onResult: function (result) {
+                    callback && callback(result);
+                }
+            });
+        };
+
+        this.unPinMessage = function (params, callback) {
+            return sendMessage({
+                chatMessageVOType: chatMessageVOTypes.UNPIN_MESSAGE,
+                typeCode: params.typeCode,
+                subjectId: params.messageId,
+                content: JSON.stringify({
+                    'notifyAll': (typeof params.notifyAll === 'boolean') ? params.notifyAll : false
+                }),
                 pushMsgType: 4,
                 token: token
             }, {
@@ -9241,18 +9538,18 @@
                     data.firstName = '';
                 }
 
-                if (typeof params.typeCode === 'string') {
-                    data.typeCode = params.typeCode;
-                }
-                else if (generalTypeCode) {
-                    data.typeCode = generalTypeCode;
-                }
-
                 if (typeof params.lastName === 'string') {
                     data.lastName = params.lastName;
                 }
                 else {
                     data.lastName = '';
+                }
+
+                if (typeof params.typeCode === 'string') {
+                    data.typeCode = params.typeCode;
+                }
+                else if (generalTypeCode) {
+                    data.typeCode = generalTypeCode;
                 }
 
                 if (typeof params.cellphoneNumber === 'string') {
@@ -9267,6 +9564,10 @@
                 }
                 else {
                     data.email = '';
+                }
+
+                if (typeof params.username === 'string') {
+                    data.username = params.username;
                 }
 
                 data.uniqueId = Utility.generateUUID();

@@ -15,6 +15,9 @@ var params = {
     // queueSend: "queue-out-amjadi-stomp",
     // queueConnectionTimeout: 20000,
     // serverName: "chat-server",
+    // fileServer: 'https://core.pod.ir',
+    // platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform",
+    // ssoHost: "https://accounts.pod.ir",
 
     /**
      * ActiveMQ Config - Sheikh
@@ -71,8 +74,8 @@ var params = {
      */
     // socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
     // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-    // platformHost: 'http:///172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
-    // fileServer: 'http:///172.16.110.76:8080', // {**REQUIRED**} File Server Address
+    // platformHost: 'http://172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
+    // fileServer: 'http://172.16.110.76:8080', // {**REQUIRED**} File Server Address
     // serverName: 'sheikh_chat', // {**REQUIRED**} Server to to
 
     /**
@@ -81,15 +84,25 @@ var params = {
     socketAddress: "wss://chat-sandbox.pod.ir/ws", // {**REQUIRED**} Socket Address
     ssoHost: "https://accounts.pod.ir", // {**REQUIRED**} Socket Address
     platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform", // {**REQUIRED**} Platform Core Address
-    fileServer: "https://sandbox.pod.ir:8443", // {**REQUIRED**} File Server Address
+    // fileServer: "https://sandbox.pod.ir:8443", // {**REQUIRED**} File Server Address
+    fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
     serverName: "chat-server", // {**REQUIRED**} Server to to register on
+
+    /**
+     * Integration
+     */
+    // socketAddress: "ws://172.16.110.235:8003/ws",
+    // ssoHost: "http://172.16.110.76",
+    // platformHost: "http://172.16.110.235:8003/srv/bptest-core",
+    // fileServer: 'http://172.16.110.76:8080',
+    // serverName: "chatlocal",
 
     grantDeviceIdFromSSO: false,
     enableCache: false, // Enable Client side caching
     fullResponseObject: false,
     mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
     // typeCode: "talk",
-    token: "a7ae8bfd668d4446be324154618082f1",
+    token: "e55eddb7831b464babfc7a9e47954a1a",
     // token: "7cba09ff83554fc98726430c30afcfc6", // {**REQUIRED**} SSO Token ZiZi
     // token: "fbd4ecedb898426394646e65c6b1d5d1", //  {**REQUIRED**} SSO Token JiJi
     // token: "5fb88da4c6914d07a501a76d68a62363", // {**REQUIRED**} SSO Token FiFi
@@ -131,6 +144,18 @@ chatAgent.on('chatReady', function () {
      *  Get User Info
      */
     // getUserInfo();
+
+    /**
+     * Update Chat Profile
+     */
+    // chatAgent.updateChatProfile({
+    //     bio: 'To be or not to be ...',
+    //     metadata: {
+    //         nickName: 'Zizi Zizuli'
+    //     }
+    // }, function(result) {
+    //     console.log('Update Chat Profile Result', result);
+    // });
 
     /**
      * Get Unseen Duration of users
@@ -190,10 +215,16 @@ chatAgent.on('chatReady', function () {
      * GET THREAD PARTICIPANTS
      * @param threadId
      */
-    // getThreadParticipants(6609);
+    // getThreadParticipants(6788);
 
-    // chatAgent.getThreadAdmins({threadId: 6292}, function(result){
+    // chatAgent.getThreadAdmins({threadId: 6729}, function(result){
     //     console.log("Get Thread Admins result", result.result.participants);
+    // });
+
+    // chatAgent.getParticipantRoles({
+    //     threadId: 6968
+    // }, function(result) {
+    //     console.log('Get Participant Roles Result', result);
     // });
 
     /**
@@ -201,14 +232,14 @@ chatAgent.on('chatReady', function () {
      * @param threadId
      * @param contacts {Array}  CONTACT ID
      */
-    // addParticipants(6609, [4702]);
+    // addParticipants(6788, [4702]);
 
     /**
      * REMOVE PARTICIPANTS
      * @param threadId
      * @param participants {Array}  USER ID
      */
-    // removeParticipants(10349, [123]);
+    // removeParticipants(6729, [6862]);
 
     /**
      * LEAVE THREAD
@@ -243,35 +274,35 @@ chatAgent.on('chatReady', function () {
     // });
 
     // getHistory({
-    //     count: 10,
-    //     offset: 0,
-    //     threadId: 9481,
-    //     // uniqueIds: ["5fc5b138-498c-4da4-d440-5c8bfc7159ee", "93d7991c-add1-4227-d792-ad1bfb03e094", "ad0ae288-6e11-4621-fe50-ea1b634e80c7", "d9aa1833-5f27-4a1d-f5bd-5ae298d2bfa3", "f50fda14-ef88-4071-b3f2-248a18b4ffcf", "redsf233f23rfdsfsdfs"],
-    //     // id: 34890,
-    //     // order: "ASC",
-    //     // query: "Helllo",
-    //     // fromTime: 1557037111638,
-    //     // fromTimeNanos: 638489000,
-    //     // toTime: 1557037111638,
-    //     // toTimeNanos: 638489000,
-    //     // metadataCriteria: {
-    //     //     'field': 'id',
-    //     //     'gt': 667,
-    //     //     'and': [
-    //     //         {
-    //     //             'field': 'name',
-    //     //             'has': 'Mas'
-    //     //         },
-    //     //         {
-    //     //             'field': 'active',
-    //     //             'is': 1
-    //     //         },
-    //     //         {
-    //     //             'field': 'address.building.age',
-    //     //             'lte': 11
-    //     //         }
-    //     //     ],
-    //     // }
+        // count: 10,
+        // offset: 0,
+        // threadId: 4441,
+        // uniqueIds: ["5fc5b138-498c-4da4-d440-5c8bfc7159ee", "93d7991c-add1-4227-d792-ad1bfb03e094", "ad0ae288-6e11-4621-fe50-ea1b634e80c7", "d9aa1833-5f27-4a1d-f5bd-5ae298d2bfa3", "f50fda14-ef88-4071-b3f2-248a18b4ffcf", "redsf233f23rfdsfsdfs"],
+        // id: 34890,
+        // order: "ASC",
+        // query: "hello",
+        // fromTime: 1557037111638,
+        // fromTimeNanos: 638489000,
+        // toTime: 1557037111638,
+        // toTimeNanos: 638489000,
+        // metadataCriteria: {
+        //     'field': 'id',
+        //     'gt': 667,
+        //     'and': [
+        //         {
+        //             'field': 'name',
+        //             'has': 'Mas'
+        //         },
+        //         {
+        //             'field': 'active',
+        //             'is': 1
+        //         },
+        //         {
+        //             'field': 'address.building.age',
+        //             'lte': 11
+        //         }
+        //     ],
+        // }
     // });
 
     // chatAgent.resendMessage("0c00552d-c291-4c0c-bec9-81f870edf170");
@@ -299,7 +330,7 @@ chatAgent.on('chatReady', function () {
      * PIN THREAD
      * @param threadId
      */
-    // pinThread(6292);
+    // pinThread(282);
 
     /**
      * UNPIN THREAD
@@ -312,10 +343,10 @@ chatAgent.on('chatReady', function () {
      * @param threadId
      */
     // chatAgent.updateThreadInfo({
-    //   threadId: 10349,
-    //   image: "https://static2.farakav.com/files/pictures/thumb/01330672.jpg",
+    //   threadId: 13502,
+    //   image: "http://tomahawk-music.eu/wp-content/uploads/2019/04/heavy_metal-900x675.jpg",
     //   description: "توضیحات ترد",
-    //   title: "عنوان ترد",
+    //   title: "Hallelujah",
     //   metadata: {
     //     id: 1152,
     //     owner: "masoudmanson",
@@ -342,10 +373,10 @@ chatAgent.on('chatReady', function () {
      * @param roles
      */
     // chatAgent.setAdmin({
-    //     threadId: 6292,
+    //     threadId: 6729,
     //     admins: [
     //         {
-    //             userId: 6862,
+    //             userId: 43,
     //             roles: [
     //                 'post_channel_message',
     //                 'edit_message_of_others',
@@ -364,12 +395,12 @@ chatAgent.on('chatReady', function () {
     // });
 
     // chatAgent.removeAdmin({
-    //     threadId: 6292,
+    //     threadId: 6729,
     //     admins: [
     //         {
-    //             userId: 6862,
+    //             userId: 43,
     //             roles: [
-    //                 'post_channel_message',
+    //                 // 'post_channel_message',
     //                 'edit_message_of_others',
     //                 'delete_message_of_others',
     //                 'add_new_user',
@@ -391,13 +422,37 @@ chatAgent.on('chatReady', function () {
      *******************************************************/
 
     /**
+     * PIN MESSAGE
+     * @param messageId
+     * @param notifyAll
+     */
+    // chatAgent.pinMessage({
+    //     messageId: 73289,
+    //     notifyAll: true
+    // }, function(result){
+    //     console.log('Pin message result', result);
+    // });
+
+    /**
+     * UNPIN MESSAGE
+     * @param messageId
+     * @param notifyAll
+     */
+    // chatAgent.unPinMessage({
+    //     messageId: 73289,
+    //     notifyAll: true
+    // }, function(result){
+    //     console.log('unPin message result', result);
+    // });
+
+    /**
      * SEND MESSAGE IN THREAD
      * @param threadId
      * @param newMessage
      * @param metadata
      */
     // setInterval(() => {
-    //     sendMessage(6609, '@h.amouzegar @ma.amjadi Message From PodDraw at ' + new Date(), {
+    //     sendMessage(4441, '@masoudmanson @ma.amjadi @zizi @jiji @fifuli Message From PodDraw at ' + new Date(), {
     //         id: 672,
     //         type: 'message',
     //         name: 'Masoud',
@@ -413,6 +468,23 @@ chatAgent.on('chatReady', function () {
     //     });
     // }, 1000);
 
+    // chatAgent.seen({
+    //     messageId: 76299,
+    //     ownerId: 15501
+    // });
+
+    // chatAgent.getAllMentionedMessages({
+    //     threadId: 6968
+    // }, function(result) {
+    //     console.log(result);
+    // });
+    //
+    // chatAgent.getUnreadMentionedMessages({
+    //     threadId: 6968
+    // }, function(result) {
+    //     console.log(result);
+    // });
+
     /**
      * SEND FILE MESSAGE IN THREAD
      * @param threadId
@@ -420,20 +492,18 @@ chatAgent.on('chatReady', function () {
      * @param caption
      * @param metadata
      */
-    // sendFileMessage(6653, __dirname + "/../test/test.txt", "Sample file description", {
+    // sendFileMessage(6848, __dirname + "/../test/test.jpg", "Sample file description", {
     //     custom_name: "John Doe"
     // });
 
-    createThreadWithFile(
-        __dirname + "/../test/test.jpg",
-        [{
-            id: 902,
-            type: "TO_BE_USER_CONTACT_ID"
-        }, {
-            id: 7741,
-            type: "TO_BE_USER_CONTACT_ID"
-        }],
-        "NORMAL");
+    // createThreadWithFile(
+    //     __dirname + "/../test/test.jpg",
+    //     [{
+    //         id: 2247,
+    //         type: "TO_BE_USER_CONTACT_ID"
+    //     }
+    //     ],
+    //     "NORMAL");
 
     /**
      * Send Location Message
@@ -447,6 +517,7 @@ chatAgent.on('chatReady', function () {
      * @param  {string}   caption        Image Caption
      * @param  {string}   metadata       Message MetaData
      */
+
     // chatAgent.sendLocationMessage({
     //     type: "standard-night",
     //     zoom: 15,
@@ -456,7 +527,7 @@ chatAgent.on('chatReady', function () {
     //     },
     //     width: 800,
     //     height: 500,
-    //     threadId: 293,
+    //     threadId: 15,
     //     caption: "This is the Address on map!",
     //     systemMetadata: {
     //         time: new Date()
@@ -482,14 +553,14 @@ chatAgent.on('chatReady', function () {
      * @param messageId  325 editable: false
      * @param newMessage
      */
-    // editMessage(66439, "*****************************************" + new Date());
+    // editMessage(74287, "*****************************************" + new Date(), {name: 'masoud'});
 
     /**
      * DELETE MESSAGE IN THREAD
      * @param {int}      messageId
      * @param {boolean}  deleteForAll
      */
-    // deleteMessage(55221, false);
+    // deleteMessage(74330, false);
 
     // chatAgent.deleteMultipleMessages({
     //     // threadId: 15,
@@ -599,15 +670,35 @@ chatAgent.on('chatReady', function () {
      * @param email
      */
     // var addContactInstantResult = chatAgent.addContacts({
-    //     firstName: "علیرضا",
-    //     lastName: "غفاری",
-    //     cellphoneNumber: "",
-    //     email: "a.ghafari@gmail.com",
-    //     typeCode: 'poddraw'
+    //     firstName: "فاطمه",
+    //     lastName: "خجسته",
+    //     cellphoneNumber: "09151242904",
+    //     email: "f.khojaste@gmail.com"
     // }, function (result) {
     //     console.log(result);
     //     console.log(result.contacts);
     // });
+
+    // var addContactInstantResult = chatAgent.addContacts({
+    //     firstName: "مسعود",
+    //     lastName: "امجدی",
+    //     cellphoneNumber: "09148401824",
+    //     email: "masoudmanson@gmail.com"
+    // }, function (result) {
+    //     console.log(result);
+    //     console.log(result.result.contacts);
+    // });
+
+    // var addContactInstantResult = chatAgent.addContacts({
+    //     firstName: "پوریا",
+    //     lastName: "پهلوانی",
+    //     cellphoneNumber: "09387181694",
+    //     email: "p.pahlevani@gmail.com"
+    // }, function (result) {
+    //     console.log(result);
+    //     console.log(result.result.contacts);
+    // });
+
     /**
      * UPDATE CONTACTS
      * @param id
@@ -631,7 +722,7 @@ chatAgent.on('chatReady', function () {
      * @param id
      */
     // chatAgent.removeContacts({
-    //   id: "842"
+    //   id: "4569"
     // }, function(result) {
     //   console.log(result);
     // });
@@ -900,6 +991,22 @@ chatAgent.on('systemEvents', function (event) {
 });
 
 /**
+ * Listen to User Events
+ */
+chatAgent.on('userEvents', function (event) {
+    var type = event.type;
+    console.log(event);
+
+    switch (type) {
+        case 'CHAT_PROFILE_UPDATED':
+            break;
+
+        default:
+            break;
+    }
+});
+
+/**
  * Listen to Disconnection Error Events
  */
 chatAgent.on('disconnect', function (event) {
@@ -1094,10 +1201,11 @@ function sendBotMessage(messageId, receiverId, message, metadata) {
     console.log(mim);
 }
 
-function editMessage(messageId, newMessage) {
+function editMessage(messageId, newMessage, metadata) {
     editChatParams = {
         messageId: messageId,
-        content: newMessage
+        content: newMessage,
+        systemMetadata: JSON.stringify(metadata)
     };
 
     chatAgent.editMessage(editChatParams, function (result) {
@@ -1191,18 +1299,18 @@ function createThread(invitees, threadType) {
         image: 'https://core.pod.ir/nzh/image?imageId=333415&hashCode=16e37b412fe-0.9111035145050199',
         description: 'This is some Description.',
         metadata: {
-          time: new Date()
+            time: new Date()
         },
         message: {
-          uniqueId: "9766b140-24a9-49fb-a02e-6aff708645a6",
-          text: "This is a new Mesage",
-          metadata: {
-            messageTime: new Date()
-          },
-          systemMetadata: {
-            id: new Date().getTime()
-          },
-          // forwardedMessageIds: [19633, 19632, 19631]
+            uniqueId: "9766b140-24a9-49fb-a02e-6aff708645a6",
+            text: "This is a new Mesage",
+            metadata: {
+                messageTime: new Date()
+            },
+            systemMetadata: {
+                id: new Date().getTime()
+            },
+            // forwardedMessageIds: [19633, 19632, 19631]
         }
     };
 
@@ -1385,23 +1493,23 @@ function getFile(fileId, hashCode, downloadable) {
 }
 
 function pinThread(threadId) {
-chatAgent.pinThread({
-    subjectId: threadId
-}, function (result) {
-    if (!result.hasError) {
-        console.log('Thread has been successfully pinned to top!');
-    }
-    console.log(result);
-});
+    chatAgent.pinThread({
+        subjectId: threadId
+    }, function (result) {
+        if (!result.hasError) {
+            console.log('Thread has been successfully pinned to top!');
+        }
+        console.log(result);
+    });
 }
 
 function unPinThread(threadId) {
-chatAgent.unPinThread({
-    subjectId: threadId
-}, function (result) {
-    if (!result.hasError) {
-        console.log('Thread has been successfully unpinned from top!');
-    }
-    console.log(result);
-});
+    chatAgent.unPinThread({
+        subjectId: threadId
+    }, function (result) {
+        if (!result.hasError) {
+            console.log('Thread has been successfully unpinned from top!');
+        }
+        console.log(result);
+    });
 }
