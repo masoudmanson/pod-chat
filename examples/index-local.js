@@ -72,21 +72,21 @@ var params = {
     /**
      * Leila Nemati
      */
-    // socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
-    // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-    // platformHost: 'http://172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
-    // fileServer: 'http://172.16.110.76:8080', // {**REQUIRED**} File Server Address
-    // serverName: 'sheikh_chat', // {**REQUIRED**} Server to to
+    socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
+    ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
+    platformHost: 'http://172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
+    fileServer: 'http://172.16.110.76:8080', // {**REQUIRED**} File Server Address
+    serverName: 'sheikh_chat', // {**REQUIRED**} Server to to
 
     /**
      * Sand Box
      */
-    socketAddress: "wss://chat-sandbox.pod.ir/ws", // {**REQUIRED**} Socket Address
-    ssoHost: "https://accounts.pod.ir", // {**REQUIRED**} Socket Address
-    platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform", // {**REQUIRED**} Platform Core Address
-    // fileServer: "https://sandbox.pod.ir:8443", // {**REQUIRED**} File Server Address
-    fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
-    serverName: "chat-server", // {**REQUIRED**} Server to to register on
+    // socketAddress: "wss://chat-sandbox.pod.ir/ws", // {**REQUIRED**} Socket Address
+    // ssoHost: "https://accounts.pod.ir", // {**REQUIRED**} Socket Address
+    // platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform", // {**REQUIRED**} Platform Core Address
+    // // fileServer: "https://sandbox.pod.ir:8443", // {**REQUIRED**} File Server Address
+    // fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
+    // serverName: "chat-server", // {**REQUIRED**} Server to to register on
 
     /**
      * Integration
@@ -102,10 +102,10 @@ var params = {
     fullResponseObject: false,
     mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
     // typeCode: "talk",
-    token: "e55eddb7831b464babfc7a9e47954a1a",
-    // token: "7cba09ff83554fc98726430c30afcfc6", // {**REQUIRED**} SSO Token ZiZi
-    // token: "fbd4ecedb898426394646e65c6b1d5d1", //  {**REQUIRED**} SSO Token JiJi
-    // token: "5fb88da4c6914d07a501a76d68a62363", // {**REQUIRED**} SSO Token FiFi
+    token: "33a41331286a4fc68593ce1169dae05b",
+    // token: "91d4fe6625934076bfdbd5ac44193b68", // {**REQUIRED**} SSO Token ZiZi
+    // token: "679ce1c356d3445896679f9e3688f40c", //  {**REQUIRED**} SSO Token JiJi
+    // token: "ab2854d56e5349eb9f4deb2b0f6ac3ab", // {**REQUIRED**} SSO Token FiFi
     // token: "bebc31c4ead6458c90b607496dae25c6", // {**REQUIRED**} SSO Token Alexi
     // token: "e4f1d5da7b254d9381d0487387eabb0a", // {**REQUIRED**} SSO Token Felfeli
     wsConnectionWaitTime: 500, // Time out to wait for socket to get ready after open
@@ -151,7 +151,7 @@ chatAgent.on('chatReady', function () {
     // chatAgent.updateChatProfile({
     //     bio: 'To be or not to be ...',
     //     metadata: {
-    //         nickName: 'Zizi Zizuli'
+    //         nickName: 'Masoudi'
     //     }
     // }, function(result) {
     //     console.log('Update Chat Profile Result', result);
@@ -178,11 +178,12 @@ chatAgent.on('chatReady', function () {
      * @param name
      */
     // getThreads({
-    //   count: 10,
-    //   offset: 0,
-    //   //   partnerCoreContactId: 63533و
-    //   // threadIds: [1576],
-    //   // name: "تست"
+    //     count: 10,
+    //     offset: 0,
+    //     // new: true,
+    //     //   partnerCoreContactId: 63533و
+    //     // threadIds: [1576],
+    //     // name: "تست"
     // });
 
     // chatAgent.getAllThreadList({
@@ -274,35 +275,35 @@ chatAgent.on('chatReady', function () {
     // });
 
     // getHistory({
-        // count: 10,
-        // offset: 0,
-        // threadId: 4441,
-        // uniqueIds: ["5fc5b138-498c-4da4-d440-5c8bfc7159ee", "93d7991c-add1-4227-d792-ad1bfb03e094", "ad0ae288-6e11-4621-fe50-ea1b634e80c7", "d9aa1833-5f27-4a1d-f5bd-5ae298d2bfa3", "f50fda14-ef88-4071-b3f2-248a18b4ffcf", "redsf233f23rfdsfsdfs"],
-        // id: 34890,
-        // order: "ASC",
-        // query: "hello",
-        // fromTime: 1557037111638,
-        // fromTimeNanos: 638489000,
-        // toTime: 1557037111638,
-        // toTimeNanos: 638489000,
-        // metadataCriteria: {
-        //     'field': 'id',
-        //     'gt': 667,
-        //     'and': [
-        //         {
-        //             'field': 'name',
-        //             'has': 'Mas'
-        //         },
-        //         {
-        //             'field': 'active',
-        //             'is': 1
-        //         },
-        //         {
-        //             'field': 'address.building.age',
-        //             'lte': 11
-        //         }
-        //     ],
-        // }
+    // count: 10,
+    // offset: 0,
+    // threadId: 4441,
+    // uniqueIds: ["5fc5b138-498c-4da4-d440-5c8bfc7159ee", "93d7991c-add1-4227-d792-ad1bfb03e094", "ad0ae288-6e11-4621-fe50-ea1b634e80c7", "d9aa1833-5f27-4a1d-f5bd-5ae298d2bfa3", "f50fda14-ef88-4071-b3f2-248a18b4ffcf", "redsf233f23rfdsfsdfs"],
+    // id: 34890,
+    // order: "ASC",
+    // query: "hello",
+    // fromTime: 1557037111638,
+    // fromTimeNanos: 638489000,
+    // toTime: 1557037111638,
+    // toTimeNanos: 638489000,
+    // metadataCriteria: {
+    //     'field': 'id',
+    //     'gt': 667,
+    //     'and': [
+    //         {
+    //             'field': 'name',
+    //             'has': 'Mas'
+    //         },
+    //         {
+    //             'field': 'active',
+    //             'is': 1
+    //         },
+    //         {
+    //             'field': 'address.building.age',
+    //             'lte': 11
+    //         }
+    //     ],
+    // }
     // });
 
     // chatAgent.resendMessage("0c00552d-c291-4c0c-bec9-81f870edf170");
@@ -496,14 +497,14 @@ chatAgent.on('chatReady', function () {
     //     custom_name: "John Doe"
     // });
 
-    // createThreadWithFile(
-    //     __dirname + "/../test/test.jpg",
-    //     [{
-    //         id: 2247,
-    //         type: "TO_BE_USER_CONTACT_ID"
-    //     }
-    //     ],
-    //     "NORMAL");
+    createThreadWithFile(
+        __dirname + "/../test/test.jpg",
+        [{
+            id: 4569,
+            type: "TO_BE_USER_CONTACT_ID"
+        }
+        ],
+        "NORMAL");
 
     /**
      * Send Location Message
@@ -680,10 +681,10 @@ chatAgent.on('chatReady', function () {
     // });
 
     // var addContactInstantResult = chatAgent.addContacts({
-    //     firstName: "مسعود",
-    //     lastName: "امجدی",
-    //     cellphoneNumber: "09148401824",
-    //     email: "masoudmanson@gmail.com"
+    //     firstName: "مهیار",
+    //     lastName: "ژیانی",
+    //     cellphoneNumber: "09358590677",
+    //     email: "m.zhiani@gmail.com"
     // }, function (result) {
     //     console.log(result);
     //     console.log(result.result.contacts);

@@ -7944,7 +7944,7 @@
                 message: {
                     chatMessageVOType: chatMessageVOTypes.MESSAGE,
                     typeCode: params.typeCode,
-                    messageType: (params.messageType && params.messageType.toUpperCase() !== undefined && chatMessageTypes[params.messageType.toUpperCase()] > 0) ? chatMessageTypes[params.messageType.toUpperCase()] : 1,
+                    messageType: (params.messageType && params.messageType.toUpperCase() !== undefined && chatMessageTypes[params.messageType.toUpperCase()] > 0) ? chatMessageTypes[params.messageType.toUpperCase()] : chatMessageTypes.TEXT,
                     subjectId: params.threadId,
                     repliedTo: params.repliedTo,
                     content: params.content,
