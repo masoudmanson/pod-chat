@@ -94,21 +94,20 @@
             /**
              * Leila Nemati
              */
-            socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
-            ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-            platformHost: 'http://172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
-            fileServer: 'http://172.16.110.76:8080', // {**REQUIRED**} File Server Address
-            serverName: 'sheikh_chat', // {**REQUIRED**} Server to to
+            // socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
+            // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
+            // platformHost: 'http://172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
+            // fileServer: 'http://172.16.110.76:8080', // {**REQUIRED**} File Server Address
+            // serverName: 'sheikh_chat', // {**REQUIRED**} Server to to
 
             /**
              * Sand Box
              */
-            // socketAddress: "wss://chat-sandbox.pod.ir/ws", // {**REQUIRED**} Socket Address
-            // ssoHost: "https://accounts.pod.ir", // {**REQUIRED**} Socket Address
-            // platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform", // {**REQUIRED**} Platform Core Address
-            // // fileServer: "https://sandbox.pod.ir:8443", // {**REQUIRED**} File Server Address
-            // fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
-            // serverName: "chat-server", // {**REQUIRED**} Server to to register on
+            socketAddress: "wss://chat-sandbox.pod.ir/ws", // {**REQUIRED**} Socket Address
+            ssoHost: "https://accounts.pod.ir", // {**REQUIRED**} Socket Address
+            platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform", // {**REQUIRED**} Platform Core Address
+            fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
+            serverName: "chat-server", // {**REQUIRED**} Server to to register on
 
             /**
              * Integration
@@ -121,13 +120,14 @@
 
             grantDeviceIdFromSSO: false,
             enableCache: false, // Enable Client side caching
-            fullResponseObject: false,
+            fullResponseObject: true,
             mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
             // typeCode: "talk",
-            token: "33a41331286a4fc68593ce1169dae05b",
-            // token: "91d4fe6625934076bfdbd5ac44193b68", // {**REQUIRED**} SSO Token ZiZi
-            // token: "fbd4ecedb898426394646e65c6b1d5d1", //  {**REQUIRED**} SSO Token JiJi
-            // token: "5fb88da4c6914d07a501a76d68a62363", // {**REQUIRED**} SSO Token FiFi
+            token: "877086d84d02495bb82aaa1c25904bd5",
+            // token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token ZiZi
+            // token: "81025b3fbc1a4f7184c3600a2f874673", //  {**REQUIRED**} SSO Token JiJi
+            // token: "3c4d62b6068043aa898cf7426d5cae68", // {**REQUIRED**} SSO Token FiFi
+            // token: "49c1a43116764ae2ab965a6c40bb46d3", // {**REQUIRED**} SSO Token Masoud
             // token: "bebc31c4ead6458c90b607496dae25c6", // {**REQUIRED**} SSO Token Alexi
             // token: "e4f1d5da7b254d9381d0487387eabb0a", // {**REQUIRED**} SSO Token Felfeli
             wsConnectionWaitTime: 500, // Time out to wait for socket to get ready after open
@@ -674,7 +674,6 @@
                      * Sending Message Seen to Sender after 5 secs
                      */
                     setTimeout(function () {
-                        console.log(`Sending SEEN ACK for message ${message.id} ...`);
                         chatAgent.seen({
                             messageId: message.id,
                             ownerId: message.ownerId
@@ -842,22 +841,21 @@
             sendChatParams = {
                 threadId: threadId,
                 content: message,
+                messageType: 0,
                 systemMetadata: metadata
             };
 
             var sentMesageUniqueId = chatAgent.sendTextMessage(sendChatParams, {
                 onSent: function (result) {
-                    console.log(result.uniqueId + " \t has been Sent!");
+                    console.log(result.uniqueId + ' \t has been Sent!');
                 },
                 onDeliver: function (result) {
-                    console.log(result.uniqueId + " \t has been Delivered!");
+                    console.log(result.uniqueId + ' \t has been Delivered!');
                 },
                 onSeen: function (result) {
-                    console.log(result.uniqueId + " \t has been Seen!");
+                    console.log(result.uniqueId + ' \t has been Seen!');
                 }
             });
-
-            console.log(sentMesageUniqueId);
         }
 
         function sendFileMessage(threadId, file, caption, metadata) {
@@ -1215,6 +1213,9 @@
         <label for="createThreadTitle">Thread title</label>
         <input type="text" name="createThreadTitle" id="createThreadTitle" value="Thread Title">
 
+        <label for="createThreadPublicName">Thread Public Name</label>
+        <input type="text" name="createThreadPublicName" id="createThreadPublicName" value="TPN">
+
         <label for="createThreadType">Thread Type</label>
         <select name="createThreadType" id="createThreadType">
             <option value="NORMAL">NORMAL</option>
@@ -1524,7 +1525,8 @@
                 invitees: [],
                 image: document.getElementById("createThreadImage").value,
                 description: document.getElementById("createThreadDesc").value,
-                metadata: document.getElementById("createThreadMetadata").value
+                metadata: document.getElementById("createThreadMetadata").value,
+                uniqueName: document.getElementById("createThreadPublicName").value
             };
 
             if (Array.isArray(invitees)) {
@@ -1563,7 +1565,8 @@
 
             var instantResult = chatAgent.sendTextMessage({
                 threadId: thread,
-                content: message
+                content: message,
+                // messageType: 'text'
             }, {
                 onSent: function (result) {
                     console.log(result.uniqueId + " \t has been Sent!");
