@@ -5,13 +5,23 @@ var assert = require('assert'),
     path = require('path');
 
 var TOKENS = {
-        TOKEN_1: '7cba09ff83554fc98726430c30afcfc6', // Masoud
-        TOKEN_2: 'fbd4ecedb898426394646e65c6b1d5d1' // Pooria
+        // TOKEN_1: '91f541d21c104dccb0b4cfbfff3d0e4f', // Masoud
+        // TOKEN_2: '4efb23b466ae425ba3554df174e556ff' // Pooria
+        TOKEN_1: 'faf267ea34b5456b8d61091482a0d616', // Masoud
+        TOKEN_2: '5bcb75e57b414a7e8927b007ad5aa22f' // Pooria
     },
-    P2P_THREAD = 293,
-    GROUP_THREAD = 10349,//312,
+    P2P_THREAD = 4441, //6848,
+    GROUP_THREAD = 7064, //6868,
     timingLog = true,
     params1 = {
+        /**
+         * Main Server
+         */
+        // socketAddress: 'wss://msg.pod.ir/ws', // {**REQUIRED**} Socket Address
+        // ssoHost: 'https://accounts.pod.ir', // {**REQUIRED**} Socket Address
+        // platformHost: 'https://api.pod.ir/srv/core', // {**REQUIRED**} Platform Core Address
+        // fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
+        // serverName: 'chat-server', // {**REQUIRED**} Server to to register on
 
         /**
          * Hamed Mehrara
@@ -25,20 +35,39 @@ var TOKENS = {
         /**
          * Mehdi Sheikh Hosseini
          */
-        socketAddress: 'ws://172.16.110.131:8003/ws', // {**REQUIRED**} Socket Address
-        ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-        platformHost: 'http://172.16.110.131:8080', // {**REQUIRED**} Platform Core Address
-        fileServer: 'http://172.16.110.131:8080', // {**REQUIRED**} File Server Address
-        serverName: 'chat-server2', // {**REQUIRED**} Server to to register on
+        // socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
+        // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
+        // platformHost: 'http://172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
+        // fileServer: 'http://172.16.110.76:8080', // {**REQUIRED**} File Server Address
+        // serverName: 'chat-server', // {**REQUIRED**} Server to to register on
+
+
+        /**
+         * Leila Nemati
+         */
+        // socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
+        // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
+        // platformHost: 'http:///172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
+        // fileServer: 'http:///172.16.110.76:8080', // {**REQUIRED**} File Server Address
+        // serverName: 'sheikh_chat', // {**REQUIRED**} Server to to
 
         /**
          * Sand Box
          */
-        // socketAddress: "wss://chat-sandbox.pod.land/ws", // {**REQUIRED**} Socket Address
-        // ssoHost: "https://accounts.pod.land", // {**REQUIRED**} Socket Address
-        // platformHost: "https://sandbox.pod.land:8043/srv/basic-platform", // {**REQUIRED**} Platform Core Address
-        // fileServer: "https://sandbox.pod.land:8443", // {**REQUIRED**} File Server Address
-        // serverName: "chat-server", // {**REQUIRED**} Server to to register on
+        socketAddress: "wss://chat-sandbox.pod.ir/ws",
+        ssoHost: "https://accounts.pod.ir",
+        platformHost: "https://api.pod.ir/srv/core",
+        fileServer: 'https://core.pod.ir',
+        serverName: "chat-server",
+
+        /**
+         * Integration
+         */
+        // socketAddress: "ws://172.16.110.235:8003/ws",
+        // ssoHost: "http://172.16.110.76",
+        // platformHost: "http://172.16.110.235:8003/srv/bptest-core",
+        // fileServer: 'http://172.16.110.76:8080',
+        // serverName: "chatlocal",
 
         enableCache: false,
         token: TOKENS.TOKEN_1,
@@ -95,6 +124,8 @@ describe('Working with Users', function(done) {
             var currentUser = chatAgent.getCurrentUser();
             if (currentUser && typeof currentUser.id === 'number') {
                 done();
+            } else {
+                done('Can not get user info!');
             }
         });
     });
@@ -131,6 +162,8 @@ describe('Working with contacts', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(contactsResult));
                 }
             });
         });
@@ -152,6 +185,8 @@ describe('Working with contacts', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(new Error(JSON.stringify(result)));
                 }
             });
         });
@@ -173,6 +208,8 @@ describe('Working with contacts', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(result));
                 }
             });
         });
@@ -190,6 +227,8 @@ describe('Working with contacts', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(result));
                 }
             });
         });
@@ -226,6 +265,8 @@ describe('Working with contacts', function(done) {
                                     }
                                     done();
                                     console.log('\n');
+                                } else {
+                                    done(JSON.stringify(result));
                                 }
                             });
 
@@ -250,6 +291,8 @@ describe('Working with contacts', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(result));
                 }
             });
         });
@@ -268,6 +311,8 @@ describe('Working with contacts', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(contactsresult));
                 }
             });
         });
@@ -285,6 +330,8 @@ describe('Working with contacts', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(contactsResult));
                 }
             });
         });
@@ -323,6 +370,8 @@ describe('Working with threads', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(threadsResult));
                 }
             });
         });
@@ -340,6 +389,8 @@ describe('Working with threads', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(threadsResult));
                 }
             });
         });
@@ -358,6 +409,8 @@ describe('Working with threads', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(threadsResult));
                 }
             });
         });
@@ -399,6 +452,8 @@ describe('Working with threads', function(done) {
                                     }
                                     done();
                                     console.log('\n');
+                                } else {
+                                    done(JSON.stringify(createThreadResult));
                                 }
                             });
                             break;
@@ -453,6 +508,8 @@ describe('Working with threads', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(createThreadResult));
                         }
                     });
                 }
@@ -505,6 +562,8 @@ describe('Working with threads', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(createThreadResult));
                         }
                     });
                 }
@@ -557,6 +616,8 @@ describe('Working with threads', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(createThreadResult));
                         }
                     });
                 }
@@ -609,6 +670,8 @@ describe('Working with threads', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(createThreadResult));
                         }
                     });
                 }
@@ -660,6 +723,8 @@ describe('Working with threads', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(createThreadResult));
                         }
                     });
                 }
@@ -681,6 +746,8 @@ describe('Working with threads', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(participantsResult));
                 }
             });
         });
@@ -698,6 +765,8 @@ describe('Working with threads', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(participantsResult));
                 }
             });
         });
@@ -794,6 +863,8 @@ describe('Working with threads', function(done) {
                                                     }
                                                     done();
                                                     console.log('\n');
+                                                } else {
+                                                    done(JSON.stringify(result));
                                                 }
                                             });
                                         }, 500);
@@ -927,6 +998,8 @@ describe('Working with threads', function(done) {
 
                                                                 done();
                                                                 console.log('\n');
+                                                            } else {
+                                                                done(JSON.stringify(result));
                                                             }
                                                         });
                                                     }, 500);
@@ -999,6 +1072,8 @@ describe('Working with threads', function(done) {
                                         }
                                         done();
                                         console.log('\n');
+                                    } else {
+                                        done(JSON.stringify(result));
                                     }
                                 });
                             }, 500);
@@ -1083,6 +1158,8 @@ describe('Working with threads', function(done) {
                                                 }
                                                 done();
                                                 console.log('\n');
+                                            } else {
+                                                done(JSON.stringify(result));
                                             }
                                         });
                                     }, 500);
@@ -1152,6 +1229,8 @@ describe('Working with threads', function(done) {
                                     }
                                     done();
                                     console.log('\n');
+                                } else {
+                                    done(JSON.stringify(result));
                                 }
                             });
                         }
@@ -1186,6 +1265,8 @@ describe('Working with threads', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(historyResult));
                         }
                     });
                 }
@@ -1218,6 +1299,8 @@ describe('Working with threads', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(historyResult));
                         }
                     });
                 }
@@ -1239,6 +1322,8 @@ describe('Working with threads', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(historyResult));
                 }
             });
         });
@@ -1250,7 +1335,7 @@ describe('Working with threads', function(done) {
             chatAgent.sendTextMessage({
                 threadId: P2P_THREAD,
                 content: faker.lorem.paragraph(),
-                metaData: {
+                systemMetadata: {
                     type: 'test'
                 }
             }, {
@@ -1273,6 +1358,8 @@ describe('Working with threads', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(historyResult));
                         }
                     });
                 }
@@ -1333,6 +1420,8 @@ describe('Working with threads', function(done) {
                                     }
                                     done();
                                     console.log('\n');
+                                } else {
+                                    done(JSON.stringify(result));
                                 }
                             });
                         }
@@ -1354,6 +1443,8 @@ describe('Working with threads', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(result));
                 }
             });
         });
@@ -1422,6 +1513,8 @@ describe('Working with threads', function(done) {
                                         }
                                         done();
                                         console.log('\n');
+                                    } else {
+                                        done(JSON.stringify(result));
                                     }
                                 });
                             }, 500);
@@ -1437,7 +1530,7 @@ describe('Working with threads', function(done) {
  * MESSAGING FUNCTIONS
  */
 describe('Messaging Functionality', function(done) {
-    this.timeout(20000);
+    this.timeout(60000);
 
     var chatAgent1,
         chatAgent2;
@@ -1482,7 +1575,7 @@ describe('Messaging Functionality', function(done) {
                 threadId: P2P_THREAD,
                 content: faker.lorem.paragraph(),
                 file: __dirname + '/test.jpg',
-                metaData: {
+                metadata: {
                     custom_name: 'John Doe'
                 }
             }, {
@@ -1588,6 +1681,8 @@ describe('Messaging Functionality', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(result));
                         }
                     });
                 },
@@ -1627,9 +1722,9 @@ describe('Messaging Functionality', function(done) {
                     var time2 = new Date().getTime();
                     chatAgent1.deleteMessage({
                         messageId: sentMessageID,
-                        content: JSON.stringify({
+                        // content: JSON.stringify({
                             deleteForAll: false
-                        })
+                        // })
                     }, function(result) {
                         if (!result.hasError) {
                             if (timingLog) {
@@ -1637,6 +1732,8 @@ describe('Messaging Functionality', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(result));
                         }
                     });
                 },
@@ -1687,6 +1784,8 @@ describe('Messaging Functionality', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(result));
                         }
                     });
                 },
@@ -1736,6 +1835,8 @@ describe('Messaging Functionality', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(result));
                         }
                     });
                 },
@@ -1786,6 +1887,8 @@ describe('Messaging Functionality', function(done) {
                             }
                             done();
                             console.log('\n');
+                        } else {
+                            done(JSON.stringify(result));
                         }
                     });
                 },
@@ -1845,6 +1948,8 @@ describe('Messaging Functionality', function(done) {
                                         done();
                                         console.log('\n');
                                     }
+                                } else {
+                                    done(JSON.stringify(result));
                                 }
                             });
                         }
@@ -1884,7 +1989,7 @@ describe('Messaging Functionality', function(done) {
                     onDeliver: function(result) {
                         sentMessagesCount++;
 
-                        if(sentMessagesCount == 4) {
+                        if(sentMessagesCount == 5) {
                             if (timingLog) {
                                 console.log('\x1b[90m    ☰ Send 5 Messages to P2P Thread \x1b[0m \x1b[90m(%sms)\x1b[0m', new Date().getTime() - time1);
                             }
@@ -1898,13 +2003,15 @@ describe('Messaging Functionality', function(done) {
                                 if (!result.hasError) {
                                     deletedMessagesCount++;
 
-                                    if(deletedMessagesCount == 4) {
+                                    if(deletedMessagesCount == 5) {
                                         if (timingLog) {
                                             console.log('\x1b[33m    ★ Delete Multiple Messages from P2P \x1b[0m \x1b[33m(%sms)\x1b[0m', new Date().getTime() - time2);
                                         }
                                         done();
                                         console.log('\n');
                                     }
+                                } else {
+                                    done(JSON.stringify(result));
                                 }
                             });
                         }
@@ -1965,6 +2072,8 @@ describe('Messaging Functionality', function(done) {
                                         done();
                                         console.log('\n');
                                     }
+                                } else {
+                                    done(JSON.stringify(result));
                                 }
                             });
                         }
@@ -2025,6 +2134,8 @@ describe('Messaging Functionality', function(done) {
                                         done();
                                         console.log('\n');
                                     }
+                                } else {
+                                    done(JSON.stringify(result));
                                 }
                             });
                         }
@@ -2201,6 +2312,8 @@ describe('Uploading & Getting File Functionality', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(result));
                 }
             });
         });
@@ -2217,6 +2330,7 @@ describe('Uploading & Getting File Functionality', function(done) {
                 hC: 400,
                 wC: 400
             }, function(result) {
+                console.log(result);
                 if (!result.hasError) {
                     imageId = result.result.id;
                     imageHashCode = result.result.hashCode;
@@ -2292,6 +2406,8 @@ describe('Uploading & Getting File Functionality', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(result));
                 }
             });
         });
@@ -2310,6 +2426,8 @@ describe('Uploading & Getting File Functionality', function(done) {
                     }
                     done();
                     console.log('\n');
+                } else {
+                    done(JSON.stringify(result));
                 }
             });
         });
