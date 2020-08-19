@@ -15,31 +15,6 @@ var params = {
     // queueSend: "queue-out-amjadi-stomp",
     // queueConnectionTimeout: 20000,
     // serverName: "chat-server",
-    // fileServer: 'https://core.pod.ir',
-    // platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform",
-    // ssoHost: "https://accounts.pod.ir",
-
-    /**
-     * ActiveMQ Config - Sheikh
-     */
-    // protocol: "queue",
-    // queueHost: "192.168.112.23",
-    // queuePort: "61613",
-    // queueUsername: "root",
-    // queuePassword: "j]Bm0RU8gLhbPUG",
-    // queueReceive: "queue-in-local_chat",
-    // queueSend: "queue-out-local_chat",
-    // queueConnectionTimeout: 20000,
-
-    // protocol: "queue",
-    // queueHost: "172.16.0.248",
-    // queuePort: "61613",
-    // queueUsername: "root",
-    // queuePassword: "zalzalak",
-    // queueReceive: "queue-in-wepod",
-    // queueSend: "queue-out-wepod",
-    // queueConnectionTimeout: 20000,
-    // serverName: "chat-server",
 
     /**
      * Main Server
@@ -48,35 +23,8 @@ var params = {
     // ssoHost: 'https://accounts.pod.ir', // {**REQUIRED**} Socket Address
     // platformHost: 'https://api.pod.ir/srv/core', // {**REQUIRED**} Platform Core Address
     // fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
+    // podSpaceFileServer: 'https://podspace.pod.ir', // {**REQUIRED**} File Server Address
     // serverName: 'chat-server', // {**REQUIRED**} Server to to register on
-
-    /**
-     * Hamed Mehrara
-     */
-    // socketAddress: 'ws://172.16.106.26:8003/ws', // {**REQUIRED**} Socket Address
-    // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-    // platformHost: 'http://172.16.106.26:8080/hamsam', // {**REQUIRED**} Platform Core Address
-    // fileServer: 'http://172.16.106.26:8080/hamsam', // {**REQUIRED**} File Server Address
-    // serverName: 'chat-server', // {**REQUIRED**} Server to to register on
-
-    /**
-     * Mehdi Sheikh Hosseini
-     */
-    // socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
-    // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-    // platformHost: 'http://172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
-    // fileServer: 'http://172.16.110.76:8080', // {**REQUIRED**} File Server Address
-    // serverName: 'chat-server', // {**REQUIRED**} Server to to register on
-
-
-    /**
-     * Leila Nemati
-     */
-    // socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
-    // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-    // platformHost: 'http://172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
-    // fileServer: 'http://172.16.110.76:8080', // {**REQUIRED**} File Server Address
-    // serverName: 'sheikh_chat', // {**REQUIRED**} Server to to
 
     /**
      * Sand Box
@@ -85,6 +33,7 @@ var params = {
     ssoHost: "https://accounts.pod.ir", // {**REQUIRED**} Socket Address
     platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform", // {**REQUIRED**} Platform Core Address
     fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
+    podSpaceFileServer: 'http://172.16.110.61:8780/podspace', // {**REQUIRED**} File Server Address
     serverName: "chat-server", // {**REQUIRED**} Server to to register on
 
     /**
@@ -93,7 +42,8 @@ var params = {
     // socketAddress: "ws://172.16.110.235:8003/ws",
     // ssoHost: "http://172.16.110.76",
     // platformHost: "http://172.16.110.235:8003/srv/bptest-core",
-    // fileServer: 'http://172.16.110.76:8080',
+    // fileServer: 'https://core.pod.ir',
+    // podSpaceFileServer: 'http://172.16.110.61:8780/podspace', // {**REQUIRED**} File Server Address
     // serverName: "chatlocal",
 
     grantDeviceIdFromSSO: false,
@@ -101,13 +51,14 @@ var params = {
     fullResponseObject: false,
     mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
     // typeCode: "talk",
-    token: "877086d84d02495bb82aaa1c25904bd5",
+    token: "45a9474e3707478080c05e35e0ff3e2c",
     // token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token ZiZi
     // token: "81025b3fbc1a4f7184c3600a2f874673", //  {**REQUIRED**} SSO Token JiJi
     // token: "3c4d62b6068043aa898cf7426d5cae68", // {**REQUIRED**} SSO Token FiFi
     // token: "49c1a43116764ae2ab965a6c40bb46d3", // {**REQUIRED**} SSO Token Masoud
     // token: "bebc31c4ead6458c90b607496dae25c6", // {**REQUIRED**} SSO Token Alexi
     // token: "e4f1d5da7b254d9381d0487387eabb0a", // {**REQUIRED**} SSO Token Felfeli
+    // token: "6f5b9aba52414efaa0073a1178c5881f", // maBOT
     wsConnectionWaitTime: 500, // Time out to wait for socket to get ready after open
     connectionRetryInterval: 5000, // Time interval to retry registering device or registering server
     connectionCheckTimeout: 10000, // Socket connection live time on server
@@ -126,15 +77,27 @@ var params = {
 var chatAgent = new Chat(params),
     PID;
 
-chatAgent.on('chatReady', function () {
+var chatReadyEventCallback = chatAgent.on('chatReady', function () {
     /*******************************************************
      *                  I S    T Y P I N G                 *
      *******************************************************/
-    // chatAgent.startTyping({threadId: 1431});
-    //
-    // setTimeout(function() {
+    // chatAgent.startTyping({ threadId: 7448 });
+
+    // setTimeout(function () {
     //     chatAgent.stopTyping();
     // }, 15000);
+
+    // chatAgent.getAllUnreadMessagesCount({
+    //     mute: false
+    // }, function(result) {
+    //     console.log('GEt All Unread Messages Count = ', result);
+    // });
+
+    // chatAgent.isPublicThreadNameAvailable({
+    //     uniqueName: "uniquep"
+    // }, function(result) {
+    //     console.log('Check Public Thread Name Availability', result);
+    // });
 
     /*******************************************************
      *                       U S E R                       *
@@ -178,12 +141,12 @@ chatAgent.on('chatReady', function () {
      * @param name
      */
     // getThreads({
-    //     // count: 10,
+    //     // count:4,
     //     // offset: 0,
-    //     new: true,
+    //     // new: true,
     //     //   partnerCoreContactId: 63533و
     //     // threadIds: [11954],
-    //     // name: "تست"
+    //     name: "fifi"
     // });
 
     // chatAgent.getAllThreadList({
@@ -199,10 +162,10 @@ chatAgent.on('chatReady', function () {
      * @param threadType
      */
     // createThread([{
-    //   id: 902,
+    //   id: 921069,
     //   type: "TO_BE_USER_CONTACT_ID"
     // }, {
-    //   id: 7741,
+    //   id: 934363,
     //   type: "TO_BE_USER_CONTACT_ID"
     // }], "NORMAL");
 
@@ -210,7 +173,7 @@ chatAgent.on('chatReady', function () {
      * CREATE THREAD (Creates P2P Chat with a specific user)
      * @param contactId
      */
-    // createThread({id: 18514, type: "TO_BE_USER_CONTACT_ID"});
+    // createThread({id: 'zizi', type: "TO_BE_USER_USERNAME"});
 
     /**
      * GET THREAD PARTICIPANTS
@@ -223,8 +186,8 @@ chatAgent.on('chatReady', function () {
     // });
 
     // chatAgent.getParticipantRoles({
-    //     threadId: 7064
-    // }, function(result) {
+    //     threadId: 7430
+    // }, function (result) {
     //     console.log('Get Participant Roles Result', result);
     // });
 
@@ -233,28 +196,29 @@ chatAgent.on('chatReady', function () {
      * @param threadId
      * @param contacts {Array}  CONTACT ID or USERNAMES
      */
-    // addParticipants(7008, 'contact', [1967]);
-    // addParticipants(7549, 'username', ['poddraw', 'm.zhiani']);
+    // addParticipants(7064, 'contact', [7741]);
+    // addParticipants(7064, 'username', ['poddraw']);
+    // addParticipants(7548, 'coreuserid', [919]); //15508?
     //
     /**
      * REMOVE PARTICIPANTS
      * @param threadId
      * @param participants {Array}  USER ID
      */
-    // removeParticipants(7008, [15501]);
+    // removeParticipants(7064, [6862]);
 
     /**
      * LEAVE THREAD
      * @param threadId
      */
-    // leaveThread(2673);
+    // leaveThread(6881);
 
     /**
      * JOIN THREAD
      * @param uniqueName
      */
-    // chatAgent.joinThread({
-    //     uniqueName: "masoudpooriaalireza"
+    // chatAgent.joinPublicThread({
+    //     uniqueName: "joinmeifyoucan"
     // }, function(result) {
     //     console.log('Join Thread Result', result);
     // });
@@ -264,7 +228,7 @@ chatAgent.on('chatReady', function () {
      * @param threadId
      */
     // chatAgent.clearHistory({
-    //     threadId: 15
+    //     threadId: 54436
     // }, function(result) {
     //     console.log("Clear history result", result);
     // });
@@ -280,11 +244,12 @@ chatAgent.on('chatReady', function () {
      * @param query
      */
     // getHistory({
-    //     // count: 20,
+    //     count: 5,
     //     // offset: 0,
-    //     // threadId: 6988,
+    //     threadId: 2858,
     //     // uniqueIds: ["1a3b3976-c149-49e1-c4ea-f14c9ee93d83", "c6651cb4-b823-4157-fff0-52052247730c"],
-    //     id: 79290
+    //     // id: 79290,
+    //     messageType: 'POD_SPACE_VIDEO'
     // });
 
     // getHistory({
@@ -332,19 +297,19 @@ chatAgent.on('chatReady', function () {
      * MUTE THREAD
      * @param threadId
      */
-    // muteThread(1431);
+    // muteThread(6968);
 
     /**
      * UNMUTE THREAD
      * @param threadId
      */
-    // unMuteThread(1431);
+    // unMuteThread(6968);
 
     /**
      * PIN THREAD
      * @param threadId
      */
-    // pinThread(7358);
+    // pinThread(10984);
 
     /**
      * UNPIN THREAD
@@ -375,9 +340,9 @@ chatAgent.on('chatReady', function () {
      * @param threadId
      */
     // chatAgent.spamPvThread({
-    //   threadId: 6881
-    // }, function(result) {
-    //   console.log(result);
+    //     threadId: 7438
+    // }, function (result) {
+    //     console.log(result);
     // });
 
     /**
@@ -387,10 +352,10 @@ chatAgent.on('chatReady', function () {
      * @param roles
      */
     // chatAgent.setAdmin({
-    //     threadId: 6729,
+    //     threadId: 7064,
     //     admins: [
     //         {
-    //             userId: 43,
+    //             userId: 6862,
     //             roles: [
     //                 'post_channel_message',
     //                 'edit_message_of_others',
@@ -404,17 +369,17 @@ chatAgent.on('chatReady', function () {
     //                 'edit_thread'
     //             ]
     //         }]
-    // }, function(result) {
+    // }, function (result) {
     //     console.log(result);
     // });
 
     // chatAgent.removeAdmin({
-    //     threadId: 6729,
+    //     threadId: 7430,
     //     admins: [
     //         {
-    //             userId: 43,
+    //             userId: 15510,
     //             roles: [
-    //                 // 'post_channel_message',
+    //                 'post_channel_message',
     //                 'edit_message_of_others',
     //                 'delete_message_of_others',
     //                 'add_new_user',
@@ -422,11 +387,11 @@ chatAgent.on('chatReady', function () {
     //                 'thread_admin',
     //                 'add_rule_to_user',
     //                 'remove_role_from_user',
-    //                 // 'read_thread',
+    //                 'read_thread',
     //                 'edit_thread'
     //             ]
     //         }]
-    // }, function(result) {
+    // }, function (result) {
     //     console.log(result);
     //     console.log(result.result[0]);
     // });
@@ -441,9 +406,9 @@ chatAgent.on('chatReady', function () {
      * @param notifyAll
      */
     // chatAgent.pinMessage({
-    //     messageId: 84290,
+    //     messageId: 99290,
     //     notifyAll: true
-    // }, function(result){
+    // }, function (result) {
     //     console.log('Pin message result', result);
     // });
 
@@ -453,7 +418,7 @@ chatAgent.on('chatReady', function () {
      * @param notifyAll
      */
     // chatAgent.unPinMessage({
-    //     messageId: 83432,
+    //     messageId: 86364,
     //     notifyAll: true
     // }, function(result){
     //     console.log('unPin message result', result);
@@ -466,20 +431,20 @@ chatAgent.on('chatReady', function () {
      * @param metadata
      */
     // setInterval(() => {
-    //     sendMessage(7048, 'Message From Masoud at ' + new Date(), {
-    //         id: 666,
-    //         type: 'message',
-    //         name: 'Masoud',
-    //         address: {
-    //             street: 'shariati',
-    //             plaque: 13,
-    //             building: {
-    //                 color: 'black',
-    //                 age: 11
-    //             }
-    //         },
-    //         active: 0
-    //     });
+    // sendMessage(4441, '@poddraw Message From Masoud at ' + new Date(), {
+    //     id: 666,
+    //     type: 'message',
+    //     name: 'Masoud',
+    //     address: {
+    //         street: 'shariati',
+    //         plaque: 13,
+    //         building: {
+    //             color: 'black',
+    //             age: 11
+    //         }
+    //     },
+    //     active: 0
+    // });
     // }, 1000);
 
     // chatAgent.seen({
@@ -508,14 +473,14 @@ chatAgent.on('chatReady', function () {
      * @param caption
      * @param metadata
      */
-    // sendFileMessage(7048, __dirname + "/../test/test.jpg", "Sample file description", {
+    // sendFileMessage(54436, __dirname + "/../test/test.jpg", "Sample file description", {
     //     custom_name: "John Doe"
-    // });
+    // }, '5GW93QH695O7HC');
 
     // createThreadWithFile(
     //     __dirname + "/../test/test.jpg",
     //     [{
-    //         id: 4569,
+    //         id: 934363,
     //         type: "TO_BE_USER_CONTACT_ID"
     //     }
     //     ],
@@ -534,16 +499,17 @@ chatAgent.on('chatReady', function () {
      * @param  {string}   metadata       Message MetaData
      */
 
-    // chatAgent.sendLocationMessage({
-    //     type: "standard-night",
-    //     zoom: 15,
-    //     center: {
-    //         lat: 35.7003508,
-    //         lng: 51.3376462
+    // var sendLocationMessageInstantResponse = chatAgent.sendLocationMessage({
+    //     mapType: "standard-night",
+    //     mapZoom: 16,
+    //     mapCenter: {
+    //         lat: 35.7034534,
+    //         lng: 51.3776390
     //     },
-    //     width: 800,
-    //     height: 500,
-    //     threadId: 15,
+    //     mapWidth: 1200,
+    //     mapHeight: 500,
+    //     threadId: 54436,
+    //     userGroupHash: '5GW93QH695O7HC',
     //     caption: "This is the Address on map!",
     //     systemMetadata: {
     //         time: new Date()
@@ -551,6 +517,8 @@ chatAgent.on('chatReady', function () {
     // }, function(result) {
     //     console.log(result);
     // });
+    //
+    // console.log('sendLocationMessageInstantResponse', sendLocationMessageInstantResponse);
 
     /**
      * SEND BOT MESSAGE IN THREAD
@@ -569,18 +537,18 @@ chatAgent.on('chatReady', function () {
      * @param messageId  325 editable: false
      * @param newMessage
      */
-    // editMessage(83432, "*****************************************" + new Date(), {name: 'masoud'});
+    // editMessage(99290, "*****************************************" + new Date(), {name: 'masoud'});
 
     /**
      * DELETE MESSAGE IN THREAD
      * @param {int}      messageId
      * @param {boolean}  deleteForAll
      */
-    // deleteMessage(84455, true);
+    // deleteMessage(92293, false);
+    // deleteMessage(361547, true);
 
     // chatAgent.deleteMultipleMessages({
-    //     // threadId: 15,
-    //     messageIds: [83336, 83337],
+    //     messageIds: [87521, 87520, 87519],
     //     deleteForAll: true
     // }, function(result) {
     //     console.log("Delete Multiple Message Result", result);
@@ -600,14 +568,14 @@ chatAgent.on('chatReady', function () {
      * @param threadId
      * @param messageId
      */
-    // replyFileMessage(1431, 19671, __dirname + "/test/test.jpg", "This is a reply to message #19671 at " + new Date());
+    // replyFileMessage(54436, 569279, __dirname + "/test.jpg", "This is a reply to message #533218 at " + new Date(), '5GW93QH695O7HC');
 
     /**
      * FORWARD MESSAGE
      * @param destination
      * @param messageIds
      */
-    // forwardMessage(1, [55902, 55901]);
+    // forwardMessage(7648, [91297]);
 
     /**
      * GET MESSAGE SEEN LIST
@@ -637,9 +605,9 @@ chatAgent.on('chatReady', function () {
      * GET CONTACTS
      */
     // getContacts({
-    //     count: 50,
+    //     count: 2,
     //     offset: 0,
-    //     // query: "masodi"
+    // query: "پوریا"
     // });
 
     /**
@@ -647,9 +615,9 @@ chatAgent.on('chatReady', function () {
      * @param contactId
      */
     // chatAgent.block({
-    //   // contactId: 563,
+    //   contactId: 7724,
     //   // threadId: 6848,
-    //   userId: 15550
+    //   // userId: 15550
     // }, function(result) {
     //   console.log(result);
     //   if (!result.hasError)
@@ -661,16 +629,16 @@ chatAgent.on('chatReady', function () {
      * @param count
      * @param offset
      */
-    getBlockedList();
+    // getBlockedList();
 
     /**
      * UNBLOCK CONTACT
      * @param blockId
      */
     // chatAgent.unblock({
-    //   // blockId: 425,
+    //   blockId: 2081,
     //   // contactId: 2247,
-    //   threadId: 293,
+    //   // threadId: 293,
     //   // userId: 221
     // }, function(result) {
     //   if (!result.hasError)
@@ -686,10 +654,11 @@ chatAgent.on('chatReady', function () {
      * @param email
      */
     // var addContactInstantResult = chatAgent.addContacts({
-    //     firstName: "Behnam",
-    //     lastName: "Salari Nia",
-    //     cellphoneNumber: "09212353868",
-    //     email: "b.salari@gmail.com"
+    //     firstName: "Zabbix",
+    //     lastName: "Bot 1",
+    //     // cellphoneNumber: "09212353868",
+    //     // email: "zabbix_bot_1@fanap.ir",
+    //     username: "zabbix_bot_1"
     // }, function (result) {
     //     console.log(result);
     //     console.log(result.contacts);
@@ -718,9 +687,9 @@ chatAgent.on('chatReady', function () {
      * @param id
      */
     // chatAgent.removeContacts({
-    //   id: "7741"
-    // }, function(result) {
-    //   console.log(result);
+    //     id: "2247"
+    // }, function (result) {
+    //     console.log(result);
     // });
 
     /**
@@ -852,6 +821,53 @@ chatAgent.on('chatReady', function () {
     // }, function(result) {
     //   console.log(result);
     // });
+
+    /*
+     * Create Bot
+     */
+    // chatAgent.createBot({
+    //     botName: 'emmaBOT'
+    // }, (result) => {
+    //     console.log('createBot ersult in index', result.result);
+    // });
+
+    /*
+     * Define Bot Commands
+     */
+    // chatAgent.defineBotCommand({
+    //     botName: 'mimBOT',
+    //     commandList: ['bark', 'run', 'fetch']
+    // }, (result) => {
+    //     console.log('Define Bot Command result', result);
+    // });
+
+    // chatAgent.getThreadParticipants({
+    //     threadId: 7730
+    // }, function(result) {
+    //     console.log(result);
+    // });
+
+    // addParticipants(7730, 'username', ['rockBOT']);
+
+    /*
+     * Start Bot
+     */
+    // chatAgent.startBot({
+    //     botName: 'emmaBOT',
+    //     threadId: 7730
+    // }, (result) => {
+    //     console.log('Start Bot result', result);
+    // });
+
+    /*
+     * Stop Bot
+     */
+    // chatAgent.stopBot({
+    //     botName: 'emmaBOT',
+    //     threadId: 7730
+    // }, (result) => {
+    //     console.log('Stop Bot result', result);
+    // });
 });
 
 /**
@@ -859,7 +875,7 @@ chatAgent.on('chatReady', function () {
  */
 chatAgent.on('error', function (error) {
     console.log('Error ', error);
-    console.log(error.lineNumber);
+    // console.log(error.lineNumber);
 });
 
 /**
@@ -938,7 +954,7 @@ chatAgent.on('messageEvents', function (event) {
     var type = event.type,
         message = event.result.message;
 
-    // console.log(event);
+    console.log(event);
 
     switch (type) {
         case 'MESSAGE_NEW':
@@ -961,7 +977,7 @@ chatAgent.on('messageEvents', function (event) {
             break;
 
         case 'MESSAGE_SEEN':
-            console.log("Some message seen has been ", event);
+            // console.log("Some message seen has been ", event);
             break;
 
         default:
@@ -1049,7 +1065,6 @@ function getThreadParticipants(threadId) {
 }
 
 function addParticipants(threadId, type, participants) {
-
     switch (type) {
         case 'contact':
             chatAgent.addParticipants({
@@ -1068,17 +1083,25 @@ function addParticipants(threadId, type, participants) {
                 console.log(result);
             });
             break;
+
+        case 'coreuserid':
+            chatAgent.addParticipants({
+                threadId: threadId,
+                coreuserids: participants
+            }, function (result) {
+                console.log(result);
+            });
+            break;
     }
 }
 
 function removeParticipants(threadId, participants) {
     chatAgent.removeParticipants({
         threadId: threadId,
-        participants: participants
+        participantIds: participants
     }, function (result) {
         // console.log(result);
     });
-
 }
 
 function leaveThread(threadId) {
@@ -1151,8 +1174,8 @@ function getHistory(params) {
 function sendMessage(threadId, message, metadata) {
     sendChatParams = {
         threadId: threadId,
-        content: message,
-        messageType: 0,
+        textMessage: message,
+        messageType: 'picture',
         systemMetadata: metadata
     };
 
@@ -1169,12 +1192,13 @@ function sendMessage(threadId, message, metadata) {
     });
 }
 
-function sendFileMessage(threadId, file, caption, metadata) {
+function sendFileMessage(threadId, file, caption, metadata, userGroupHash) {
     var instantResult = chatAgent.sendFileMessage({
         threadId: threadId,
         file: file,
         content: caption,
-        systemMetadata: metadata
+        systemMetadata: metadata,
+        userGroupHash: userGroupHash
     }, {
         onSent: function (result) {
             console.log(result.uniqueId + ' \t has been Sent!');
@@ -1264,12 +1288,14 @@ function replyMessage(threadId, messageId, message) {
     });
 }
 
-function replyFileMessage(threadId, messageId, file, message) {
+function replyFileMessage(threadId, messageId, file, message, userGroupHash) {
     replyChatParams = {
         threadId: threadId,
         repliedTo: messageId,
         content: message,
-        file: file
+        file: file,
+        userGroupHash: userGroupHash,
+        messageType: 'POD_SPACE_PICTURE'
     };
 
     chatAgent.replyFileMessage(replyChatParams, {
@@ -1328,6 +1354,7 @@ function createThread(invitees, threadType) {
             systemMetadata: {
                 id: new Date().getTime()
             },
+            type: 1
             // forwardedMessageIds: [19633, 19632, 19631]
         }
     };
