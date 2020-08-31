@@ -43,12 +43,20 @@
             /**
              * Main Server
              */
-            socketAddress: 'wss://msg.pod.ir/ws', // {**REQUIRED**} Socket Address
-            ssoHost: 'https://accounts.pod.ir', // {**REQUIRED**} Socket Address
+            // socketAddress: 'wss://msg.pod.ir/ws', // {**REQUIRED**} Socket Address
+            // ssoHost: 'https://accounts.pod.ir', // {**REQUIRED**} Socket Address
+            // platformHost: 'https://api.pod.ir/srv/core', // {**REQUIRED**} Platform Core Address
+            // fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
+            // podSpaceFileServer: 'https://podspace.pod.ir', // {**REQUIRED**} File Server Address
+            // serverName: 'chat-server', // {**REQUIRED**} Server to to register on
+
+
+            socketAddress: 'ws://172.16.110.207:8003/ws', // {**REQUIRED**} Socket Address
+            ssoHost: 'http://ssotst.midrp.ir', // {**REQUIRED**} Socket Address
             platformHost: 'https://api.pod.ir/srv/core', // {**REQUIRED**} Platform Core Address
             fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
             podSpaceFileServer: 'https://podspace.pod.ir', // {**REQUIRED**} File Server Address
-            serverName: 'chat-server', // {**REQUIRED**} Server to to register on
+            serverName: 'chatlocal', // {**REQUIRED**} Server to to register on
 
             /**
              * Sand Box
@@ -85,7 +93,7 @@
             fullResponseObject: false,
             mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
             // typeCode: "talk",
-            token: "86c08e24442b4bcda2f931d14a5ce05d",
+            token: "673dbef547c5493a87b790bd1985dd6d",
             // token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token ZiZi
             // token: "81025b3fbc1a4f7184c3600a2f874673", //  {**REQUIRED**} SSO Token JiJi
             // token: "3c4d62b6068043aa898cf7426d5cae68", // {**REQUIRED**} SSO Token FiFi
@@ -122,6 +130,12 @@
             //     messageId: 109291,
             //     ownerId: 254
             // })
+
+            // chatAgent.getCurrentUserRoles({
+            //     threadId: 7895
+            // }, function(res) {
+            //
+            // });
 
             // chatAgent.getAllUnreadMessagesCount({}, function(result){
             //     console.log('All unread messages count is: ', result);
