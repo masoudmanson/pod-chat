@@ -30,6 +30,7 @@
     "dexie": "^2.0.4",
     "faker": "^4.1.0",
     "form-data": "^2.5.0",
+    "image-size": "^0.8.3",
     "indexeddbshim": "^3.10.0",
     "mime": "^2.4.4",
     "podasync": "^2.7.4",
@@ -37,6 +38,6 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "mocha": "^5.1.1"
+    "mocha": "^8.1.1"
   }
 }
