@@ -5,10 +5,8 @@ var assert = require('assert'),
     path = require('path');
 
 var TOKENS = {
-        // TOKEN_1: '91f541d21c104dccb0b4cfbfff3d0e4f', // Masoud
-        // TOKEN_2: '4efb23b466ae425ba3554df174e556ff' // Pooria
-        TOKEN_1: 'faf267ea34b5456b8d61091482a0d616', // Masoud
-        TOKEN_2: '5bcb75e57b414a7e8927b007ad5aa22f' // Pooria
+        TOKEN_1: '573f0bc94cc14e258f835d40c8b40137', // Masoud
+        TOKEN_2: 'dd84f092ba4c4ee3942439a8d2304a26' // PodDraw
     },
     P2P_THREAD = 4441, //6848,
     GROUP_THREAD = 7064, //6868,
@@ -21,44 +19,18 @@ var TOKENS = {
         // ssoHost: 'https://accounts.pod.ir', // {**REQUIRED**} Socket Address
         // platformHost: 'https://api.pod.ir/srv/core', // {**REQUIRED**} Platform Core Address
         // fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
+        // podSpaceFileServer: 'https://podspace.pod.ir', // {**REQUIRED**} File Server Address
         // serverName: 'chat-server', // {**REQUIRED**} Server to to register on
-
-        /**
-         * Hamed Mehrara
-         */
-        // socketAddress: 'ws://172.16.106.26:8003/ws', // {**REQUIRED**} Socket Address
-        // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-        // platformHost: 'http://172.16.106.26:8080/hamsam', // {**REQUIRED**} Platform Core Address
-        // fileServer: 'http://172.16.106.26:8080/hamsam', // {**REQUIRED**} File Server Address
-        // serverName: 'chat-server', // {**REQUIRED**} Server to to register on
-
-        /**
-         * Mehdi Sheikh Hosseini
-         */
-        // socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
-        // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-        // platformHost: 'http://172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
-        // fileServer: 'http://172.16.110.76:8080', // {**REQUIRED**} File Server Address
-        // serverName: 'chat-server', // {**REQUIRED**} Server to to register on
-
-
-        /**
-         * Leila Nemati
-         */
-        // socketAddress: 'ws://172.16.110.235:8003/ws', // {**REQUIRED**} Socket Address
-        // ssoHost: 'http://172.16.110.76', // {**REQUIRED**} Socket Address
-        // platformHost: 'http:///172.16.110.76:8080', // {**REQUIRED**} Platform Core Address
-        // fileServer: 'http:///172.16.110.76:8080', // {**REQUIRED**} File Server Address
-        // serverName: 'sheikh_chat', // {**REQUIRED**} Server to to
 
         /**
          * Sand Box
          */
-        socketAddress: "wss://chat-sandbox.pod.ir/ws",
-        ssoHost: "https://accounts.pod.ir",
-        platformHost: "https://api.pod.ir/srv/core",
-        fileServer: 'https://core.pod.ir',
-        serverName: "chat-server",
+        socketAddress: "wss://chat-sandbox.pod.ir/ws", // {**REQUIRED**} Socket Address
+        ssoHost: "https://accounts.pod.ir", // {**REQUIRED**} Socket Address
+        platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform", // {**REQUIRED**} Platform Core Address
+        fileServer: 'https://core.pod.ir', // {**REQUIRED**} File Server Address
+        podSpaceFileServer: 'http://172.16.110.61:8780/podspace', // {**REQUIRED**} File Server Address
+        serverName: "chat-server", // {**REQUIRED**} Server to to register on
 
         /**
          * Integration
@@ -66,7 +38,8 @@ var TOKENS = {
         // socketAddress: "ws://172.16.110.235:8003/ws",
         // ssoHost: "http://172.16.110.76",
         // platformHost: "http://172.16.110.235:8003/srv/bptest-core",
-        // fileServer: 'http://172.16.110.76:8080',
+        // fileServer: 'https://core.pod.ir',
+        // podSpaceFileServer: 'http://172.16.110.61:8780/podspace', // {**REQUIRED**} File Server Address
         // serverName: "chatlocal",
 
         enableCache: false,
@@ -301,7 +274,7 @@ describe('Working with contacts', function(done) {
     it('Should Get Blocked contacts list', function(done) {
         chatAgent.on('chatReady', function() {
             var time1 = new Date().getTime();
-            chatAgent.getBlocked({
+            chatAgent.getBlockedList({
                 count: 50,
                 offset: 0
             }, function(contactsResult) {
@@ -605,6 +578,7 @@ describe('Working with threads', function(done) {
 
                     chatAgent.createThread({
                         title: faker.lorem.word(),
+                        uniqueName: faker.lorem.word() + faker.lorem.word(),
                         type: 'PUBLIC_GROUP',
                         invitees: groupInvitees
                     }, function(createThreadResult) {
@@ -1064,7 +1038,7 @@ describe('Working with threads', function(done) {
                             setTimeout(function() {
                                 chatAgent.addParticipants({
                                     threadId: newGroupThreadId,
-                                    contacts: [lastInvitee.id]
+                                    contactIds: [lastInvitee.id]
                                 }, function(result) {
                                     if (!result.hasError) {
                                         if (timingLog) {
@@ -1149,7 +1123,7 @@ describe('Working with threads', function(done) {
                                         var userId = participantsResult.result.participants[0];
                                         chatAgent.removeParticipants({
                                             threadId: newGroupThreadId,
-                                            participants: [userId.id]
+                                            participantIds: [userId.id]
                                         }, function(result) {
                                             if (!result.hasError) {
                                                 if (timingLog) {
@@ -1334,7 +1308,7 @@ describe('Working with threads', function(done) {
             var time = new Date().getTime();
             chatAgent.sendTextMessage({
                 threadId: P2P_THREAD,
-                content: faker.lorem.paragraph(),
+                textMessage: faker.lorem.paragraph(),
                 systemMetadata: {
                     type: 'test'
                 }
@@ -1412,7 +1386,7 @@ describe('Working with threads', function(done) {
 
                             muteThreadId = createThreadResult.result.thread.id;
                             chatAgent.muteThread({
-                                subjectId: muteThreadId
+                                threadId: muteThreadId
                             }, function(result) {
                                 if (!result.hasError) {
                                     if (timingLog) {
@@ -1435,7 +1409,7 @@ describe('Working with threads', function(done) {
         chatAgent.on('chatReady', function() {
             var time = new Date().getTime();
             chatAgent.unMuteThread({
-                subjectId: muteThreadId
+                threadId: muteThreadId
             }, function(result) {
                 if (!result.hasError) {
                     if (timingLog) {
@@ -1551,7 +1525,7 @@ describe('Messaging Functionality', function(done) {
 
             chatAgent1.sendTextMessage({
                 threadId: P2P_THREAD,
-                content: faker.lorem.paragraph()
+                textMessage: faker.lorem.paragraph()
             }, {
                 onSent: function(result) {
                     if (timingLog) {
@@ -1573,7 +1547,7 @@ describe('Messaging Functionality', function(done) {
             var time = new Date().getTime();
             chatAgent1.sendTextMessage({
                 threadId: P2P_THREAD,
-                content: faker.lorem.paragraph(),
+                textMessage: faker.lorem.paragraph(),
                 file: __dirname + '/test.jpg',
                 metadata: {
                     custom_name: 'John Doe'
@@ -1601,7 +1575,7 @@ describe('Messaging Functionality', function(done) {
             var time = new Date().getTime();
             chatAgent1.sendTextMessage({
                 threadId: P2P_THREAD,
-                content: faker.lorem.paragraph()
+                textMessage: faker.lorem.paragraph()
             }, {
                 onSent: function(result) {
                 },
@@ -1623,7 +1597,7 @@ describe('Messaging Functionality', function(done) {
             var time = new Date().getTime();
             chatAgent1.sendTextMessage({
                 threadId: P2P_THREAD,
-                content: faker.lorem.paragraph()
+                textMessage: faker.lorem.paragraph()
             }, {
                 onSent: function(result) {
                 },
@@ -1662,7 +1636,7 @@ describe('Messaging Functionality', function(done) {
             var time1 = new Date().getTime();
             chatAgent1.sendTextMessage({
                 threadId: P2P_THREAD,
-                content: faker.lorem.paragraph()
+                textMessage: faker.lorem.paragraph()
             }, {
                 onSent: function(result) {
                 },
@@ -1711,7 +1685,7 @@ describe('Messaging Functionality', function(done) {
             var time1 = new Date().getTime();
             chatAgent1.sendTextMessage({
                 threadId: P2P_THREAD,
-                content: faker.lorem.paragraph()
+                textMessage: faker.lorem.paragraph()
             }, {
                 onSent: function(result) {
                 },
@@ -1723,7 +1697,7 @@ describe('Messaging Functionality', function(done) {
                     chatAgent1.deleteMessage({
                         messageId: sentMessageID,
                         // content: JSON.stringify({
-                            deleteForAll: false
+                        deleteForAll: false
                         // })
                     }, function(result) {
                         if (!result.hasError) {
@@ -1762,7 +1736,7 @@ describe('Messaging Functionality', function(done) {
             var time1 = new Date().getTime();
             chatAgent1.sendTextMessage({
                 threadId: P2P_THREAD,
-                content: faker.lorem.paragraph()
+                textMessage: faker.lorem.paragraph()
             }, {
                 onSent: function(result) {
                 },
@@ -1814,7 +1788,7 @@ describe('Messaging Functionality', function(done) {
             var time1 = new Date().getTime();
             chatAgent1.sendTextMessage({
                 threadId: GROUP_THREAD,
-                content: faker.lorem.paragraph()
+                textMessage: faker.lorem.paragraph()
             }, {
                 onSent: function(result) {
                 },
@@ -1865,7 +1839,7 @@ describe('Messaging Functionality', function(done) {
             var time1 = new Date().getTime();
             chatAgent1.sendTextMessage({
                 threadId: GROUP_THREAD,
-                content: faker.lorem.paragraph()
+                textMessage: faker.lorem.paragraph()
             }, {
                 onSent: function(result) {
                 },
@@ -1912,8 +1886,8 @@ describe('Messaging Functionality', function(done) {
 
     it('Should sent several messages to a P2P thread then DELETE the sent messages afterwards (Delete For themeself Only)', function(done) {
         var sentMessageIDs = [],
-        sentMessagesCount = 0,
-        deletedMessagesCount = 0;
+            sentMessagesCount = 0,
+            deletedMessagesCount = 0;
 
         chatAgent1.on('chatReady', function() {
             var time1 = new Date().getTime();
@@ -1921,7 +1895,7 @@ describe('Messaging Functionality', function(done) {
             for (var i = 0; i < 5; i++) {
                 chatAgent1.sendTextMessage({
                     threadId: P2P_THREAD,
-                    content: faker.lorem.paragraph()
+                    textMessage: faker.lorem.paragraph()
                 }, {
                     onSent: function(result) {},
                     onDeliver: function(result) {
@@ -1983,7 +1957,7 @@ describe('Messaging Functionality', function(done) {
             for (var i = 0; i < 5; i++) {
                 chatAgent1.sendTextMessage({
                     threadId: P2P_THREAD,
-                    content: faker.lorem.paragraph()
+                    textMessage: faker.lorem.paragraph()
                 }, {
                     onSent: function(result) {},
                     onDeliver: function(result) {
@@ -2045,7 +2019,7 @@ describe('Messaging Functionality', function(done) {
             for (var i = 0; i < 5; i++) {
                 chatAgent1.sendTextMessage({
                     threadId: GROUP_THREAD,
-                    content: faker.lorem.paragraph()
+                    textMessage: faker.lorem.paragraph()
                 }, {
                     onSent: function(result) {},
                     onDeliver: function(result) {
@@ -2107,7 +2081,7 @@ describe('Messaging Functionality', function(done) {
             for (var i = 0; i < 5; i++) {
                 chatAgent1.sendTextMessage({
                     threadId: GROUP_THREAD,
-                    content: faker.lorem.paragraph()
+                    textMessage: faker.lorem.paragraph()
                 }, {
                     onSent: function(result) {},
                     onDeliver: function(result) {
@@ -2166,7 +2140,7 @@ describe('Messaging Functionality', function(done) {
             var time1 = new Date().getTime();
             chatAgent1.sendTextMessage({
                 threadId: P2P_THREAD,
-                content: faker.lorem.paragraph()
+                textMessage: faker.lorem.paragraph()
             }, {
                 onSent: function(result) {
                 },
@@ -2224,7 +2198,7 @@ describe('Messaging Functionality', function(done) {
             var time1 = new Date().getTime();
             chatAgent1.sendTextMessage({
                 threadId: P2P_THREAD,
-                content: faker.lorem.paragraph()
+                textMessage: faker.lorem.paragraph()
             }, {
                 onSent: function(result) {
                 },

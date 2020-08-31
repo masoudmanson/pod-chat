@@ -172,6 +172,7 @@
                 CHANNEL: 8,
                 NOTIFICATION_CHANNEL: 16
             },
+
             chatMessageTypes = {
                 TEXT: '1',
                 VOICE: '2',
@@ -186,6 +187,8 @@
                 POD_SPACE_FILE: '11',
                 LINK: '12'
             },
+
+
             systemMessageTypes = {
                 IS_TYPING: '1',
                 RECORD_VOICE: '2',
@@ -2139,14 +2142,14 @@
                             fireEvent('threadEvents', {
                                 type: 'THREAD_ADD_PARTICIPANTS',
                                 result: {
-                                    thread: messageContent.id
+                                    thread: messageContent
                                 }
                             });
 
                             fireEvent('threadEvents', {
                                 type: 'THREAD_LAST_ACTIVITY_TIME',
                                 result: {
-                                    thread: messageContent.id
+                                    thread: messageContent
                                 }
                             });
                         }
@@ -8407,28 +8410,28 @@
             },
 
             objectDeepMerger = function (...arguments) {
-                var target = {};
+            var target = {};
 
-                var merger = function (obj) {
-                    for (var prop in obj) {
-                        if (obj.hasOwnProperty(prop)) {
-                            if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
-                                target[prop] = objectDeepMerger(target[prop], obj[prop]);
-                            } else {
-                                target[prop] = obj[prop];
-                            }
+            var merger = function (obj) {
+                for (var prop in obj) {
+                    if (obj.hasOwnProperty(prop)) {
+                        if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+                            target[prop] = objectDeepMerger(target[prop], obj[prop]);
+                        } else {
+                            target[prop] = obj[prop];
                         }
                     }
-                };
-
-                for (var i = 0; i < arguments.length; i++) {
-                    merger(arguments[i]);
                 }
+            };
 
-                return target;
-            },
+            for (var i = 0; i < arguments.length; i++) {
+                merger(arguments[i]);
+            }
 
-            setRoleToUser = function (params, callback) {
+            return target;
+        },
+
+        setRoleToUser = function (params, callback) {
             var setRoleData = {
                 chatMessageVOType: chatMessageVOTypes.SET_ROLE_TO_USER,
                 typeCode: params.typeCode,
@@ -10084,12 +10087,10 @@
 
         this.forwardMessage = function (params, callbacks) {
             var threadId = params.threadId,
-                messageIdsList = JSON.parse(params.messageIds),
+                messageIdsList = params.messageIds,
                 uniqueIdsList = [];
 
             for (i in messageIdsList) {
-                var messageId = messageIdsList[i];
-
                 if (!threadCallbacks[threadId]) {
                     threadCallbacks[threadId] = {};
                 }
@@ -10124,13 +10125,14 @@
                     typeCode: params.typeCode,
                     subjectId: params.threadId,
                     repliedTo: params.repliedTo,
-                    content: params.content,
+                    content: messageIdsList,
                     uniqueId: uniqueIdsList,
                     metadata: JSON.stringify(params.metadata),
                     pushMsgType: 5
                 },
                 callbacks: callbacks
             }, function () {
+                console.log('has been put in chat send q');
                 chatSendQueueHandler();
             });
         };

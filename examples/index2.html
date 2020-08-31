@@ -85,7 +85,7 @@
             fullResponseObject: false,
             mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
             // typeCode: "talk",
-            token: "df6e6547e4de41d586f21ad634a2d31d",
+            token: "cfe592f32c084770a7af20222a19dd65",
             // token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token ZiZi
             // token: "81025b3fbc1a4f7184c3600a2f874673", //  {**REQUIRED**} SSO Token JiJi
             // token: "3c4d62b6068043aa898cf7426d5cae68", // {**REQUIRED**} SSO Token FiFi
@@ -119,7 +119,7 @@
              *******************************************************/
             // console.log('sending seen');
             // chatAgent.seen({
-            //     messageId: 145317,
+            //     messageId: 109291,
             //     ownerId: 254
             // })
 
@@ -445,7 +445,7 @@
              * @param destination
              * @param messageIds
              */
-            // forwardMessage(57583, [592482, 592481]);
+            // forwardMessage(1431, [17259, 17258]);
 
             /**
              * GET MESSAGE SEEN LIST
@@ -1022,8 +1022,8 @@
 
         function forwardMessage(destination, messageIds) {
             chatAgent.forwardMessage({
-                threadId: destination,
-                messageIds: messageIds
+                subjectId: destination,
+                content: JSON.stringify(messageIds)
             }, {
                 onSent: function (result) {
                     console.log(result.uniqueId + " \t has been Sent! (FORWARD)");
@@ -1944,10 +1944,8 @@ Token: <input type="text" id="tokenInput" autocomplete="on" width="500">
             }, function (result) {
                 console.log(result);
             });
-
-            console.log("Instant updateThreadInfo Results", instantResult)
-
-
+            //
+            // console.log("Instant updateThreadInfo Results", instantResult)
         });
 
     /**

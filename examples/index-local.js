@@ -51,7 +51,7 @@ var params = {
     fullResponseObject: false,
     mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
     // typeCode: "talk",
-    token: "45a9474e3707478080c05e35e0ff3e2c",
+    token: "737cab0e45bc47d0bbae2816a50b5880",
     // token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token ZiZi
     // token: "81025b3fbc1a4f7184c3600a2f874673", //  {**REQUIRED**} SSO Token JiJi
     // token: "3c4d62b6068043aa898cf7426d5cae68", // {**REQUIRED**} SSO Token FiFi
@@ -197,15 +197,15 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
      * @param contacts {Array}  CONTACT ID or USERNAMES
      */
     // addParticipants(7064, 'contact', [7741]);
-    // addParticipants(7064, 'username', ['poddraw']);
-    // addParticipants(7548, 'coreuserid', [919]); //15508?
+    // addParticipants(7064, 'username', ['emmaBOT']);
+    // addParticipants(7064, 'coreuserid', [2]); //15508?
     //
     /**
      * REMOVE PARTICIPANTS
      * @param threadId
      * @param participants {Array}  USER ID
      */
-    // removeParticipants(7064, [6862]);
+    // removeParticipants(7064, [18399]);
 
     /**
      * LEAVE THREAD
@@ -355,7 +355,7 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
     //     threadId: 7064,
     //     admins: [
     //         {
-    //             userId: 6862,
+    //             userId: 2,
     //             roles: [
     //                 'post_channel_message',
     //                 'edit_message_of_others',
@@ -826,7 +826,7 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
      * Create Bot
      */
     // chatAgent.createBot({
-    //     botName: 'emmaBOT'
+    //     botName: 'secondBOT'
     // }, (result) => {
     //     console.log('createBot ersult in index', result.result);
     // });
@@ -835,8 +835,8 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
      * Define Bot Commands
      */
     // chatAgent.defineBotCommand({
-    //     botName: 'mimBOT',
-    //     commandList: ['bark', 'run', 'fetch']
+    //     botName: 'secondBOT',
+    //     commandList: ['hola', 'poop', 'pee', 'bark', 'run', 'fetch', 'pet']
     // }, (result) => {
     //     console.log('Define Bot Command result', result);
     // });
@@ -847,14 +847,14 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
     //     console.log(result);
     // });
 
-    // addParticipants(7730, 'username', ['rockBOT']);
+    // addParticipants(8088, 'username', ['firstBOT', 'secondBOT']);
 
     /*
      * Start Bot
      */
     // chatAgent.startBot({
-    //     botName: 'emmaBOT',
-    //     threadId: 7730
+    //     botName: 'secondBOT',
+    //     threadId: 8088
     // }, (result) => {
     //     console.log('Start Bot result', result);
     // });
