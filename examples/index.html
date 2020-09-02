@@ -85,7 +85,7 @@
             fullResponseObject: false,
             mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
             // typeCode: "talk",
-            token: "df6e6547e4de41d586f21ad634a2d31d",
+            token: "c3843355569540c188b1a12d92fadf69",
             // token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token ZiZi
             // token: "81025b3fbc1a4f7184c3600a2f874673", //  {**REQUIRED**} SSO Token JiJi
             // token: "3c4d62b6068043aa898cf7426d5cae68", // {**REQUIRED**} SSO Token FiFi
@@ -1453,16 +1453,16 @@ Token: <input type="text" id="tokenInput" autocomplete="on" width="500">
     <fieldset>
         <legend>Send File Message</legend>
         <label for="sendFileThread">Thread Id</label>
-        <input type="text" name="sendFileThread" id="sendFileThread" value="54436">
+        <input type="text" name="sendFileThread" id="sendFileThread" value="57583">
         <br>
         <label for="sendFileUserGroupHash">Thread userGroupHash</label>
-        <input type="text" name="sendFileUserGroupHash" id="sendFileUserGroupHash" value="5GW93QH695O7HC">
+        <input type="text" name="sendFileUserGroupHash" id="sendFileUserGroupHash" value="7SQF2D5PUU5NPI">
         <br>
 
         <label for="sendFileMessageType">Message Type</label>
         <select name="sendFileMessageType" id="sendFileMessageType">
             <option value="TEXT">TEXT</option>
-            <option value="POD_SPACE_PICTURE">POD_SPACE_PICTURE</option>
+            <option value="POD_SPACE_PICTURE" selected>POD_SPACE_PICTURE</option>
             <option value="POD_SPACE_VIDEO">POD_SPACE_VIDEO</option>
             <option value="POD_SPACE_SOUND">POD_SPACE_SOUND</option>
             <option value="POD_SPACE_VOICE">POD_SPACE_VOICE</option>
@@ -1504,70 +1504,70 @@ Token: <input type="text" id="tokenInput" autocomplete="on" width="500">
     </fieldset>
 </form>
 
-<br>
-<hr>
-<br>
+<!--<br>-->
+<!--<hr>-->
+<!--<br>-->
 
-<form>
-    <fieldset>
-        <legend>Upload Image</legend>
-        <input type="file" name="image" id="imageInput" value="">
-        <button type="button" name="button" id="uploadImage">Upload Image</button>
-        <br>
-        <img id="uploadedImage"/>
-        <div id="uploadedImageData"></div>
-    </fieldset>
-</form>
+<!--<form>-->
+    <!--<fieldset>-->
+        <!--<legend>Upload Image</legend>-->
+        <!--<input type="file" name="image" id="imageInput" value="">-->
+        <!--<button type="button" name="button" id="uploadImage">Upload Image</button>-->
+        <!--<br>-->
+        <!--<img id="uploadedImage"/>-->
+        <!--<div id="uploadedImageData"></div>-->
+    <!--</fieldset>-->
+<!--</form>-->
 
-<br>
-<hr>
-<br>
+<!--<br>-->
+<!--<hr>-->
+<!--<br>-->
 
-<form>
-    <fieldset>
-        <legend>Upload File</legend>
-        <input type="file" name="file" id="fileInput" value="">
-        <button type="button" name="button" id="uploadFile">Upload File</button>
-        <br>
-        <div id="uploadedFile"></div>
-    </fieldset>
-</form>
+<!--<form>-->
+    <!--<fieldset>-->
+        <!--<legend>Upload File</legend>-->
+        <!--<input type="file" name="file" id="fileInput" value="">-->
+        <!--<button type="button" name="button" id="uploadFile">Upload File</button>-->
+        <!--<br>-->
+        <!--<div id="uploadedFile"></div>-->
+    <!--</fieldset>-->
+<!--</form>-->
 
-<br>
-<hr>
-<br>
+<!--<br>-->
+<!--<hr>-->
+<!--<br>-->
 
-<form>
-    <fieldset>
-        <legend>Get Image</legend>
-        <label for="imageId">Image ID : </label>
-        <input type="text" name="imageId" id="imageId" value="">
-        <br>
-        <label for="hashCode">HashCode:</label>
-        <input type="text" name="hashCode" id="hashCode" value="">
-        <button type="button" name="button" id="getImage">Get Image</button>
-        <br>
-        <img id="getImageResult"/>
-    </fieldset>
-</form>
+<!--<form>-->
+    <!--<fieldset>-->
+        <!--<legend>Get Image</legend>-->
+        <!--<label for="imageId">Image ID : </label>-->
+        <!--<input type="text" name="imageId" id="imageId" value="">-->
+        <!--<br>-->
+        <!--<label for="hashCode">HashCode:</label>-->
+        <!--<input type="text" name="hashCode" id="hashCode" value="">-->
+        <!--<button type="button" name="button" id="getImage">Get Image</button>-->
+        <!--<br>-->
+        <!--<img id="getImageResult"/>-->
+    <!--</fieldset>-->
+<!--</form>-->
 
-<br>
-<hr>
-<br>
+<!--<br>-->
+<!--<hr>-->
+<!--<br>-->
 
-<form>
-    <fieldset>
-        <legend>Get File</legend>
-        <label for="fileId">File ID : </label>
-        <input type="text" name="fileId" id="fileId" value="">
-        <br>
-        <label for="fileHashCode">HashCode:</label>
-        <input type="text" name="fileHashCode" id="fileHashCode" value="">
-        <button type="button" name="button" id="getFile">Get File</button>
-        <br>
-        <div id="getFileResult"></div>
-    </fieldset>
-</form>
+<!--<form>-->
+    <!--<fieldset>-->
+        <!--<legend>Get File</legend>-->
+        <!--<label for="fileId">File ID : </label>-->
+        <!--<input type="text" name="fileId" id="fileId" value="">-->
+        <!--<br>-->
+        <!--<label for="fileHashCode">HashCode:</label>-->
+        <!--<input type="text" name="fileHashCode" id="fileHashCode" value="">-->
+        <!--<button type="button" name="button" id="getFile">Get File</button>-->
+        <!--<br>-->
+        <!--<div id="getFileResult"></div>-->
+    <!--</fieldset>-->
+<!--</form>-->
 
 
 <br>
@@ -1580,6 +1580,14 @@ Token: <input type="text" id="tokenInput" autocomplete="on" width="500">
         <label for="fileHash">HashCode:</label>
         <input type="text" name="fileHash" id="fileHash" value="">
         <button type="button" name="button" id="getFileFromPodspace">Get File</button>
+
+        <br>
+        <br>
+        <fieldset>
+            <legend>Cancel File Download</legend>
+            <input type="text" name="fileDownloadCancelUniqueId" id="fileDownloadCancelUniqueId">
+            <button type="button" name="fileDownloadCancel" id="fileDownloadCancel">Cancel Download</button>
+        </fieldset>
         <br>
         <div id="getFileFromPodspaceResult"></div>
     </fieldset>
@@ -1604,6 +1612,12 @@ Token: <input type="text" id="tokenInput" autocomplete="on" width="500">
 
         <button type="button" name="button" id="getImageFromPodspace">Get Image</button>
         <br>
+        <br>
+        <fieldset>
+            <legend>Cancel File Download</legend>
+            <input type="text" name="imageDownloadCancelUniqueId" id="imageDownloadCancelUniqueId">
+            <button type="button" name="imageDownloadCancel" id="imageDownloadCancel">Cancel Download</button>
+        </fieldset>
         <div id="getImageFromPodspaceResult"></div>
     </fieldset>
 </form>
@@ -1953,114 +1967,114 @@ Token: <input type="text" id="tokenInput" autocomplete="on" width="500">
     /**
      * UPLOAD IMAGE
      */
-    document.getElementById("uploadImage")
-        .addEventListener("click", function () {
-            var imageInput = document.getElementById("imageInput"),
-                image = imageInput.files[0];
-
-            var uploadResult = chatAgent.uploadImage({
-                image: image,
-                // fileName: "Test Name",
-                xC: 100,
-                yC: 100,
-                hC: 800,
-                wC: 800
-            }, function (result) {
-                console.log(result);
-                if (!result.hasError) {
-                    var image = result.result;
-
-                    chatAgent.getImage({
-                        imageId: image.id,
-                        hashCode: image.hashCode
-                    }, function (result) {
-                        if (!result.hasError) {
-                            document.getElementById("uploadedImage").src = result.result;
-                            document.getElementById("uploadedImageData").innerHTML =
-                                "<pre><br>Uploaded Image Id: " +
-                                image.id + "<br>Uploaded Image Name : " + image.name +
-                                "<br>Uploaded Image HashCode : " +
-                                image.hashCode + "</pre>";
-                        }
-                    });
-                }
-            });
-
-            console.log(uploadResult);
-        });
+    // document.getElementById("uploadImage")
+    //     .addEventListener("click", function () {
+    //         var imageInput = document.getElementById("imageInput"),
+    //             image = imageInput.files[0];
+    //
+    //         var uploadResult = chatAgent.uploadImage({
+    //             image: image,
+    //             // fileName: "Test Name",
+    //             xC: 100,
+    //             yC: 100,
+    //             hC: 800,
+    //             wC: 800
+    //         }, function (result) {
+    //             console.log(result);
+    //             if (!result.hasError) {
+    //                 var image = result.result;
+    //
+    //                 chatAgent.getImage({
+    //                     imageId: image.id,
+    //                     hashCode: image.hashCode
+    //                 }, function (result) {
+    //                     if (!result.hasError) {
+    //                         document.getElementById("uploadedImage").src = result.result;
+    //                         document.getElementById("uploadedImageData").innerHTML =
+    //                             "<pre><br>Uploaded Image Id: " +
+    //                             image.id + "<br>Uploaded Image Name : " + image.name +
+    //                             "<br>Uploaded Image HashCode : " +
+    //                             image.hashCode + "</pre>";
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //
+    //         console.log(uploadResult);
+    //     });
 
     /**
      * UPLOAD FILE
      */
-    document.getElementById("uploadFile")
-        .addEventListener("click", function () {
-            var fileInput = document.getElementById("fileInput"),
-                file = fileInput.files[0];
-
-            var uploadResult = chatAgent.uploadFile({
-                file: file,
-                // fileName: "Test Name"
-            }, function (result) {
-                console.log(result);
-                if (!result.hasError) {
-                    var file = result.result;
-                    document.getElementById("uploadedFile").innerHTML = "<pre><br>Uploaded File Id: " + file
-                            .id +
-                        "<br>Uploaded File Name : " + file.name + "<br>Uploaded File HashCode : " + file
-                            .hashCode +
-                        "</pre>";
-                }
-            });
-
-            console.log(uploadResult);
-        });
+    // document.getElementById("uploadFile")
+    //     .addEventListener("click", function () {
+    //         var fileInput = document.getElementById("fileInput"),
+    //             file = fileInput.files[0];
+    //
+    //         var uploadResult = chatAgent.uploadFile({
+    //             file: file,
+    //             // fileName: "Test Name"
+    //         }, function (result) {
+    //             console.log(result);
+    //             if (!result.hasError) {
+    //                 var file = result.result;
+    //                 document.getElementById("uploadedFile").innerHTML = "<pre><br>Uploaded File Id: " + file
+    //                         .id +
+    //                     "<br>Uploaded File Name : " + file.name + "<br>Uploaded File HashCode : " + file
+    //                         .hashCode +
+    //                     "</pre>";
+    //             }
+    //         });
+    //
+    //         console.log(uploadResult);
+    //     });
 
     /**
      * GET IMAGE
      */
-    document.getElementById("getImage")
-        .addEventListener("click", function () {
-            var imageId = document.getElementById("imageId").value,
-                hashCode = document.getElementById("hashCode").value;
-
-            chatAgent.getImage({
-                imageId: imageId,
-                hashCode: hashCode
-            }, function (result) {
-                console.log(result);
-                if (!result.hasError) {
-                    document.getElementById("getImageResult").src = result.result;
-                }
-            });
-        });
+    // document.getElementById("getImage")
+    //     .addEventListener("click", function () {
+    //         var imageId = document.getElementById("imageId").value,
+    //             hashCode = document.getElementById("hashCode").value;
+    //
+    //         chatAgent.getImage({
+    //             imageId: imageId,
+    //             hashCode: hashCode
+    //         }, function (result) {
+    //             console.log(result);
+    //             if (!result.hasError) {
+    //                 document.getElementById("getImageResult").src = result.result;
+    //             }
+    //         });
+    //     });
 
     /**
      * GET FILE
      */
-    document.getElementById("getFile")
-        .addEventListener("click", function () {
-            var fileId = document.getElementById("fileId").value,
-                hashCode = document.getElementById("fileHashCode").value;
-
-            chatAgent.getFile({
-                fileId: fileId,
-                hashCode: hashCode,
-                downloadable: true
-            }, function (result) {
-                console.log(result);
-                if (!result.hasError) {
-                    document.getElementById("getFileResult").innerHTML = "<a href=\"" + result.result +
-                        "\">" +
-                        result.result + "</a>";
-                }
-            });
-        });
+    // document.getElementById("getFile")
+    //     .addEventListener("click", function () {
+    //         var fileId = document.getElementById("fileId").value,
+    //             hashCode = document.getElementById("fileHashCode").value;
+    //
+    //         chatAgent.getFile({
+    //             fileId: fileId,
+    //             hashCode: hashCode,
+    //             downloadable: true
+    //         }, function (result) {
+    //             console.log(result);
+    //             if (!result.hasError) {
+    //                 document.getElementById("getFileResult").innerHTML = "<a href=\"" + result.result +
+    //                     "\">" +
+    //                     result.result + "</a>";
+    //             }
+    //         });
+    //     });
 
     document.getElementById("getFileFromPodspace")
         .addEventListener("click", function () {
             var hashCode = document.getElementById("fileHash").value;
 
-            chatAgent.getFileFromPodspace({
+            var instantGetFileResult = chatAgent.getFileFromPodspace({
                 hashCode: hashCode
             }, function (result) {
                 if (!result.hasError) {
@@ -2089,14 +2103,16 @@ Token: <input type="text" id="tokenInput" autocomplete="on" width="500">
                         fileOutput.download = 'Darkthrone.svg';
                         document.getElementById('getFileFromPodspaceResult').appendChild(fileOutput);
                     }
-
                 }
             });
+
+            document.querySelector('#fileDownloadCancelUniqueId').value = instantGetFileResult.uniqueId;
+            console.log('instantGetFileResult', instantGetFileResult);
         });
 
     document.getElementById("getImageFromPodspace")
         .addEventListener("click", function () {
-            chatAgent.getImageFromPodspace({
+            var instantGetImageResult = chatAgent.getImageFromPodspace({
                 hashCode: document.getElementById("imageHash").value,
                 size: document.getElementById("imageSize").value,
                 quality: document.getElementById("imageQuality").value,
@@ -2118,7 +2134,27 @@ Token: <input type="text" id="tokenInput" autocomplete="on" width="500">
                     reader.readAsDataURL(result.result);
                 }
             });
+
+            document.querySelector('#imageDownloadCancelUniqueId').value = instantGetImageResult.uniqueId;
+
+            console.log('instantGetImageResult', instantGetImageResult);
         });
+
+    document.getElementById('imageDownloadCancel').addEventListener('click', function (e) {
+        chatAgent.cancelFileDownload({
+            uniqueId: document.getElementById('imageDownloadCancelUniqueId').value
+        }, function() {
+            console.log('Cancel Image Download has been called!');
+        });
+    });
+
+    document.getElementById('fileDownloadCancel').addEventListener('click', function (e) {
+        chatAgent.cancelFileDownload({
+            uniqueId: document.getElementById('fileDownloadCancelUniqueId').value
+        }, function() {
+            console.log('Cancel File Download has been called!');
+        });
+    });
 
     document.getElementById('tokenInputSet').addEventListener('click', function (e) {
         console.log('New Token Has been set: ', document.getElementById('tokenInput').value);

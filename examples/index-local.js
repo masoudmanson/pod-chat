@@ -51,7 +51,7 @@ var params = {
     fullResponseObject: false,
     mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
     // typeCode: "talk",
-    token: "737cab0e45bc47d0bbae2816a50b5880",
+    token: "aa6e5b20ef1943a4b321ea4c1cca2687",
     // token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token ZiZi
     // token: "81025b3fbc1a4f7184c3600a2f874673", //  {**REQUIRED**} SSO Token JiJi
     // token: "3c4d62b6068043aa898cf7426d5cae68", // {**REQUIRED**} SSO Token FiFi
@@ -654,11 +654,11 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
      * @param email
      */
     // var addContactInstantResult = chatAgent.addContacts({
-    //     firstName: "Zabbix",
-    //     lastName: "Bot 1",
-    //     // cellphoneNumber: "09212353868",
+    //     firstName: "Ahmad",
+    //     lastName: "Sajadi",
+    //     cellphoneNumber: "09386099063",
     //     // email: "zabbix_bot_1@fanap.ir",
-    //     username: "zabbix_bot_1"
+    //     // username: "zabbix_bot_1"
     // }, function (result) {
     //     console.log(result);
     //     console.log(result.contacts);
