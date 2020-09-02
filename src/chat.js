@@ -1287,7 +1287,7 @@
                                 }
                                 callback && callback({
                                     hasError: true,
-                                    errorMessage: httpRequestObject[eval('fileUploadUniqueId')].responseText,
+                                    errorMessage: (xhrResponseType === 'text') ? httpRequestObject[eval('fileUploadUniqueId')].responseText : '',
                                     errorCode: httpRequestObject[eval('fileUploadUniqueId')].status,
                                     responseHeaders: httpRequestObject[eval('fileUploadUniqueId')].getAllResponseHeaders()
                                 });
@@ -2264,7 +2264,7 @@
                         break;
 
                     /**
-                     * Type 18    Remove a /participant from Thread
+                     * Type 18    Remove a participant from Thread
                      */
                     case chatMessageVOTypes.REMOVE_PARTICIPANT:
                         if (messagesCallbacks[uniqueId]) {
@@ -4421,9 +4421,6 @@
                         if (Object.keys(whereClause).length === 0) {
                             thenAble = db.threads.where('[owner+time]')
                                 .between([userInfo.id, minIntegerValue], [userInfo.id, maxIntegerValue * 1000])
-                                // .and(function (thread) {
-                                //     return thread.pin;
-                                // })
                                 .reverse();
                         }
                         else {
@@ -6560,7 +6557,8 @@
              * @return {object} File Object
              */
             getFileFromPodspace = function (params, callback) {
-                getFileData = {};
+                var downloadUniqueId = Utility.generateUUID(),
+                    getFileData = {};
                 if (params) {
                     if (params.hashCode && typeof params.hashCode == 'string') {
                         getFileData.hash = params.hashCode;
@@ -6577,6 +6575,7 @@
                     url: SERVICE_ADDRESSES.PODSPACE_FILESERVER_ADDRESS + SERVICES_PATH.PODSPACE_DOWNLOAD_FILE,
                     method: 'GET',
                     responseType: 'blob',
+                    uniqueId: downloadUniqueId,
                     headers: {
                         '_token_': token,
                         '_token_issuer_': 1
@@ -6595,6 +6594,10 @@
                         });
                     }
                 });
+
+                return {
+                    uniqueId: downloadUniqueId
+                };
             },
 
             /**
@@ -6613,11 +6616,12 @@
              * @return {object} File Object
              */
             getImageFromPodspace = function (params, callback) {
-                getImageData = {
-                    size: params.size,
-                    quality: params.quality,
-                    crop: params.crop
-                };
+                var downloadUniqueId = Utility.generateUUID(),
+                    getImageData = {
+                        size: params.size,
+                        quality: params.quality,
+                        crop: params.crop
+                    };
 
                 if (params) {
                     if (params.hashCode && typeof params.hashCode == 'string') {
@@ -6634,6 +6638,7 @@
                         url: SERVICE_ADDRESSES.PODSPACE_FILESERVER_ADDRESS + SERVICES_PATH.PODSPACE_DOWNLOAD_IMAGE,
                         method: 'GET',
                         responseType: 'blob',
+                        uniqueId: downloadUniqueId,
                         headers: {
                             '_token_': token,
                             '_token_issuer_': 1
@@ -6652,6 +6657,10 @@
                             });
                         }
                     });
+
+                    return {
+                        uniqueId: downloadUniqueId
+                    };
                 }
             },
 
@@ -8410,28 +8419,28 @@
             },
 
             objectDeepMerger = function (...arguments) {
-            var target = {};
+                var target = {};
 
-            var merger = function (obj) {
-                for (var prop in obj) {
-                    if (obj.hasOwnProperty(prop)) {
-                        if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
-                            target[prop] = objectDeepMerger(target[prop], obj[prop]);
-                        } else {
-                            target[prop] = obj[prop];
+                var merger = function (obj) {
+                    for (var prop in obj) {
+                        if (obj.hasOwnProperty(prop)) {
+                            if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+                                target[prop] = objectDeepMerger(target[prop], obj[prop]);
+                            } else {
+                                target[prop] = obj[prop];
+                            }
                         }
                     }
+                };
+
+                for (var i = 0; i < arguments.length; i++) {
+                    merger(arguments[i]);
                 }
-            };
 
-            for (var i = 0; i < arguments.length; i++) {
-                merger(arguments[i]);
-            }
+                return target;
+            },
 
-            return target;
-        },
-
-        setRoleToUser = function (params, callback) {
+            setRoleToUser = function (params, callback) {
             var setRoleData = {
                 chatMessageVOType: chatMessageVOTypes.SET_ROLE_TO_USER,
                 typeCode: params.typeCode,
@@ -8653,7 +8662,7 @@
                         ia[i] = byteString.charCodeAt(i);
                     }
 
-                    return callback(new Blob([ia], { type: mimeString }));
+                    return callback(new Blob([ia], {type: mimeString}));
                 }
 
                 img.src = url;
@@ -9574,7 +9583,7 @@
                     sendFileMessage({
                         threadId: params.threadId,
                         fileUniqueId: fileUniqueId,
-                        file: new File([blobImage], "location.png",{type:"image/png", lastModified:new Date()}),
+                        file: new File([blobImage], "location.png", {type: "image/png", lastModified: new Date()}),
                         content: params.caption,
                         messageType: 'POD_SPACE_PICTURE',
                         userGroupHash: params.userGroupHash,
@@ -9738,6 +9747,19 @@
                             uniqueId: uniqueId
                         }
                     }, callback);
+                }
+            }
+            return;
+        };
+
+        this.cancelFileDownload = function (params, callback) {
+            if (params) {
+                if (typeof params.uniqueId == 'string') {
+                    var uniqueId = params.uniqueId;
+                    httpRequestObject[eval('uniqueId')] && httpRequestObject[eval('uniqueId')].abort();
+                    httpRequestObject[eval('uniqueId')] && delete (httpRequestObject[eval('uniqueId')]);
+
+                    callback && callback(uniqueId);
                 }
             }
             return;
@@ -10132,7 +10154,6 @@
                 },
                 callbacks: callbacks
             }, function () {
-                console.log('has been put in chat send q');
                 chatSendQueueHandler();
             });
         };
