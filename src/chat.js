@@ -188,7 +188,7 @@
                 LINK: '12'
             },
 
-
+:qq:q
             systemMessageTypes = {
                 IS_TYPING: '1',
                 RECORD_VOICE: '2',
@@ -1156,6 +1156,24 @@
                                 }
                             }
 
+                            httpRequestObject[eval('fileUploadUniqueId')].onprogress = function (event) {
+                                if (event.lengthComputable && !hasError) {
+                                    console.log('total bytes', event.total);
+                                    console.log('loaded bytes', event.loaded);
+                                    fireEvent('fileDownloadEvents', {
+                                        threadId: threadId,
+                                        uniqueId: fileUniqueId,
+                                        state: 'DOWNLOADING',
+                                        progress: Math.round((event.loaded / event.total) * 100),
+                                        fileInfo: {
+                                            fileName: originalFileName,
+                                            fileSize: fileSize
+                                        },
+                                        fileObject: fileObject
+                                    });
+                                }
+                            };
+
                             httpRequestObject[eval('fileUploadUniqueId')].send();
                         }
 
@@ -1187,6 +1205,8 @@
 
                                     httpRequestObject[eval('fileUploadUniqueId')].upload.onprogress = function (event) {
                                         if (event.lengthComputable && !hasError) {
+                                            console.log('total bytes', event.total);
+                                            console.log('loaded bytes', event.loaded);
                                             fireEvent('fileUploadEvents', {
                                                 threadId: threadId,
                                                 uniqueId: fileUniqueId,
@@ -6578,7 +6598,8 @@
                     uniqueId: downloadUniqueId,
                     headers: {
                         '_token_': token,
-                        '_token_issuer_': 1
+                        '_token_issuer_': 1,
+                        // 'Range': 'bytes=100-200'
                     },
                     data: getFileData
                 }, function (result) {
@@ -6596,7 +6617,14 @@
                 });
 
                 return {
-                    uniqueId: downloadUniqueId
+                    uniqueId: downloadUniqueId,
+                    cancel: function() {
+                        cancelFileDownload({
+                            uniqueId: downloadUniqueId
+                        }, function() {
+                            console.log(`❌ "${downloadUniqueId}" - File download has been canceled!`);
+                        });
+                    }
                 };
             },
 
@@ -6659,7 +6687,14 @@
                     });
 
                     return {
-                        uniqueId: downloadUniqueId
+                        uniqueId: downloadUniqueId,
+                        cancel: function() {
+                            cancelFileDownload({
+                                uniqueId: downloadUniqueId
+                            }, function() {
+                                console.log(`❌ "${downloadUniqueId}" - Image download has been canceled!`);
+                            });
+                        }
                     };
                 }
             },
@@ -8633,6 +8668,19 @@
                 };
             },
 
+            cancelFileDownload = function (params, callback) {
+                if (params) {
+                    if (typeof params.uniqueId == 'string') {
+                        var uniqueId = params.uniqueId;
+                        httpRequestObject[eval('uniqueId')] && httpRequestObject[eval('uniqueId')].abort();
+                        httpRequestObject[eval('uniqueId')] && delete (httpRequestObject[eval('uniqueId')]);
+
+                        callback && callback(uniqueId);
+                    }
+                }
+                return;
+            },
+
             //TODO Change Node Version
             getImageFormUrl = function (url, callback) {
                 var img = new Image();
@@ -9752,18 +9800,7 @@
             return;
         };
 
-        this.cancelFileDownload = function (params, callback) {
-            if (params) {
-                if (typeof params.uniqueId == 'string') {
-                    var uniqueId = params.uniqueId;
-                    httpRequestObject[eval('uniqueId')] && httpRequestObject[eval('uniqueId')].abort();
-                    httpRequestObject[eval('uniqueId')] && delete (httpRequestObject[eval('uniqueId')]);
-
-                    callback && callback(uniqueId);
-                }
-            }
-            return;
-        };
+        this.cancelFileDownload = cancelFileDownload;
 
         this.editMessage = function (params, callback) {
             return sendMessage({

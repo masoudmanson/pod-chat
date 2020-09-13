@@ -51,7 +51,7 @@ var params = {
     fullResponseObject: false,
     mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
     // typeCode: "talk",
-    token: "aa6e5b20ef1943a4b321ea4c1cca2687",
+    token: "100b9646673e4f80ae49b2ad7502b8aa",
     // token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token ZiZi
     // token: "81025b3fbc1a4f7184c3600a2f874673", //  {**REQUIRED**} SSO Token JiJi
     // token: "3c4d62b6068043aa898cf7426d5cae68", // {**REQUIRED**} SSO Token FiFi
@@ -173,7 +173,7 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
      * CREATE THREAD (Creates P2P Chat with a specific user)
      * @param contactId
      */
-    // createThread({id: 'zizi', type: "TO_BE_USER_USERNAME"});
+    // createThread({id: 'p.pahlevani', type: "TO_BE_USER_USERNAME"});
 
     /**
      * GET THREAD PARTICIPANTS
@@ -546,9 +546,9 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
      */
     // deleteMessage(92293, false);
     // deleteMessage(361547, true);
-
+    //
     // chatAgent.deleteMultipleMessages({
-    //     messageIds: [87521, 87520, 87519],
+    //     messageIds: [152820, 152821, 152822],
     //     deleteForAll: true
     // }, function(result) {
     //     console.log("Delete Multiple Message Result", result);
@@ -636,7 +636,7 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
      * @param blockId
      */
     // chatAgent.unblock({
-    //   blockId: 2081,
+    //   blockId: 2162,
     //   // contactId: 2247,
     //   // threadId: 293,
     //   // userId: 221
@@ -653,16 +653,16 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
      * @param cellphoneNumber
      * @param email
      */
-    // var addContactInstantResult = chatAgent.addContacts({
-    //     firstName: "Ahmad",
-    //     lastName: "Sajadi",
-    //     cellphoneNumber: "09386099063",
-    //     // email: "zabbix_bot_1@fanap.ir",
-    //     // username: "zabbix_bot_1"
-    // }, function (result) {
-    //     console.log(result);
-    //     console.log(result.contacts);
-    // });
+    var addContactInstantResult = chatAgent.addContacts({
+        firstName: "Ahmad",
+        lastName: "Sajadi",
+        cellphoneNumber: "09158245345",
+        // email: "zabbix_bot_1@fanap.ir",
+        // username: "zabbix_bot_1"
+    }, function (result) {
+        console.log(result);
+        console.log(result.contacts);
+    });
 
     /**
      * UPDATE CONTACTS
@@ -1345,18 +1345,18 @@ function createThread(invitees, threadType) {
         metadata: {
             time: new Date()
         },
-        message: {
-            uniqueId: "9766b140-24a9-49fb-a02e-6aff708645a6",
-            text: "This is a new Mesage",
-            metadata: {
-                messageTime: new Date()
-            },
-            systemMetadata: {
-                id: new Date().getTime()
-            },
-            type: 1
-            // forwardedMessageIds: [19633, 19632, 19631]
-        }
+        // message: {
+        //     uniqueId: "9766b140-24a9-49fb-a02e-6aff708645a6",
+        //     text: "This is a new Mesage",
+        //     metadata: {
+        //         messageTime: new Date()
+        //     },
+        //     systemMetadata: {
+        //         id: new Date().getTime()
+        //     },
+        //     type: 1
+        //     // forwardedMessageIds: [19633, 19632, 19631]
+        // }
     };
 
     if (Array.isArray(invitees)) {
@@ -1458,7 +1458,7 @@ function getBlockedList() {
         count: 50,
         offset: 0
     };
-    chatAgent.getBlocked(data, function (result) {
+    chatAgent.getBlockedList(data, function (result) {
         if (!result.hasError) {
             console.log(result.result.blockedUsers);
         }
