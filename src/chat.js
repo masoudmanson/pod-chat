@@ -153,6 +153,8 @@
                 DEFINE_BOT_COMMAND: 63,
                 START_BOT: 64,
                 STOP_BOT: 65,
+                BOT_COMMANDS: 68,
+                THREAD_ALL_BOTS: 69,
                 CONTACT_SYNCED: 90,
                 LOGOUT: 100,
                 ERROR: 999
@@ -172,7 +174,6 @@
                 CHANNEL: 8,
                 NOTIFICATION_CHANNEL: 16
             },
-
             chatMessageTypes = {
                 TEXT: '1',
                 VOICE: '2',
@@ -187,8 +188,6 @@
                 POD_SPACE_FILE: '11',
                 LINK: '12'
             },
-
-
             systemMessageTypes = {
                 IS_TYPING: '1',
                 RECORD_VOICE: '2',
@@ -3128,6 +3127,24 @@
                      * Type 65    Stop Bot
                      */
                     case chatMessageVOTypes.STOP_BOT:
+                        if (messagesCallbacks[uniqueId]) {
+                            messagesCallbacks[uniqueId](Utility.createReturnData(false, '', 0, messageContent, contentCount));
+                        }
+                        break;
+
+                    /**
+                     * Type 68    Get Bot Commands List
+                     */
+                    case chatMessageVOTypes.BOT_COMMANDS:
+                        if (messagesCallbacks[uniqueId]) {
+                            messagesCallbacks[uniqueId](Utility.createReturnData(false, '', 0, messageContent, contentCount));
+                        }
+                        break;
+
+                    /**
+                     * Type 69    Get Thread All Bots
+                     */
+                    case chatMessageVOTypes.THREAD_ALL_BOTS:
                         if (messagesCallbacks[uniqueId]) {
                             messagesCallbacks[uniqueId](Utility.createReturnData(false, '', 0, messageContent, contentCount));
                         }
@@ -11481,6 +11498,78 @@
             }
 
             return sendMessage(stopBotData, {
+                onResult: function (result) {
+                    callback && callback(result);
+                }
+            });
+        };
+
+        this.getBotCommandsList = function (params, callback) {
+            var getBotCommandsListData = {
+                chatMessageVOType: chatMessageVOTypes.BOT_COMMANDS,
+                typeCode: params.typeCode,
+                content: {},
+                pushMsgType: 4,
+                token: token
+            };
+
+            if (params) {
+                if (typeof params.botName !== 'string' || params.botName.length == 0) {
+                    fireEvent('error', {
+                        code: 999,
+                        message: 'You need to insert a botName!'
+                    });
+                    return;
+                }
+
+                getBotCommandsListData.content = JSON.stringify({
+                    botName: params.botName.trim()
+                });
+
+            } else {
+                fireEvent('error', {
+                    code: 999,
+                    message: 'No params have been sent to get bot commands'
+                });
+                return;
+            }
+            console.log('getBotCommandsListData', getBotCommandsListData);
+            return sendMessage(getBotCommandsListData, {
+                onResult: function (result) {
+                    callback && callback(result);
+                }
+            });
+        };
+
+        this.getThreadAllBots = function (params, callback) {
+            var getThreadBotsData = {
+                chatMessageVOType: chatMessageVOTypes.THREAD_ALL_BOTS,
+                typeCode: params.typeCode,
+                content: {},
+                pushMsgType: 4,
+                token: token
+            };
+
+            if (params) {
+                if (typeof +params.threadId !== 'number' || params.threadId < 0) {
+                    fireEvent('error', {
+                        code: 999,
+                        message: 'Enter a valid Thread Id to get all Bots List!'
+                    });
+                    return;
+                }
+
+                getThreadBotsData.subjectId = +params.threadId;
+
+            } else {
+                fireEvent('error', {
+                    code: 999,
+                    message: 'No params have been sent to get thread\' bots list!'
+                });
+                return;
+            }
+
+            return sendMessage(getThreadBotsData, {
                 onResult: function (result) {
                     callback && callback(result);
                 }

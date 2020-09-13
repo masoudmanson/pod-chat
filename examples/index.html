@@ -53,12 +53,12 @@
             /**
              * Sand Box
              */
-            socketAddress: "wss://chat-sandbox.pod.ir/ws",
-            ssoHost: "https://accounts.pod.ir",
-            platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform",
-            fileServer: 'https://core.pod.ir',
-            podSpaceFileServer: 'https://podspace.pod.ir',
-            serverName: "chat-server",
+            // socketAddress: "wss://chat-sandbox.pod.ir/ws",
+            // ssoHost: "https://accounts.pod.ir",
+            // platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform",
+            // fileServer: 'https://core.pod.ir',
+            // podSpaceFileServer: 'https://podspace.pod.ir',
+            // serverName: "chat-server",
 
             /**
              * PodSpace test
@@ -73,20 +73,20 @@
             /**
              * Integration
              */
-            // socketAddress: "ws://172.16.110.235:8003/ws",
-            // ssoHost: "http://172.16.110.76",
-            // platformHost: "http://172.16.110.235:8003/srv/bptest-core",
-            // fileServer: 'https://core.pod.ir',
-            // podSpaceFileServer: 'http://172.16.110.61:8780/podspace',
-            // serverName: "chatlocal",
+            socketAddress: "ws://172.16.110.235:8003/ws",
+            ssoHost: "http://172.16.110.76",
+            platformHost: "http://172.16.110.235:8003/srv/bptest-core",
+            fileServer: 'https://core.pod.ir',
+            podSpaceFileServer: 'http://172.16.110.61:8780/podspace',
+            serverName: "chatlocal",
 
             grantDeviceIdFromSSO: false,
             enableCache: false, // Enable Client side caching
             fullResponseObject: false,
             mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
             // typeCode: "talk",
-            token: "c3843355569540c188b1a12d92fadf69",
-            // token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token ZiZi
+            // token: "3fd2b986c4894aba800d4e4dddce56f4",
+            token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token Zizi
             // token: "81025b3fbc1a4f7184c3600a2f874673", //  {**REQUIRED**} SSO Token JiJi
             // token: "3c4d62b6068043aa898cf7426d5cae68", // {**REQUIRED**} SSO Token FiFi
             // token: "49c1a43116764ae2ab965a6c40bb46d3", // {**REQUIRED**} SSO Token Masoud
@@ -188,7 +188,7 @@
              * @param threadId
              * @param contacts {Array}  CONTACT ID
              */
-            // addParticipants(8088, 'contact', [7741]);
+            // addParticipants(60117, 'contact', [638575]);
             // addParticipants(8088, 'username', ['poddraw']);
             // addParticipants(7548, 'coreuserid', [919]); //15508?
 
@@ -216,9 +216,10 @@
              * @param query
              */
             // getHistory({
-            //     count: 50,
-            //     offset: 0,
-            //     threadId: 47596,
+            //     // count: 50,
+            //     // offset: 0,
+            //     threadId: 8543,
+            //     messageId: 609644,
             //     // firstMessageId: 17035,
             //     // order: "ASC",
             //     // lastMessageId: 17052,
@@ -231,7 +232,7 @@
             //     //   }]
             //     // },
             //     // query: "query",
-            //     messageType: 'voice'
+            //     // messageType: 'voice'
             // });
 
             /**
@@ -294,9 +295,9 @@
              */
             // getContacts({
             //     // contactId: "7741",
-            //     // cellphoneNumber: "912",
+            //     // cellphoneNumber: "9387181694",
             //     // email: "gmail.com",
-            //     // query: "بهنام",
+            //     query: "paniz",
             //     // uniqueId: "672803e8-455f-4201-b0d6-64216b19679a"
             // });
 
@@ -646,6 +647,21 @@
             // }, (result) => {
             //     console.log('Stop Bot result', result);
             // });
+
+            /*
+             * GEt All Bot Commands
+             */
+            chatAgent.getBotCommandsList({
+                botName: 'spanishBOT'
+            });
+
+            /*
+             * Get Thread Bot List
+             */
+            // chatAgent.getThreadAllBots({
+            //     threadId:
+            // });
+
         });
 
         /**
@@ -836,7 +852,7 @@
                 case 'contact':
                     chatAgent.addParticipants({
                         threadId: threadId,
-                        contacts: participants
+                        contactIds: participants
                     }, function (result) {
                         console.log(result);
                     });
@@ -2141,11 +2157,16 @@ Token: <input type="text" id="tokenInput" autocomplete="on" width="500">
         });
 
     document.getElementById('imageDownloadCancel').addEventListener('click', function (e) {
+
+
         chatAgent.cancelFileDownload({
-            uniqueId: document.getElementById('imageDownloadCancelUniqueId').value
+            uniqueId: downloadUniqueId
         }, function() {
             console.log('Cancel Image Download has been called!');
         });
+
+
+
     });
 
     document.getElementById('fileDownloadCancel').addEventListener('click', function (e) {
