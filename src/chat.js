@@ -40,8 +40,7 @@
                 Dexie.dependencies.indexedDB = indexedDB;
                 Dexie.dependencies.IDBKeyRange = IDBKeyRange;
             }
-        }
-        else {
+        } else {
             Async = window.POD.Async,
                 ChatUtility = window.POD.ChatUtility,
                 FormData = window.FormData,
@@ -153,6 +152,8 @@
                 DEFINE_BOT_COMMAND: 63,
                 START_BOT: 64,
                 STOP_BOT: 65,
+                BOT_COMMANDS: 68,
+                THREAD_ALL_BOTS: 69,
                 CONTACT_SYNCED: 90,
                 LOGOUT: 100,
                 ERROR: 999
@@ -172,7 +173,6 @@
                 CHANNEL: 8,
                 NOTIFICATION_CHANNEL: 16
             },
-
             chatMessageTypes = {
                 TEXT: '1',
                 VOICE: '2',
@@ -187,8 +187,6 @@
                 POD_SPACE_FILE: '11',
                 LINK: '12'
             },
-
-:qq:q
             systemMessageTypes = {
                 IS_TYPING: '1',
                 RECORD_VOICE: '2',
@@ -347,8 +345,7 @@
 
                             initAsync();
                         });
-                    }
-                    else {
+                    } else {
                         initAsync();
                     }
                 });
@@ -432,8 +429,7 @@
                                                             chatState = true;
                                                             fireEvent('chatReady');
                                                             chatSendQueueHandler();
-                                                        }
-                                                        else {
+                                                        } else {
                                                             if (result.message != '') {
                                                                 try {
                                                                     var response = JSON.parse(result.message);
@@ -443,15 +439,13 @@
                                                                             keySize: 256
                                                                         });
                                                                     }
-                                                                }
-                                                                catch (e) {
+                                                                } catch (e) {
                                                                     console.log(e);
                                                                 }
                                                             }
                                                         }
                                                     });
-                                                }
-                                                else {
+                                                } else {
                                                     generateEncryptionKey({
                                                         keyAlgorithm: 'AES',
                                                         keySize: 256
@@ -469,24 +463,21 @@
                                                     error: error
                                                 });
                                             });
-                                    }
-                                    else {
+                                    } else {
                                         fireEvent('error', {
                                             code: 6601,
                                             message: CHAT_ERRORS[6601],
                                             error: null
                                         });
                                     }
-                                }
-                                else {
+                                } else {
                                     chatState = true;
                                     fireEvent('chatReady');
                                     chatSendQueueHandler();
                                 }
                             }
                         });
-                    }
-                    else if (userInfo.id > 0) {
+                    } else if (userInfo.id > 0) {
                         chatState = true;
                         fireEvent('chatReady');
                         chatSendQueueHandler();
@@ -587,20 +578,17 @@
                                     message: CHAT_ERRORS[6000],
                                     error: null
                                 });
-                            }
-                            else {
+                            } else {
                                 callback(deviceId);
                             }
-                        }
-                        else {
+                        } else {
                             fireEvent('error', {
                                 code: 6001,
                                 message: CHAT_ERRORS[6001],
                                 error: null
                             });
                         }
-                    }
-                    else {
+                    } else {
                         fireEvent('error', {
                             code: result.errorCode,
                             message: result.errorMessage,
@@ -655,8 +643,7 @@
                     if (!result.hasError) {
                         try {
                             var response = JSON.parse(result.result.responseText);
-                        }
-                        catch (e) {
+                        } catch (e) {
                             console.log(e);
                         }
 
@@ -684,8 +671,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -693,8 +679,7 @@
                                 });
                             }
                         }
-                    }
-                    else {
+                    } else {
                         fireEvent('error', {
                             code: result.error,
                             message: result.error_description,
@@ -736,8 +721,7 @@
                             if (!result.hasError) {
                                 try {
                                     var response = JSON.parse(result.result.responseText);
-                                }
-                                catch (e) {
+                                } catch (e) {
                                     console.log(e);
                                 }
 
@@ -745,8 +729,7 @@
                                     hasError: false,
                                     secretKey: response.secretKey
                                 });
-                            }
-                            else {
+                            } else {
                                 callback && callback({
                                     hasError: true,
                                     code: result.errorCode,
@@ -818,8 +801,7 @@
                                     fileUniqueId = data.uniqueId;
                                     fileObject = data[i];
                                     postFormData[i] = FS.createReadStream(data[i]);
-                                }
-                                else {
+                                } else {
                                     postFormData[i] = data[i];
                                 }
                             }
@@ -855,8 +837,7 @@
                                                 errorMessage: body.message,
                                                 errorEvent: body
                                             });
-                                        }
-                                        else {
+                                        } else {
                                             hasError = false;
                                             fireEvent('fileUploadEvents', {
                                                 threadId: threadId,
@@ -878,8 +859,7 @@
                                                 }
                                             });
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         hasError = true;
                                         fireEvent('fileUploadEvents', {
                                             threadId: threadId,
@@ -901,8 +881,7 @@
                                             errorMessage: body
                                         });
                                     }
-                                }
-                                else {
+                                } else {
                                     hasError = true;
                                     fireEvent('fileUploadEvents', {
                                         threadId: threadId,
@@ -969,15 +948,13 @@
                                             },
                                             fileObject: params.file
                                         });
-                                    }
-                                    else {
+                                    } else {
                                         clearInterval(q);
                                     }
                                 }
                             }, 10);
 
-                        }
-                        else {
+                        } else {
                             headers['Content-Type'] = 'application/x-www-form-urlencoded';
                             data = QueryString.stringify(data);
                             Request.post({
@@ -994,16 +971,14 @@
                                                 responseText: body
                                             }
                                         });
-                                    }
-                                    else {
+                                    } else {
                                         callback && callback({
                                             hasError: true,
                                             errorCode: response.statusCode,
                                             errorMessage: body
                                         });
                                     }
-                                }
-                                else {
+                                } else {
                                     callback && callback({
                                         hasError: true,
                                         errorCode: 6200,
@@ -1013,13 +988,11 @@
                                 }
                             });
                         }
-                    }
-                    else if (params.method == 'GET') {
+                    } else if (params.method == 'GET') {
                         if (typeof data === 'object') {
                             data = QueryString.stringify(data);
                             url += '?' + data;
-                        }
-                        else if (typeof data === 'string') {
+                        } else if (typeof data === 'string') {
                             url += '?' + data;
                         }
                         Request.get({
@@ -1035,16 +1008,14 @@
                                             responseText: body
                                         }
                                     });
-                                }
-                                else {
+                                } else {
                                     callback && callback({
                                         hasError: true,
                                         errorCode: response.statusCode,
                                         errorMessage: body
                                     });
                                 }
-                            }
-                            else {
+                            } else {
                                 callback && callback({
                                     hasError: true,
                                     errorCode: 6200,
@@ -1054,8 +1025,7 @@
                             }
                         });
                     }
-                }
-                else {
+                } else {
                     var hasFile = false;
 
                     httpRequestObject[eval('fileUploadUniqueId')] = new XMLHttpRequest(),
@@ -1143,8 +1113,7 @@
                                         }
                                     }
                                 }
-                            }
-                            else if (typeof data === 'string' && data !== null) {
+                            } else if (typeof data === 'string' && data !== null) {
                                 url += '?' + data;
                             }
 
@@ -1158,8 +1127,8 @@
 
                             httpRequestObject[eval('fileUploadUniqueId')].onprogress = function (event) {
                                 if (event.lengthComputable && !hasError) {
-                                    console.log('total bytes', event.total);
-                                    console.log('loaded bytes', event.loaded);
+                                    // console.log('total bytes', event.total);
+                                    // console.log('loaded bytes', event.loaded);
                                     fireEvent('fileDownloadEvents', {
                                         threadId: threadId,
                                         uniqueId: fileUniqueId,
@@ -1205,8 +1174,8 @@
 
                                     httpRequestObject[eval('fileUploadUniqueId')].upload.onprogress = function (event) {
                                         if (event.lengthComputable && !hasError) {
-                                            console.log('total bytes', event.total);
-                                            console.log('loaded bytes', event.loaded);
+                                            // console.log('total bytes', event.total);
+                                            // console.log('loaded bytes', event.loaded);
                                             fireEvent('fileUploadEvents', {
                                                 threadId: threadId,
                                                 uniqueId: fileUniqueId,
@@ -1222,8 +1191,7 @@
                                     };
 
                                     httpRequestObject[eval('fileUploadUniqueId')].send(formData);
-                                }
-                                else {
+                                } else {
                                     httpRequestObject[eval('fileUploadUniqueId')].setRequestHeader(
                                         'Content-Type',
                                         'application/x-www-form-urlencoded');
@@ -1244,13 +1212,11 @@
 
                                     httpRequestObject[eval('fileUploadUniqueId')].send(sendData);
                                 }
-                            }
-                            else {
+                            } else {
                                 httpRequestObject[eval('fileUploadUniqueId')].send(data);
                             }
                         }
-                    }
-                    catch (e) {
+                    } catch (e) {
                         callback && callback({
                             hasError: true,
                             cache: false,
@@ -1286,8 +1252,7 @@
                                         responseHeaders: httpRequestObject[eval('fileUploadUniqueId')].getAllResponseHeaders()
                                     }
                                 });
-                            }
-                            else {
+                            } else {
                                 if (hasFile) {
                                     hasError = true;
                                     fireEvent('fileUploadEvents', {
@@ -1344,8 +1309,7 @@
                         message: CHAT_ERRORS[6101],
                         error: null
                     });
-                }
-                else {
+                } else {
                     getUserInfoTimeout && clearTimeout(getUserInfoTimeout);
 
                     getUserInfoTimeout = setTimeout(function () {
@@ -1395,8 +1359,7 @@
                                                                 error: error
                                                             });
                                                         });
-                                                }
-                                                else {
+                                                } else {
                                                     db.users.put(currentUser)
                                                         .catch(function (error) {
                                                             fireEvent('error', {
@@ -1407,8 +1370,7 @@
                                                         });
                                                 }
                                             });
-                                    }
-                                    else {
+                                    } else {
                                         fireEvent('error', {
                                             code: 6601,
                                             message: CHAT_ERRORS[6601],
@@ -1490,8 +1452,7 @@
 
                 if (params.typeCode) {
                     messageVO.typeCode = params.typeCode;
-                }
-                else if (generalTypeCode) {
+                } else if (generalTypeCode) {
                     messageVO.typeCode = generalTypeCode;
                 }
 
@@ -1507,8 +1468,7 @@
                 if (params.content) {
                     if (typeof params.content == 'object') {
                         messageVO.content = JSON.stringify(params.content);
-                    }
-                    else {
+                    } else {
                         messageVO.content = params.content;
                     }
                 }
@@ -1529,15 +1489,13 @@
 
                 if (typeof params.uniqueId != 'undefined') {
                     uniqueId = params.uniqueId;
-                }
-                else if (params.chatMessageVOType !== chatMessageVOTypes.PING) {
+                } else if (params.chatMessageVOType !== chatMessageVOTypes.PING) {
                     uniqueId = Utility.generateUUID();
                 }
 
                 if (Array.isArray(uniqueId)) {
                     messageVO.uniqueId = JSON.stringify(uniqueId);
-                }
-                else {
+                } else {
                     messageVO.uniqueId = uniqueId;
                 }
 
@@ -1567,12 +1525,10 @@
                             threadCallbacks[threadId][uniqueId].onDeliver = false;
                         }
 
-                    }
-                    else if (callbacks.onResult) {
+                    } else if (callbacks.onResult) {
                         messagesCallbacks[uniqueId] = callbacks.onResult;
                     }
-                }
-                else if (typeof callbacks == 'function') {
+                } else if (typeof callbacks == 'function') {
                     messagesCallbacks[uniqueId] = callbacks;
                 }
 
@@ -1609,8 +1565,7 @@
                     if (res.hasError && callbacks) {
                         if (typeof callbacks == 'function') {
                             callbacks(res);
-                        }
-                        else if (typeof callbacks == 'object' && typeof callbacks.onResult == 'function') {
+                        } else if (typeof callbacks == 'object' && typeof callbacks.onResult == 'function') {
                             callbacks.onResult(res);
                         }
 
@@ -1715,8 +1670,7 @@
                         chatMessageVOType: chatMessageVOTypes.PING,
                         pushMsgType: 5
                     });
-                }
-                else {
+                } else {
                     sendPingTimeout && clearTimeout(sendPingTimeout);
                 }
             },
@@ -1864,8 +1818,7 @@
                                     });
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('messageEvents', {
                                 type: 'MESSAGE_DELIVERY',
                                 result: {
@@ -1901,8 +1854,7 @@
                                     });
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('messageEvents', {
                                 type: 'MESSAGE_SEEN',
                                 result: {
@@ -2011,8 +1963,7 @@
                                             });
                                         });
                                 }
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -2042,8 +1993,7 @@
                                                 thread: threads[0]
                                             }
                                         });
-                                    }
-                                    else {
+                                    } else {
                                         fireEvent('threadEvents', {
                                             type: 'THREAD_LEAVE_PARTICIPANT',
                                             result: {
@@ -2054,8 +2004,7 @@
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_LEAVE_PARTICIPANT',
                                 result: {
@@ -2107,8 +2056,7 @@
                                         tempData.salt = salt;
 
                                         cacheData.push(tempData);
-                                    }
-                                    catch (error) {
+                                    } catch (error) {
                                         fireEvent('error', {
                                             code: error.code,
                                             message: error.message,
@@ -2125,8 +2073,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -2157,8 +2104,7 @@
                                     });
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_ADD_PARTICIPANTS',
                                 result: {
@@ -2271,8 +2217,7 @@
                                         });
                                     });
 
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -2311,8 +2256,7 @@
                                             });
                                         });
                                 }
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -2343,8 +2287,7 @@
                                     });
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_REMOVE_PARTICIPANTS',
                                 result: {
@@ -2383,8 +2326,7 @@
                                     }
                                 });
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_MUTE',
                                 result: {
@@ -2417,8 +2359,7 @@
                                     }
                                 });
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_UNMUTE',
                                 result: {
@@ -2459,8 +2400,7 @@
                                             tempData.time = thread.time;
                                             tempData.data = Utility.crypt(JSON.stringify(unsetNotSeenDuration(thread)), cacheSecret, salt);
                                             tempData.salt = salt;
-                                        }
-                                        catch (error) {
+                                        } catch (error) {
                                             fireEvent('error', {
                                                 code: error.code,
                                                 message: error.message,
@@ -2476,8 +2416,7 @@
                                                     error: error
                                                 });
                                             });
-                                    }
-                                    else {
+                                    } else {
                                         fireEvent('error', {
                                             code: 6601,
                                             message: CHAT_ERRORS[6601],
@@ -2493,8 +2432,7 @@
                                     }
                                 });
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_INFO_UPDATED',
                                 result: {
@@ -2588,8 +2526,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -2626,8 +2563,7 @@
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('messageEvents', {
                                 type: 'MESSAGE_DELETE',
                                 result: {
@@ -2742,8 +2678,7 @@
                                     });
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_UNREAD_COUNT_UPDATED',
                                 result: {
@@ -2851,8 +2786,7 @@
                                     });
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_ADD_ADMIN',
                                 result: {
@@ -2904,8 +2838,7 @@
                                     });
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_REMOVE_ADMIN',
                                 result: {
@@ -2977,8 +2910,7 @@
                                     }
                                 });
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_PIN',
                                 result: {
@@ -3010,8 +2942,7 @@
                                     }
                                 });
                             });
-                        }
-                        else {
+                        } else {
                             fireEvent('threadEvents', {
                                 type: 'THREAD_UNPIN',
                                 result: {
@@ -3148,6 +3079,24 @@
                      * Type 65    Stop Bot
                      */
                     case chatMessageVOTypes.STOP_BOT:
+                        if (messagesCallbacks[uniqueId]) {
+                            messagesCallbacks[uniqueId](Utility.createReturnData(false, '', 0, messageContent, contentCount));
+                        }
+                        break;
+
+                    /**
+                     * Type 68    Get Bot Commands List
+                     */
+                    case chatMessageVOTypes.BOT_COMMANDS:
+                        if (messagesCallbacks[uniqueId]) {
+                            messagesCallbacks[uniqueId](Utility.createReturnData(false, '', 0, messageContent, contentCount));
+                        }
+                        break;
+
+                    /**
+                     * Type 69    Get Thread All Bots
+                     */
+                    case chatMessageVOTypes.THREAD_ALL_BOTS:
                         if (messagesCallbacks[uniqueId]) {
                             messagesCallbacks[uniqueId](Utility.createReturnData(false, '', 0, messageContent, contentCount));
                         }
@@ -3323,8 +3272,7 @@
                             tempData.salt = salt;
                             tempData.sendStatus = 'sent';
 
-                        }
-                        catch (error) {
+                        } catch (error) {
                             fireEvent('error', {
                                 code: error.code,
                                 message: error.message,
@@ -3340,8 +3288,7 @@
                                     error: error
                                 });
                             });
-                    }
-                    else {
+                    } else {
                         fireEvent('error', {
                             code: 6601,
                             message: CHAT_ERRORS[6601],
@@ -3379,8 +3326,7 @@
                             }
                         });
                     });
-                }
-                else {
+                } else {
                     fireEvent('threadEvents', {
                         type: 'THREAD_LAST_ACTIVITY_TIME',
                         result: {
@@ -3414,8 +3360,7 @@
                                 error: error
                             });
                         });
-                }
-                else {
+                } else {
                     for (var i = 0; i < chatSendQueue.length; i++) {
                         if (chatSendQueue[i].uniqueId == message.uniqueId) {
                             chatSendQueue.splice(i, 1);
@@ -3466,16 +3411,14 @@
                                         error: error
                                     });
                                 });
-                        }
-                        catch (error) {
+                        } catch (error) {
                             fireEvent('error', {
                                 code: error.code,
                                 message: error.message,
                                 error: error
                             });
                         }
-                    }
-                    else {
+                    } else {
                         fireEvent('error', {
                             code: 6601,
                             message: CHAT_ERRORS[6601],
@@ -3509,8 +3452,7 @@
                             }
                         }
                     });
-                }
-                else {
+                } else {
                     fireEvent('messageEvents', {
                         type: 'MESSAGE_EDIT',
                         result: {
@@ -3572,8 +3514,7 @@
                                 tempData.time = threadData.time;
                                 tempData.data = Utility.crypt(JSON.stringify(unsetNotSeenDuration(threadData)), cacheSecret, salt);
                                 tempData.salt = salt;
-                            }
-                            catch (error) {
+                            } catch (error) {
                                 fireEvent('error', {
                                     code: error.code,
                                     message: error.message,
@@ -3589,8 +3530,7 @@
                                         error: error
                                     });
                                 });
-                        }
-                        else {
+                        } else {
                             fireEvent('error', {
                                 code: 6601,
                                 message: CHAT_ERRORS[6601],
@@ -4154,8 +4094,7 @@
                 if (fromCache || pushMessageVO.time.toString().length > 14) {
                     var time = pushMessageVO.time,
                         timeMiliSeconds = parseInt(pushMessageVO.time / 1000000);
-                }
-                else {
+                } else {
                     var time = (pushMessageVO.timeNanos)
                         ? (parseInt(parseInt(pushMessageVO.time) / 1000) * 1000000000) + parseInt(pushMessageVO.timeNanos)
                         : (parseInt(pushMessageVO.time)),
@@ -4442,8 +4381,7 @@
                             thenAble = db.threads.where('[owner+time]')
                                 .between([userInfo.id, minIntegerValue], [userInfo.id, maxIntegerValue * 1000])
                                 .reverse();
-                        }
-                        else {
+                        } else {
                             if (whereClause.hasOwnProperty('threadIds')) {
                                 thenAble = db.threads.where('id')
                                     .anyOf(whereClause.threadIds)
@@ -4487,8 +4425,7 @@
                                                     salt = threads[i].salt;
 
                                                 cacheData.push(createThread(JSON.parse(chatDecrypt(threads[i].data, cacheSecret, threads[i].salt)), false));
-                                            }
-                                            catch (error) {
+                                            } catch (error) {
                                                 fireEvent('error', {
                                                     code: error.code,
                                                     message: error.message,
@@ -4524,8 +4461,7 @@
                                     error: error
                                 });
                             });
-                    }
-                    else {
+                    } else {
                         fireEvent('error', {
                             code: 6601,
                             message: CHAT_ERRORS[6601],
@@ -4673,8 +4609,7 @@
 
                                             cacheData.push(tempData);
                                             pinnedThreadsOrderTime--;
-                                        }
-                                        catch (error) {
+                                        } catch (error) {
                                             fireEvent('error', {
                                                 code: error.code,
                                                 message: error.message,
@@ -4691,8 +4626,7 @@
                                                 error: error
                                             });
                                         });
-                                }
-                                else {
+                                } else {
                                     fireEvent('error', {
                                         code: 6601,
                                         message: CHAT_ERRORS[6601],
@@ -4756,8 +4690,7 @@
                                                 error: error
                                             });
                                         });
-                                }
-                                else {
+                                } else {
                                     fireEvent('error', {
                                         code: 6601,
                                         message: CHAT_ERRORS[6601],
@@ -4887,16 +4820,14 @@
                             }
 
                             failedQueueMessages = waitQueueMessages;
-                        }
-                        else {
+                        } else {
                             failedQueueMessages = [];
                         }
 
                         if (dynamicHistoryCount) {
                             var tempCount = count - (sendingQueueMessages.length + failedQueueMessages.length + uploadingQueueMessages.length);
                             sendMessageParams.content.count = (tempCount > 0) ? tempCount : 0;
-                        }
-                        else {
+                        } else {
                             sendMessageParams.content.count = count;
                         }
 
@@ -4916,8 +4847,7 @@
                                 .substring(0, 13));
                             sendMessageParams.content.fromTimeNanos = whereClause.fromTimeNanos = parseInt(params.fromTimeFull.toString()
                                 .substring(10, 19));
-                        }
-                        else {
+                        } else {
                             if (parseInt(params.fromTime) > 0 && parseInt(params.fromTime) < 9999999999999) {
                                 sendMessageParams.content.fromTime = whereClause.fromTime = parseInt(params.fromTime);
                             }
@@ -4932,8 +4862,7 @@
                                 .substring(0, 13));
                             sendMessageParams.content.toTimeNanos = whereClause.toTimeNanos = parseInt(params.toTimeFull.toString()
                                 .substring(10, 19));
-                        }
-                        else {
+                        } else {
                             if (parseInt(params.toTime) > 0 && parseInt(params.toTime) < 9999999999999) {
                                 sendMessageParams.content.toTime = whereClause.toTime = parseInt(params.toTime);
                             }
@@ -4989,8 +4918,7 @@
                                             return message.owner == userInfo.id;
                                         })
                                         .reverse();
-                                }
-                                else {
+                                } else {
                                     collection = table.where('[threadId+owner+time]')
                                         .between([parseInt(params.threadId), parseInt(userInfo.id), minIntegerValue],
                                             [parseInt(params.threadId), parseInt(userInfo.id), maxIntegerValue * 1000])
@@ -5116,8 +5044,7 @@
                                                                         tempMessage.metadata,
                                                                         tempMessage.systemMetadata]))
                                                                 };
-                                                            }
-                                                            catch (error) {
+                                                            } catch (error) {
                                                                 fireEvent('error', {
                                                                     code: error.code,
                                                                     message: error.message,
@@ -5203,8 +5130,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -5691,8 +5617,7 @@
 
                                                     cacheData.push(tempData);
                                                     resultMessagesId.push(history[i].id);
-                                                }
-                                                catch (error) {
+                                                } catch (error) {
                                                     fireEvent('error', {
                                                         code: error.code,
                                                         message: error.message,
@@ -5836,8 +5761,7 @@
                                                         });
                                                     });
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             fireEvent('error', {
                                                 code: 6601,
                                                 message: CHAT_ERRORS[6601],
@@ -5931,8 +5855,7 @@
                                                     //     }
                                                     // });
                                                 }
-                                            }
-                                            else {
+                                            } else {
                                                 /**
                                                  * This Message has not found on cache but it has
                                                  * came from server, so we emit it as a new message
@@ -5965,8 +5888,7 @@
                                                 result: batchNewMessage
                                             });
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         callback && callback(returnData);
                                         callback = undefined;
                                     }
@@ -5974,8 +5896,7 @@
                             }
                         });
                     });
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: 999,
                         message: 'Thread ID is required for Getting history!'
@@ -6004,7 +5925,6 @@
                 var updateThreadInfoData = {
                         chatMessageVOType: chatMessageVOTypes.UPDATE_THREAD_INFO,
                         typeCode: params.typeCode,
-                        subjectId: params.threadId,
                         content: {},
                         pushMsgType: 4,
                         token: token
@@ -6018,8 +5938,8 @@
                 if (params) {
                     if (parseInt(params.threadId) > 0) {
                         threadId = parseInt(params.threadId);
-                    }
-                    else {
+                        updateThreadInfoData.subjectId = threadId;
+                    } else {
                         fireEvent('error', {
                             code: 999,
                             message: 'Thread ID is required for Updating thread info!'
@@ -6036,57 +5956,103 @@
 
                     if (typeof params.metadata == 'object') {
                         threadInfoContent.metadata = params.metadata;
-                    }
-                    else if (typeof params.metadata == 'string') {
+                    } else if (typeof params.metadata == 'string') {
                         try {
                             threadInfoContent.metadata = JSON.parse(params.metadata);
                         } catch (e) {
                             threadInfoContent.metadata = {};
                         }
+                    } else {
+                        threadInfoContent.metadata = {};
                     }
 
-                    return chatUploadHandler({
-                        threadId: threadId,
-                        file: params.image,
-                        fileUniqueId: fileUniqueId
-                    }, function (uploadHandlerResult, uploadHandlerMetadata, fileType, fileExtension) {
-                        fileUploadParams = Object.assign(fileUploadParams, uploadHandlerResult);
-                        threadInfoContent.metadata = JSON.stringify(Object.assign(threadInfoContent.metadata, uploadHandlerMetadata));
-                        putInChatUploadQueue({
-                            message: {
-                                chatMessageVOType: chatMessageVOTypes.UPDATE_THREAD_INFO,
-                                typeCode: params.typeCode,
-                                subjectId: threadId,
-                                content: threadInfoContent,
-                                metadata: threadInfoContent.metadata,
-                                systemMetadata: JSON.stringify(params.systemMetadata),
-                                uniqueId: fileUniqueId,
-                                pushMsgType: 4,
-                                token: token
-                            },
-                            callbacks: callback
-                        }, function () {
-                            if (imageMimeTypes.indexOf(fileType) >= 0 || imageExtentions.indexOf(fileExtension) >= 0) {
-                                uploadImageToPodspace(fileUploadParams, function (result) {
-                                    if (!result.hasError) {
-                                        metadata['fileHash'] = result.result.hashCode;
-                                        transferFromUploadQToSendQ(parseInt(params.threadId), fileUniqueId, JSON.stringify(metadata), function () {
-                                            chatSendQueueHandler();
-                                        });
-                                    }
-                                    else {
-                                        deleteFromChatUploadQueue({message: {uniqueId: fileUniqueId}});
-                                    }
-                                });
-                            }
-                            else {
-                                fireEvent('error', {
-                                    code: 999,
-                                    message: 'Thread picture can be a image type only!'
-                                });
+                    updateThreadInfoData.content = threadInfoContent;
+
+                    if (typeof params.image == 'object' && params.image.size > 0) {
+                        return chatUploadHandler({
+                            threadId: threadId,
+                            file: params.image,
+                            fileUniqueId: fileUniqueId
+                        }, function (uploadHandlerResult, uploadHandlerMetadata, fileType, fileExtension) {
+                            fileUploadParams = Object.assign(fileUploadParams, uploadHandlerResult);
+                            threadInfoContent.metadata = JSON.stringify(Object.assign(threadInfoContent.metadata, uploadHandlerMetadata));
+                            putInChatUploadQueue({
+                                message: {
+                                    chatMessageVOType: chatMessageVOTypes.UPDATE_THREAD_INFO,
+                                    typeCode: params.typeCode,
+                                    subjectId: threadId,
+                                    content: threadInfoContent,
+                                    metadata: threadInfoContent.metadata,
+                                    uniqueId: fileUniqueId,
+                                    pushMsgType: 4,
+                                    token: token
+                                },
+                                callbacks: callback
+                            }, function () {
+                                if (imageMimeTypes.indexOf(fileType) >= 0 || imageExtentions.indexOf(fileExtension) >= 0) {
+                                    uploadImageToPodspace(fileUploadParams, function (result) {
+                                        if (!result.hasError) {
+                                            metadata['fileHash'] = result.result.hashCode;
+                                            transferFromUploadQToSendQ(parseInt(params.threadId), fileUniqueId, JSON.stringify(metadata), function () {
+                                                chatSendQueueHandler();
+                                            });
+                                        } else {
+                                            deleteFromChatUploadQueue({message: {uniqueId: fileUniqueId}});
+                                        }
+                                    });
+                                } else {
+                                    fireEvent('error', {
+                                        code: 999,
+                                        message: 'Thread picture can be a image type only!'
+                                    });
+                                }
+                            });
+                        });
+                    } else if (typeof params.image == 'string' && params.image.length > 5) {
+                        threadInfoContent.metadata = JSON.stringify(Object.assign(threadInfoContent.metadata, {fileHash: params.image}));
+
+                        getImageDownloadLinkFromPodspace({
+                            hashCode: params.image
+                        }, function (result) {
+                            if (!result.hasError) {
+                                threadInfoContent.image = result.downloadUrl;
                             }
                         });
-                    });
+
+                        return sendMessage({
+                            chatMessageVOType: chatMessageVOTypes.UPDATE_THREAD_INFO,
+                            typeCode: params.typeCode,
+                            subjectId: threadId,
+                            content: threadInfoContent,
+                            metadata: threadInfoContent.metadata,
+                            uniqueId: fileUniqueId,
+                            pushMsgType: 4,
+                            token: token
+                        }, {
+                            onResult: function (result) {
+                                callback && callback(result);
+                            }
+                        });
+                    } else {
+                        if(Object.keys(threadInfoContent.metadata).length ==  0) {
+                            delete threadInfoContent.metadata;
+                        }
+
+                        return sendMessage({
+                            chatMessageVOType: chatMessageVOTypes.UPDATE_THREAD_INFO,
+                            typeCode: params.typeCode,
+                            subjectId: threadId,
+                            content: threadInfoContent,
+                            metadata: threadInfoContent.metadata,
+                            uniqueId: fileUniqueId,
+                            pushMsgType: 4,
+                            token: token
+                        }, {
+                            onResult: function (result) {
+                                callback && callback(result);
+                            }
+                        });
+                    }
                 }
             },
 
@@ -6121,8 +6087,7 @@
 
                     if (typeof params.metadata == 'object') {
                         updateChatProfileData.content.metadata = JSON.stringify(params.metadata);
-                    }
-                    else if (typeof params.metadata == 'string') {
+                    } else if (typeof params.metadata == 'string') {
                         updateChatProfileData.content.metadata = params.metadata;
                     }
                 }
@@ -6224,8 +6189,7 @@
                                         .and(function (participant) {
                                             return participant.owner == userInfo.id;
                                         });
-                                }
-                                else {
+                                } else {
                                     if (whereClause.hasOwnProperty('name')) {
                                         thenAble = db.participants.where('threadId')
                                             .equals(parseInt(params.threadId))
@@ -6263,8 +6227,7 @@
 
                                                         cacheData.push(formatDataToMakeParticipant(
                                                             JSON.parse(chatDecrypt(participants[i].data, cacheSecret, participants[i].salt)), participants[i].threadId));
-                                                    }
-                                                    catch (error) {
+                                                    } catch (error) {
                                                         fireEvent('error', {
                                                             code: error.code,
                                                             message: error.message,
@@ -6308,8 +6271,7 @@
                                     error: error
                                 });
                             });
-                    }
-                    else {
+                    } else {
                         fireEvent('error', {
                             code: 6601,
                             message: CHAT_ERRORS[6601],
@@ -6366,8 +6328,7 @@
                                             tempData.salt = salt;
 
                                             cacheData.push(tempData);
-                                        }
-                                        catch (error) {
+                                        } catch (error) {
                                             fireEvent('error', {
                                                 code: error.code,
                                                 message: error.message,
@@ -6384,8 +6345,7 @@
                                                 error: error
                                             });
                                         });
-                                }
-                                else {
+                                } else {
                                     fireEvent('error', {
                                         code: 6601,
                                         message: CHAT_ERRORS[6601],
@@ -6498,8 +6458,7 @@
                             hasError: result.hasError,
                             result: image
                         });
-                    }
-                    else {
+                    } else {
                         callback({
                             hasError: true
                         });
@@ -6555,8 +6514,7 @@
                             hasError: result.hasError,
                             result: file
                         });
-                    }
-                    else {
+                    } else {
                         callback({
                             hasError: true
                         });
@@ -6608,8 +6566,7 @@
                             hasError: result.hasError,
                             result: result.result.response
                         });
-                    }
-                    else {
+                    } else {
                         callback({
                             hasError: true
                         });
@@ -6618,10 +6575,10 @@
 
                 return {
                     uniqueId: downloadUniqueId,
-                    cancel: function() {
+                    cancel: function () {
                         cancelFileDownload({
                             uniqueId: downloadUniqueId
-                        }, function() {
+                        }, function () {
                             console.log(`❌ "${downloadUniqueId}" - File download has been canceled!`);
                         });
                     }
@@ -6678,8 +6635,7 @@
                                 hasError: result.hasError,
                                 result: result.result.response
                             });
-                        }
-                        else {
+                        } else {
                             callback({
                                 hasError: true
                             });
@@ -6688,10 +6644,10 @@
 
                     return {
                         uniqueId: downloadUniqueId,
-                        cancel: function() {
+                        cancel: function () {
                             cancelFileDownload({
                                 uniqueId: downloadUniqueId
-                            }, function() {
+                            }, function () {
                                 console.log(`❌ "${downloadUniqueId}" - Image download has been canceled!`);
                             });
                         }
@@ -6795,8 +6751,7 @@
                     fileSize = FS.statSync(params.file).size;
                     fileExtension = params.file.split('.')
                         .pop();
-                }
-                else {
+                } else {
                     fileName = params.file.name;
                     fileType = params.file.type;
                     fileSize = params.file.size;
@@ -6813,8 +6768,7 @@
 
                     if (params.randomFileName) {
                         uploadFileData.fileName = Utility.generateUUID() + '.' + fileExtension;
-                    }
-                    else {
+                    } else {
                         uploadFileData.fileName = fileName;
                     }
 
@@ -6823,8 +6777,7 @@
                     if (parseInt(params.threadId) > 0) {
                         uploadThreadId = params.threadId;
                         uploadFileData.threadId = params.threadId;
-                    }
-                    else {
+                    } else {
                         uploadThreadId = 0;
                         uploadFileData.threadId = 0;
                     }
@@ -6832,16 +6785,14 @@
                     if (typeof params.uniqueId == 'string') {
                         uploadUniqueId = params.uniqueId;
                         uploadFileData.uniqueId = params.uniqueId;
-                    }
-                    else {
+                    } else {
                         uploadUniqueId = Utility.generateUUID();
                         uploadFileData.uniqueId = uploadUniqueId;
                     }
 
                     if (typeof params.originalFileName == 'string') {
                         uploadFileData.originalFileName = params.originalFileName;
-                    }
-                    else {
+                    } else {
                         uploadFileData.originalFileName = fileName;
                     }
                 }
@@ -6865,16 +6816,14 @@
                                 hasError: response.hasError,
                                 result: response.result
                             });
-                        }
-                        catch (e) {
+                        } catch (e) {
                             callback({
                                 hasError: true,
                                 errorCode: 999,
                                 errorMessage: 'Problem in Parsing result'
                             });
                         }
-                    }
-                    else {
+                    } else {
                         callback({
                             hasError: true,
                             errorCode: result.errorCode,
@@ -6932,8 +6881,7 @@
                     fileSize = FS.statSync(params.file).size;
                     fileExtension = params.file.split('.')
                         .pop();
-                }
-                else {
+                } else {
                     fileName = params.file.name;
                     fileType = params.file.type;
                     fileSize = params.file.size;
@@ -6950,8 +6898,7 @@
 
                     if (params.randomFileName) {
                         uploadFileData.filename = Utility.generateUUID() + '.' + fileExtension;
-                    }
-                    else {
+                    } else {
                         uploadFileData.filename = fileName;
                     }
 
@@ -6960,8 +6907,7 @@
                     if (parseInt(params.threadId) > 0) {
                         uploadThreadId = params.threadId;
                         uploadFileData.threadId = params.threadId;
-                    }
-                    else {
+                    } else {
                         uploadThreadId = 0;
                         uploadFileData.threadId = 0;
                     }
@@ -6969,8 +6915,7 @@
                     if (typeof params.uniqueId == 'string') {
                         uploadUniqueId = params.uniqueId;
                         uploadFileData.uniqueId = params.uniqueId;
-                    }
-                    else {
+                    } else {
                         uploadUniqueId = Utility.generateUUID();
                         uploadFileData.uniqueId = uploadUniqueId;
                     }
@@ -6978,8 +6923,7 @@
                     if (typeof params.userGroupHash == 'string') {
                         userGroupHash = params.userGroupHash;
                         uploadFileData.userGroupHash = params.userGroupHash;
-                    }
-                    else {
+                    } else {
                         callback({
                             hasError: true,
                             errorCode: 999,
@@ -6990,8 +6934,7 @@
 
                     if (typeof params.originalFileName == 'string') {
                         uploadFileData.originalFileName = params.originalFileName;
-                    }
-                    else {
+                    } else {
                         uploadFileData.originalFileName = fileName;
                     }
                 }
@@ -7015,16 +6958,14 @@
                                 hasError: response.hasError,
                                 result: response.result
                             });
-                        }
-                        catch (e) {
+                        } catch (e) {
                             callback({
                                 hasError: true,
                                 errorCode: 999,
                                 errorMessage: 'Problem in Parsing result'
                             });
                         }
-                    }
-                    else {
+                    } else {
                         callback({
                             hasError: true,
                             errorCode: result.errorCode,
@@ -7078,29 +7019,25 @@
 
                     if (typeof params.fileExtension !== 'undefined') {
                         fileExtension = params.fileExtension;
-                    }
-                    else {
+                    } else {
                         fileExtension = 'png';
                     }
 
                     if (typeof params.fileName == 'string') {
                         uploadFileData.filename = params.fileName;
-                    }
-                    else {
+                    } else {
                         uploadFileData.filename = Utility.generateUUID() + '.' + fileExtension;
                     }
 
                     if (typeof params.uniqueId == 'string') {
                         uploadUniqueId = params.uniqueId;
-                    }
-                    else {
+                    } else {
                         uploadUniqueId = Utility.generateUUID();
                     }
 
                     if (parseInt(params.threadId) > 0) {
                         uploadThreadId = params.threadId;
-                    }
-                    else {
+                    } else {
                         uploadThreadId = 0;
                     }
 
@@ -7126,8 +7063,7 @@
                                 hasError: response.hasError,
                                 result: response.result
                             });
-                        }
-                        catch (e) {
+                        } catch (e) {
                             callback({
                                 hasError: true,
                                 errorCode: 999,
@@ -7135,8 +7071,7 @@
                                 error: e
                             });
                         }
-                    }
-                    else {
+                    } else {
                         callback({
                             hasError: true,
                             errorCode: result.errorCode,
@@ -7192,8 +7127,7 @@
                     fileSize = FS.statSync(params.image).size;
                     fileExtension = params.image.split('.')
                         .pop();
-                }
-                else {
+                } else {
                     fileName = params.image.name;
                     fileType = params.image.type;
                     fileSize = params.image.size;
@@ -7212,8 +7146,7 @@
 
                         if (params.randomFileName) {
                             uploadImageData.fileName = Utility.generateUUID() + '.' + fileExtension;
-                        }
-                        else {
+                        } else {
                             uploadImageData.fileName = fileName;
                         }
 
@@ -7222,8 +7155,7 @@
                         if (parseInt(params.threadId) > 0) {
                             uploadThreadId = params.threadId;
                             uploadImageData.threadId = params.threadId;
-                        }
-                        else {
+                        } else {
                             uploadThreadId = 0;
                             uploadImageData.threadId = 0;
                         }
@@ -7231,16 +7163,14 @@
                         if (typeof params.uniqueId == 'string') {
                             uploadUniqueId = params.uniqueId;
                             uploadImageData.uniqueId = params.uniqueId;
-                        }
-                        else {
+                        } else {
                             uploadUniqueId = Utility.generateUUID();
                             uploadImageData.uniqueId = uploadUniqueId;
                         }
 
                         if (typeof params.originalFileName == 'string') {
                             uploadImageData.originalFileName = params.originalFileName;
-                        }
-                        else {
+                        } else {
                             uploadImageData.originalFileName = fileName;
                         }
 
@@ -7281,24 +7211,21 @@
                                         hasError: response.hasError,
                                         result: response.result
                                     });
-                                }
-                                else {
+                                } else {
                                     callback({
                                         hasError: true,
                                         errorCode: response.errorCode,
                                         errorMessage: response.message
                                     });
                                 }
-                            }
-                            catch (e) {
+                            } catch (e) {
                                 callback({
                                     hasError: true,
                                     errorCode: 6300,
                                     errorMessage: CHAT_ERRORS[6300]
                                 });
                             }
-                        }
-                        else {
+                        } else {
                             callback({
                                 hasError: true,
                                 errorCode: result.errorCode,
@@ -7321,8 +7248,7 @@
                             }
                         }
                     };
-                }
-                else {
+                } else {
                     callback({
                         hasError: true,
                         errorCode: 6301,
@@ -7369,8 +7295,7 @@
                     fileSize = FS.statSync(params.image).size;
                     fileExtension = params.image.split('.')
                         .pop();
-                }
-                else {
+                } else {
                     fileName = params.image.name;
                     fileType = params.image.type;
                     fileSize = params.image.size;
@@ -7408,8 +7333,7 @@
 
                             if (params.randomFileName) {
                                 uploadImageData.fileName = Utility.generateUUID() + '.' + fileExtension;
-                            }
-                            else {
+                            } else {
                                 uploadImageData.filename = fileName;
                             }
 
@@ -7418,8 +7342,7 @@
                             if (parseInt(params.threadId) > 0) {
                                 uploadThreadId = params.threadId;
                                 uploadImageData.threadId = params.threadId;
-                            }
-                            else {
+                            } else {
                                 uploadThreadId = 0;
                                 uploadImageData.threadId = 0;
                             }
@@ -7427,16 +7350,14 @@
                             if (typeof params.uniqueId == 'string') {
                                 uploadUniqueId = params.uniqueId;
                                 uploadImageData.uniqueId = params.uniqueId;
-                            }
-                            else {
+                            } else {
                                 uploadUniqueId = Utility.generateUUID();
                                 uploadImageData.uniqueId = uploadUniqueId;
                             }
 
                             if (typeof params.originalFileName == 'string') {
                                 uploadImageData.originalFileName = params.originalFileName;
-                            }
-                            else {
+                            } else {
                                 uploadImageData.originalFileName = fileName;
                             }
 
@@ -7466,16 +7387,14 @@
                                             hasError: response.hasError,
                                             result: response.result
                                         });
-                                    }
-                                    else {
+                                    } else {
                                         callback({
                                             hasError: true,
                                             errorCode: response.errorCode,
                                             errorMessage: response.message
                                         });
                                     }
-                                }
-                                catch (e) {
+                                } catch (e) {
                                     console.log(e)
                                     callback({
                                         hasError: true,
@@ -7483,8 +7402,7 @@
                                         errorMessage: CHAT_ERRORS[6300]
                                     });
                                 }
-                            }
-                            else {
+                            } else {
                                 callback({
                                     hasError: true,
                                     errorCode: result.errorCode,
@@ -7507,8 +7425,7 @@
                                 }
                             }
                         };
-                    }
-                    else {
+                    } else {
                         callback({
                             hasError: true,
                             errorCode: 6301,
@@ -7569,8 +7486,7 @@
                             if (typeof params.userGroupHash == 'string') {
                                 userGroupHash = params.userGroupHash;
                                 uploadImageData.userGroupHash = params.userGroupHash;
-                            }
-                            else {
+                            } else {
                                 callback({
                                     hasError: true,
                                     errorCode: 999,
@@ -7581,8 +7497,7 @@
 
                             if (params.randomFileName) {
                                 uploadImageData.fileName = Utility.generateUUID() + '.' + fileExtension;
-                            }
-                            else {
+                            } else {
                                 uploadImageData.filename = fileName;
                             }
 
@@ -7591,8 +7506,7 @@
                             if (parseInt(params.threadId) > 0) {
                                 uploadThreadId = params.threadId;
                                 uploadImageData.threadId = params.threadId;
-                            }
-                            else {
+                            } else {
                                 uploadThreadId = 0;
                                 uploadImageData.threadId = 0;
                             }
@@ -7600,16 +7514,14 @@
                             if (typeof params.uniqueId == 'string') {
                                 uploadUniqueId = params.uniqueId;
                                 uploadImageData.uniqueId = params.uniqueId;
-                            }
-                            else {
+                            } else {
                                 uploadUniqueId = Utility.generateUUID();
                                 uploadImageData.uniqueId = uploadUniqueId;
                             }
 
                             if (typeof params.originalFileName == 'string') {
                                 uploadImageData.originalFileName = params.originalFileName;
-                            }
-                            else {
+                            } else {
                                 uploadImageData.originalFileName = fileName;
                             }
 
@@ -7642,16 +7554,14 @@
                                             hasError: response.hasError,
                                             result: response.result
                                         });
-                                    }
-                                    else {
+                                    } else {
                                         callback({
                                             hasError: true,
                                             errorCode: response.errorCode,
                                             errorMessage: response.message
                                         });
                                     }
-                                }
-                                catch (e) {
+                                } catch (e) {
                                     console.log(e)
                                     callback({
                                         hasError: true,
@@ -7659,8 +7569,7 @@
                                         errorMessage: CHAT_ERRORS[6300]
                                     });
                                 }
-                            }
-                            else {
+                            } else {
                                 callback({
                                     hasError: true,
                                     errorCode: result.errorCode,
@@ -7683,8 +7592,7 @@
                                 }
                             }
                         };
-                    }
-                    else {
+                    } else {
                         callback({
                             hasError: true,
                             errorCode: 6301,
@@ -7706,8 +7614,7 @@
                     fileHeight = dimensions.height;
 
                     continueImageUpload(params);
-                }
-                else {
+                } else {
                     fileName = params.image.name;
                     fileType = params.image.type;
                     fileSize = params.image.size;
@@ -7782,13 +7689,11 @@
                                         transferFromUploadQToSendQ(parseInt(params.threadId), fileUniqueId, JSON.stringify(metadata), function () {
                                             chatSendQueueHandler();
                                         });
-                                    }
-                                    else {
+                                    } else {
                                         deleteFromChatUploadQueue({message: {uniqueId: fileUniqueId}});
                                     }
                                 });
-                            }
-                            else {
+                            } else {
                                 uploadFileToPodspace(fileUploadParams, function (result) {
                                     if (!result.hasError) {
                                         metadata['fileHash'] = result.result.hashCode;
@@ -7802,8 +7707,7 @@
                                         transferFromUploadQToSendQ(parseInt(params.threadId), fileUniqueId, JSON.stringify(metadata), function () {
                                             chatSendQueueHandler();
                                         });
-                                    }
-                                    else {
+                                    } else {
                                         deleteFromChatUploadQueue({message: {uniqueId: fileUniqueId}});
                                     }
                                 });
@@ -7994,8 +7898,7 @@
                     } else {
                         callback && callback();
                     }
-                }
-                else {
+                } else {
                     console.log(CHAT_ERRORS[6600]);
                 }
             },
@@ -8019,8 +7922,7 @@
                         }
                     }
                     callback && callback(tempSendQueue);
-                }
-                else {
+                } else {
                     callback && callback(chatSendQueue);
                 }
             },
@@ -8103,8 +8005,7 @@
                                             }
                                         }
                                     });
-                                }
-                                else {
+                                } else {
                                     callback && callback(waitQueueOnCache);
                                 }
                             })
@@ -8115,8 +8016,7 @@
                                     error: error
                                 });
                             });
-                    }
-                    else {
+                    } else {
                         var uniqueIds = [];
 
                         for (var i = 0; i < chatWaitQueue.length; i++) {
@@ -8147,13 +8047,11 @@
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             callback && callback([]);
                         }
                     }
-                }
-                else {
+                } else {
                     callback && callback([]);
                 }
             },
@@ -8229,8 +8127,7 @@
                                 error: error
                             });
                         });
-                }
-                else {
+                } else {
                     for (var i = 0; i < chatWaitQueue.length; i++) {
                         if (chatWaitQueue[i].uniqueId == item.uniqueId) {
                             chatWaitQueue.splice(i, 1);
@@ -8313,8 +8210,7 @@
                                         error: error
                                     });
                                 });
-                        }
-                        else {
+                        } else {
                             item.uniqueId = waitQueueUniqueId;
                             chatWaitQueue.push(item);
                             callback && callback();
@@ -8382,8 +8278,7 @@
                                 }
 
                                 message.metadata = JSON.stringify(finalMetaData);
-                            }
-                            catch (e) {
+                            } catch (e) {
                                 console.log(e);
                             }
 
@@ -8416,8 +8311,7 @@
                 var decryptedString = Utility.decrypt(string, secret, salt);
                 if (!decryptedString.hasError) {
                     return decryptedString.result;
-                }
-                else {
+                } else {
                     /**
                      * If there is a problem with decrypting cache
                      * Some body is trying to decrypt cache with wrong key
@@ -8476,43 +8370,43 @@
             },
 
             setRoleToUser = function (params, callback) {
-            var setRoleData = {
-                chatMessageVOType: chatMessageVOTypes.SET_ROLE_TO_USER,
-                typeCode: params.typeCode,
-                content: [],
-                pushMsgType: 4,
-                token: token
-            };
+                var setRoleData = {
+                    chatMessageVOType: chatMessageVOTypes.SET_ROLE_TO_USER,
+                    typeCode: params.typeCode,
+                    content: [],
+                    pushMsgType: 4,
+                    token: token
+                };
 
-            if (params) {
-                if (parseInt(params.threadId) > 0) {
-                    setRoleData.subjectId = params.threadId;
-                }
-
-                if (params.admins && Array.isArray(params.admins)) {
-                    for (var i = 0; i < params.admins.length; i++) {
-                        var temp = {};
-                        if (parseInt(params.admins[i].userId) > 0) {
-                            temp.userId = params.admins[i].userId;
-                        }
-
-                        if (Array.isArray(params.admins[i].roles)) {
-                            temp.roles = params.admins[i].roles;
-                        }
-
-                        setRoleData.content.push(temp);
+                if (params) {
+                    if (parseInt(params.threadId) > 0) {
+                        setRoleData.subjectId = params.threadId;
                     }
 
-                    setRoleData.content = JSON.stringify(setRoleData.content);
-                }
-            }
+                    if (params.admins && Array.isArray(params.admins)) {
+                        for (var i = 0; i < params.admins.length; i++) {
+                            var temp = {};
+                            if (parseInt(params.admins[i].userId) > 0) {
+                                temp.userId = params.admins[i].userId;
+                            }
 
-            return sendMessage(setRoleData, {
-                onResult: function (result) {
-                    callback && callback(result);
+                            if (Array.isArray(params.admins[i].roles)) {
+                                temp.roles = params.admins[i].roles;
+                            }
+
+                            setRoleData.content.push(temp);
+                        }
+
+                        setRoleData.content = JSON.stringify(setRoleData.content);
+                    }
                 }
-            });
-        },
+
+                return sendMessage(setRoleData, {
+                    onResult: function (result) {
+                        callback && callback(result);
+                    }
+                });
+            },
 
             removeRoleFromUser = function (params, callback) {
                 var setAdminData = {
@@ -8586,8 +8480,7 @@
                         fileSize = FS.statSync(params.file).size;
                         fileExtension = params.file.split('.')
                             .pop();
-                    }
-                    else {
+                    } else {
                         fileName = params.file.name;
                         fileType = params.file.type;
                         fileSize = params.file.size;
@@ -8629,8 +8522,7 @@
                         if (params.wC > 0) {
                             fileUploadParams.wC = params.wC;
                         }
-                    }
-                    else {
+                    } else {
                         chatUploadHandlerResult.file = params.file;
                     }
 
@@ -8644,8 +8536,7 @@
                     chatUploadHandlerResult.originalFileName = fileName;
 
                     callbacks && callbacks(chatUploadHandlerResult, metadata, fileType, fileExtension);
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: 6302,
                         message: CHAT_ERRORS[6302]
@@ -8878,8 +8769,7 @@
                             if (Object.keys(whereClause).length === 0) {
                                 thenAble = db.contacts.where('owner')
                                     .equals(parseInt(userInfo.id));
-                            }
-                            else {
+                            } else {
                                 if (whereClause.hasOwnProperty('query')) {
                                     thenAble = db.contacts.where('owner')
                                         .equals(parseInt(userInfo.id))
@@ -8909,8 +8799,7 @@
                                                         salt = contacts[i].salt;
 
                                                     cacheData.push(formatDataToMakeContact(JSON.parse(chatDecrypt(contacts[i].data, cacheSecret, contacts[i].salt))));
-                                                }
-                                                catch (error) {
+                                                } catch (error) {
                                                     fireEvent('error', {
                                                         code: error.code,
                                                         message: error.message,
@@ -8954,8 +8843,7 @@
                                 error: error
                             });
                         });
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: 6601,
                         message: CHAT_ERRORS[6601],
@@ -9021,8 +8909,7 @@
                                         tempData.salt = salt;
 
                                         cacheData.push(tempData);
-                                    }
-                                    catch (error) {
+                                    } catch (error) {
                                         fireEvent('error', {
                                             code: error.code,
                                             message: error.message,
@@ -9039,8 +8926,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -9311,12 +9197,10 @@
 
                 if (typeof params.metadata === 'string') {
                     content.metadata = params.metadata;
-                }
-                else if (typeof params.metadata === 'object') {
+                } else if (typeof params.metadata === 'object') {
                     try {
                         content.metadata = JSON.stringify(params.metadata);
-                    }
-                    catch (e) {
+                    } catch (e) {
                         console.log(e);
                     }
                 }
@@ -9342,15 +9226,13 @@
 
                     if (typeof params.message.metadata === 'string') {
                         content.message.metadata = params.message.metadata;
-                    }
-                    else if (typeof params.message.metadata === 'object') {
+                    } else if (typeof params.message.metadata === 'object') {
                         content.message.metadata = JSON.stringify(params.message.metadata);
                     }
 
                     if (typeof params.message.systemMetadata === 'string') {
                         content.message.systemMetadata = params.message.systemMetadata;
-                    }
-                    else if (typeof params.message.systemMetadata === 'object') {
+                    } else if (typeof params.message.systemMetadata === 'object') {
                         content.message.systemMetadata = JSON.stringify(params.message.systemMetadata);
                     }
 
@@ -9401,8 +9283,7 @@
 
             if (typeof params.uniqueId != 'undefined') {
                 uniqueId = params.uniqueId;
-            }
-            else {
+            } else {
                 uniqueId = Utility.generateUUID();
             }
 
@@ -9502,12 +9383,10 @@
 
                 if (typeof params.metadata === 'string') {
                     content.metadata = params.metadata;
-                }
-                else if (typeof params.metadata === 'object') {
+                } else if (typeof params.metadata === 'object') {
                     try {
                         content.metadata = JSON.stringify(params.metadata);
-                    }
-                    catch (e) {
+                    } catch (e) {
                         console.log(e);
                     }
                 }
@@ -9560,37 +9439,32 @@
             if (params) {
                 if (typeof params.mapType === 'string') {
                     data.type = params.mapType;
-                }
-                else {
+                } else {
                     data.type = 'standard-night';
                 }
 
                 if (parseInt(params.mapZoom) > 0) {
                     data.zoom = params.mapZoom;
-                }
-                else {
+                } else {
                     data.zoom = 15;
                 }
 
                 if (parseInt(params.mapWidth) > 0) {
                     data.width = params.mapWidth;
-                }
-                else {
+                } else {
                     data.width = 800;
                 }
 
                 if (parseInt(params.mapHeight) > 0) {
                     data.height = params.mapHeight;
-                }
-                else {
+                } else {
                     data.height = 600;
                 }
 
                 if (typeof params.mapCenter === 'object') {
                     if (parseFloat(params.mapCenter.lat) > 0 && parseFloat(params.mapCenter.lng)) {
                         data.center = params.mapCenter.lat + ',' + parseFloat(params.mapCenter.lng);
-                    }
-                    else {
+                    } else {
                         hasError = true;
                         fireEvent('error', {
                             code: 6700,
@@ -9598,8 +9472,7 @@
                             error: undefined
                         });
                     }
-                }
-                else {
+                } else {
                     hasError = true;
                     fireEvent('error', {
                         code: 6700,
@@ -9675,8 +9548,7 @@
                             error: error
                         });
                     });
-            }
-            else {
+            } else {
                 for (var i = 0; i < chatWaitQueue.length; i++) {
                     if (chatWaitQueue[i].message.uniqueId == uniqueId) {
                         putInChatSendQueue({
@@ -9755,8 +9627,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -9858,16 +9729,14 @@
                                                 error: error
                                             });
                                         });
-                                }
-                                catch (error) {
+                                } catch (error) {
                                     fireEvent('error', {
                                         code: error.code,
                                         message: error.message,
                                         error: error
                                     });
                                 }
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -9932,8 +9801,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -9998,8 +9866,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -10030,8 +9897,7 @@
 
             if (typeof params.uniqueId != 'undefined') {
                 uniqueId = params.uniqueId;
-            }
-            else {
+            } else {
                 uniqueId = Utility.generateUUID();
             }
 
@@ -10114,13 +9980,11 @@
                                 transferFromUploadQToSendQ(parseInt(params.threadId), fileUniqueId, JSON.stringify(metadata), function () {
                                     chatSendQueueHandler();
                                 });
-                            }
-                            else {
+                            } else {
                                 deleteFromChatUploadQueue({message: {uniqueId: fileUniqueId}});
                             }
                         });
-                    }
-                    else {
+                    } else {
                         uploadFileToPodspace(fileUploadParams, function (result) {
                             if (!result.hasError) {
                                 metadata['fileHash'] = result.result.hashCode;
@@ -10134,8 +9998,7 @@
                                 transferFromUploadQToSendQ(parseInt(params.threadId), fileUniqueId, JSON.stringify(metadata), function () {
                                     chatSendQueueHandler();
                                 });
-                            }
-                            else {
+                            } else {
                                 deleteFromChatUploadQueue({message: {uniqueId: fileUniqueId}});
                             }
                         });
@@ -10615,36 +10478,31 @@
             if (params) {
                 if (typeof params.firstName === 'string') {
                     data.firstName = params.firstName;
-                }
-                else {
+                } else {
                     data.firstName = '';
                 }
 
                 if (typeof params.lastName === 'string') {
                     data.lastName = params.lastName;
-                }
-                else {
+                } else {
                     data.lastName = '';
                 }
 
                 if (typeof params.typeCode === 'string') {
                     data.typeCode = params.typeCode;
-                }
-                else if (generalTypeCode) {
+                } else if (generalTypeCode) {
                     data.typeCode = generalTypeCode;
                 }
 
                 if (typeof params.cellphoneNumber === 'string') {
                     data.cellphoneNumber = params.cellphoneNumber;
-                }
-                else {
+                } else {
                     data.cellphoneNumber = '';
                 }
 
                 if (typeof params.email === 'string') {
                     data.email = params.email;
-                }
-                else {
+                } else {
                     data.email = '';
                 }
 
@@ -10718,8 +10576,7 @@
                                         tempData.salt = salt;
 
                                         cacheData.push(tempData);
-                                    }
-                                    catch (error) {
+                                    } catch (error) {
                                         fireEvent('error', {
                                             code: error.code,
                                             message: error.message,
@@ -10736,8 +10593,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -10750,8 +10606,7 @@
 
                     callback && callback(returnData);
 
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: result.errorCode,
                         message: result.errorMessage,
@@ -10767,8 +10622,7 @@
             if (params) {
                 if (parseInt(params.id) > 0) {
                     data.id = parseInt(params.id);
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: 999,
                         message: 'ID is required for Updating Contact!',
@@ -10778,8 +10632,7 @@
 
                 if (typeof params.firstName === 'string') {
                     data.firstName = params.firstName;
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: 999,
                         message: 'firstName is required for Updating Contact!'
@@ -10788,8 +10641,7 @@
 
                 if (typeof params.lastName === 'string') {
                     data.lastName = params.lastName;
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: 999,
                         message: 'lastName is required for Updating Contact!'
@@ -10798,8 +10650,7 @@
 
                 if (typeof params.cellphoneNumber === 'string') {
                     data.cellphoneNumber = params.cellphoneNumber;
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: 999,
                         message: 'cellphoneNumber is required for Updating Contact!'
@@ -10808,8 +10659,7 @@
 
                 if (typeof params.email === 'string') {
                     data.email = params.email;
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: 999,
                         message: 'email is required for Updating Contact!'
@@ -10883,8 +10733,7 @@
                                         tempData.salt = salt;
 
                                         cacheData.push(tempData);
-                                    }
-                                    catch (error) {
+                                    } catch (error) {
                                         fireEvent('error', {
                                             code: error.code,
                                             message: error.message,
@@ -10901,8 +10750,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -10915,8 +10763,7 @@
 
                     callback && callback(returnData);
 
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: result.errorCode,
                         message: result.errorMessage,
@@ -10932,8 +10779,7 @@
             if (params) {
                 if (parseInt(params.id) > 0) {
                     data.id = parseInt(params.id);
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: 999,
                         message: 'ID is required for Deleting Contact!',
@@ -10982,8 +10828,7 @@
                                         error: error
                                     });
                                 });
-                        }
-                        else {
+                        } else {
                             fireEvent('error', {
                                 code: 6601,
                                 message: CHAT_ERRORS[6601],
@@ -10994,8 +10839,7 @@
 
                     callback && callback(returnData);
 
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: result.errorCode,
                         message: result.errorMessage,
@@ -11093,23 +10937,20 @@
                             if (Object.keys(whereClause).length === 0) {
                                 thenAble = db.contacts.where('owner')
                                     .equals(parseInt(userInfo.id));
-                            }
-                            else {
+                            } else {
                                 if (whereClause.hasOwnProperty('id')) {
                                     thenAble = db.contacts.where('owner')
                                         .equals(parseInt(userInfo.id))
                                         .and(function (contact) {
                                             return contact.id == whereClause.id;
                                         });
-                                }
-                                else if (whereClause.hasOwnProperty('uniqueId')) {
+                                } else if (whereClause.hasOwnProperty('uniqueId')) {
                                     thenAble = db.contacts.where('owner')
                                         .equals(parseInt(userInfo.id))
                                         .and(function (contact) {
                                             return contact.uniqueId == whereClause.uniqueId;
                                         });
-                                }
-                                else {
+                                } else {
                                     if (whereClause.hasOwnProperty('firstName')) {
                                         thenAble = db.contacts.where('owner')
                                             .equals(parseInt(userInfo.id))
@@ -11166,8 +11007,7 @@
                                                         salt = contacts[i].salt;
 
                                                     cacheData.push(formatDataToMakeContact(JSON.parse(chatDecrypt(contacts[i].data, cacheSecret, ontacts[i].salt))));
-                                                }
-                                                catch (error) {
+                                                } catch (error) {
                                                     fireEvent('error', {
                                                         code: error.code,
                                                         message: error.message,
@@ -11218,8 +11058,7 @@
                                 error: error
                             });
                         });
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: 6601,
                         message: CHAT_ERRORS[6601],
@@ -11285,8 +11124,7 @@
                                         tempData.salt = salt;
 
                                         cacheData.push(tempData);
-                                    }
-                                    catch (error) {
+                                    } catch (error) {
                                         fireEvent('error', {
                                             code: error.code,
                                             message: error.message,
@@ -11303,8 +11141,7 @@
                                             error: error
                                         });
                                     });
-                            }
-                            else {
+                            } else {
                                 fireEvent('error', {
                                     code: 6601,
                                     message: CHAT_ERRORS[6601],
@@ -11327,8 +11164,7 @@
                             result: returnData.result
                         });
                     }
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: result.errorCode,
                         message: result.errorMessage,
@@ -11524,6 +11360,78 @@
             });
         };
 
+        this.getBotCommandsList = function (params, callback) {
+            var getBotCommandsListData = {
+                chatMessageVOType: chatMessageVOTypes.BOT_COMMANDS,
+                typeCode: params.typeCode,
+                content: {},
+                pushMsgType: 4,
+                token: token
+            };
+
+            if (params) {
+                if (typeof params.botName !== 'string' || params.botName.length == 0) {
+                    fireEvent('error', {
+                        code: 999,
+                        message: 'You need to insert a botName!'
+                    });
+                    return;
+                }
+
+                getBotCommandsListData.content = JSON.stringify({
+                    botName: params.botName.trim()
+                });
+
+            } else {
+                fireEvent('error', {
+                    code: 999,
+                    message: 'No params have been sent to get bot commands'
+                });
+                return;
+            }
+
+            return sendMessage(getBotCommandsListData, {
+                onResult: function (result) {
+                    callback && callback(result);
+                }
+            });
+        };
+
+        this.getThreadAllBots = function (params, callback) {
+            var getThreadBotsData = {
+                chatMessageVOType: chatMessageVOTypes.THREAD_ALL_BOTS,
+                typeCode: params.typeCode,
+                content: {},
+                pushMsgType: 4,
+                token: token
+            };
+
+            if (params) {
+                if (typeof +params.threadId !== 'number' || params.threadId < 0) {
+                    fireEvent('error', {
+                        code: 999,
+                        message: 'Enter a valid Thread Id to get all Bots List!'
+                    });
+                    return;
+                }
+
+                getThreadBotsData.subjectId = +params.threadId;
+
+            } else {
+                fireEvent('error', {
+                    code: 999,
+                    message: 'No params have been sent to get thread\' bots list!'
+                });
+                return;
+            }
+
+            return sendMessage(getThreadBotsData, {
+                onResult: function (result) {
+                    callback && callback(result);
+                }
+            });
+        };
+
         this.mapReverse = function (params, callback) {
             var data = {};
 
@@ -11562,8 +11470,7 @@
 
                     callback && callback(returnData);
 
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: result.errorCode,
                         message: result.errorMessage,
@@ -11615,8 +11522,7 @@
 
                     callback && callback(returnData);
 
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: result.errorCode,
                         message: result.errorMessage,
@@ -11632,16 +11538,14 @@
             if (params) {
                 if (typeof params.alternative === 'boolean') {
                     data.alternative = params.alternative;
-                }
-                else {
+                } else {
                     data.alternative = true;
                 }
 
                 if (typeof params.origin === 'object') {
                     if (parseFloat(params.origin.lat) > 0 && parseFloat(params.origin.lng)) {
                         data.origin = params.origin.lat + ',' + parseFloat(params.origin.lng);
-                    }
-                    else {
+                    } else {
                         console.log('No origin has been selected!');
                     }
                 }
@@ -11649,8 +11553,7 @@
                 if (typeof params.destination === 'object') {
                     if (parseFloat(params.destination.lat) > 0 && parseFloat(params.destination.lng)) {
                         data.destination = params.destination.lat + ',' + parseFloat(params.destination.lng);
-                    }
-                    else {
+                    } else {
                         console.log('No destination has been selected!');
                     }
                 }
@@ -11681,8 +11584,7 @@
 
                     callback && callback(returnData);
 
-                }
-                else {
+                } else {
                     fireEvent('error', {
                         code: result.errorCode,
                         message: result.errorMessage,
@@ -11700,37 +11602,32 @@
             if (params) {
                 if (typeof params.type === 'string') {
                     data.type = params.type;
-                }
-                else {
+                } else {
                     data.type = 'standard-night';
                 }
 
                 if (parseInt(params.zoom) > 0) {
                     data.zoom = params.zoom;
-                }
-                else {
+                } else {
                     data.zoom = 15;
                 }
 
                 if (parseInt(params.width) > 0) {
                     data.width = params.width;
-                }
-                else {
+                } else {
                     data.width = 800;
                 }
 
                 if (parseInt(params.height) > 0) {
                     data.height = params.height;
-                }
-                else {
+                } else {
                     data.height = 600;
                 }
 
                 if (typeof params.center === 'object') {
                     if (parseFloat(params.center.lat) > 0 && parseFloat(params.center.lng)) {
                         data.center = params.center.lat + ',' + parseFloat(params.center.lng);
-                    }
-                    else {
+                    } else {
                         hasError = true;
                         fireEvent('error', {
                             code: 6700,
@@ -11738,8 +11635,7 @@
                             error: undefined
                         });
                     }
-                }
-                else {
+                } else {
                     hasError = true;
                     fireEvent('error', {
                         code: 6700,
@@ -11794,22 +11690,6 @@
             removeRoleFromUser(params, callback);
         };
 
-        this.generateUUID = Utility.generateUUID;
-
-        this.logout = function () {
-            clearChatServerCaches();
-
-            // Delete all event callbacks
-            for (var i in eventCallbacks) {
-                delete eventCallbacks[i];
-            }
-            messagesCallbacks = {};
-            sendMessageCallbacks = {};
-            threadCallbacks = {};
-
-            asyncClient.logout();
-        };
-
         this.clearChatServerCaches = clearChatServerCaches;
 
         this.deleteCacheDatabases = deleteCacheDatabases;
@@ -11830,13 +11710,28 @@
             }
         };
 
+        this.generateUUID = Utility.generateUUID;
+
+        this.logout = function () {
+            clearChatServerCaches();
+
+            // Delete all event callbacks
+            for (var i in eventCallbacks) {
+                delete eventCallbacks[i];
+            }
+            messagesCallbacks = {};
+            sendMessageCallbacks = {};
+            threadCallbacks = {};
+
+            asyncClient.logout();
+        };
+
         init();
     }
 
     if (typeof module !== 'undefined' && typeof module.exports != 'undefined') {
         module.exports = Chat;
-    }
-    else {
+    } else {
         if (!window.POD) {
             window.POD = {};
         }
