@@ -200,10 +200,7 @@
             recordingVoiceInterval,
             upoadingInterval,
             protocol = params.protocol || 'websocket',
-            queueHost = params.queueHost,
-            queuePort = params.queuePort,
-            queueUsername = params.queueUsername,
-            queuePassword = params.queuePassword,
+            queueServers = params.queueServers || [],
             queueReceive = params.queueReceive,
             queueSend = params.queueSend,
             queueConnectionTimeout = params.queueConnectionTimeout,
@@ -362,14 +359,15 @@
              * @return {undefined}
              */
             initAsync = function () {
+                if(protocol === 'queue' && (!Array.isArray(queueServers) || queueServers.length == 0)) {
+                    console.log('Queue Servers are invalid!', queueServers);
+                    return;
+                }
                 var asyncGetReadyTime = new Date().getTime();
 
                 asyncClient = new Async({
                     protocol: protocol,
-                    queueHost: queueHost,
-                    queuePort: queuePort,
-                    queueUsername: queueUsername,
-                    queuePassword: queuePassword,
+                    servers: queueServers,
                     queueReceive: queueReceive,
                     queueSend: queueSend,
                     queueConnectionTimeout: queueConnectionTimeout,

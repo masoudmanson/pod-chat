@@ -7,12 +7,12 @@ var params = {
      * ActiveMQ Config
      */
     // protocol: "queue",
-    // queueHost: "10.56.16.25",
-    // queuePort: "61613",
+    // queueHost: "***",
+    // queuePort: "***",
     // queueUsername: "root",
-    // queuePassword: "zalzalak",
-    // queueReceive: "queue-in-amjadi-stomp",
-    // queueSend: "queue-out-amjadi-stomp",
+    // queuePassword: "***",
+    // queueReceive: "queue-in-***",
+    // queueSend: "queue-out-***",
     // queueConnectionTimeout: 20000,
     // serverName: "chat-server",
 
@@ -51,7 +51,7 @@ var params = {
     fullResponseObject: false,
     mapApiKey: '8b77db18704aa646ee5aaea13e7370f4f88b9e8c',
     // typeCode: "talk",
-    token: "100b9646673e4f80ae49b2ad7502b8aa",
+    token: "8dbbec9d51be497db95c729b422bd655",
     // token: "f19933ae1b1e424db9965a243bf3bcd3", // {**REQUIRED**} SSO Token ZiZi
     // token: "81025b3fbc1a4f7184c3600a2f874673", //  {**REQUIRED**} SSO Token JiJi
     // token: "3c4d62b6068043aa898cf7426d5cae68", // {**REQUIRED**} SSO Token FiFi
@@ -653,16 +653,16 @@ var chatReadyEventCallback = chatAgent.on('chatReady', function () {
      * @param cellphoneNumber
      * @param email
      */
-    var addContactInstantResult = chatAgent.addContacts({
-        firstName: "Ahmad",
-        lastName: "Sajadi",
-        cellphoneNumber: "09158245345",
-        // email: "zabbix_bot_1@fanap.ir",
-        // username: "zabbix_bot_1"
-    }, function (result) {
-        console.log(result);
-        console.log(result.contacts);
-    });
+    // var addContactInstantResult = chatAgent.addContacts({
+    //     firstName: "Ahmad",
+    //     lastName: "Sajadi",
+    //     cellphoneNumber: "09158245345",
+    //     // email: "zabbix_bot_1@fanap.ir",
+    //     // username: "zabbix_bot_1"
+    // }, function (result) {
+    //     console.log(result);
+    //     console.log(result.contacts);
+    // });
 
     /**
      * UPDATE CONTACTS
