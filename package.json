@@ -33,7 +33,7 @@
     "image-size": "^0.8.3",
     "indexeddbshim": "^3.10.0",
     "mime": "^2.4.4",
-    "podasync": "^2.7.4",
+    "podasync": "^2.8.3",
     "query-string": "^6.8.1",
     "request": "^2.88.0"
   },
